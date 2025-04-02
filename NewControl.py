@@ -139,21 +139,21 @@ class Control():
                              +'PV'+str(int(profile_info['PV System']))      +'.csv')
         
         # eventuell input loading übergeben und alles andere im optimisation task festlegen aus param
-        input_optimisation =    [Param.optimise_time, Param.step_time, profile_info['Battery'],
-                                 Param.battery_costs,
-                                profile_info['Battery Power'], 
-                                Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
+        # input_optimisation =    [Param.optimise_time, Param.step_time, profile_info['Battery'],
+        #                          Param.battery_costs,
+        #                         profile_info['Battery Power'], 
+        #                         Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
         
-        data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
-                                                              input_optimisation, 
-                                                              select_opti)
+        # data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+        #                                                       input_optimisation, 
+        #                                                       select_opti)
         
-        # calculation of the costs and store in a Dataframe to concat all together later
-        costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, 
-                                                                            profile_info, 
-                                                                            select_opti)
+        # # calculation of the costs and store in a Dataframe to concat all together later
+        # costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, 
+        #                                                                     profile_info, 
+        #                                                                     select_opti)
         
-        st.write(f"**Power:** {costs} Euro")
+        st.write("Hi ich bin fertig mit rechnen!")#(f"**Power:** {costs} Euro")
         # return costs, battery_charge
     
     def select_optimisation_behaviour(self, number_optimisation):
