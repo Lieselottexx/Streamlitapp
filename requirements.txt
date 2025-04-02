@@ -3,5 +3,5 @@ streamlit
 scipy
 numpy
 pvlib
-matpoltlib
+matplotlib
 seaborn
