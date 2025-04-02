@@ -26,11 +26,44 @@ class Control():
         # get the prices once is enough
         self.static_feed_in_price, self.static_bonus_feed_in = self.get_eeg_prices(Param.year_pv_installation,Param.month_pv_installation)
         # st.title('Uber pickups in NYC')
-        self.program_flow()
+        # self.program_flow()
+        self.small_opti()
         pass
 
     def __del__(self):
         pass
+
+
+    def small_opti(self):
+        Lastprofil = 7
+        pv_mode = 1
+        pv_peak = 10
+        verhalten = 1
+        battery = 10
+        battery_power = battery * 5/60
+
+
+        self.data, averageEnergyHousehold = self.data_generator.loadData(Lastprofil, pv_mode, pv_peak) 
+        st.write("erstes ist fertig")
+        self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold)
+        st.write("zweites ist fertig")
+        select_opti = self.select_optimisation_behaviour(verhalten)
+        st.write("drittes ist fertig")
+
+        input_optimisation =    [Param.optimise_time, Param.step_time, battery,
+                                 Param.battery_costs,
+                                battery_power, 
+                                Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
+        st.write("vietes ist fertig")
+        data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+                                                              input_optimisation, 
+                                                              select_opti)
+        st.write("alles ist fertig")
+        
+        # calculation of the costs and store in a Dataframe to concat all together later
+        # costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, 
+        #                                                                     profile_info, 
+        #                                                                     select_opti)
 
     def program_flow(self):
         profile_info = self.loading_of_categories_file()

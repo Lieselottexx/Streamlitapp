@@ -42,8 +42,8 @@ start_date = datetime.fromisoformat(f'{y_start}-{m_start}-{d_start}')
 stop_date = datetime.fromisoformat(f'{y_stop}-{m_stop}-{d_stop}')
 
 # data types for numbers
-datatype       = np.float64
-str_datatype   = 'float64'
+datatype       = np.float32
+str_datatype   = 'float32'
 
 
 ''' Parameter used in the Optimisation'''
@@ -60,10 +60,10 @@ grid_power = 11 * 5/60 # kW * 5/60 h
 
 # The time over how long an optimisation step should be calculated
 # how long the optimisation should be able to take a prediction into account
-optimise_time = 48 # h
+optimise_time = 24 # h
 
 # time duration of new calculation 
-step_time = 6 # h
+step_time = 12 # h
 
 # Year of installation of the pv system
 # derive the feed-in price 
