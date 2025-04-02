@@ -33,10 +33,7 @@ class Control():
         pass
 
     def program_flow(self):
-
-        import os
-        print("Current working directory:", os.getcwd())
-        profile_info = self.loading_of_categories_file()
+        # profile_info = self.loading_of_categories_file()
         ''' Optimisation '''
         # self.optimisation_process(profile_info)
 

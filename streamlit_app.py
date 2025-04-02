@@ -4,7 +4,7 @@ import streamlit as st
 class Streamlit():
 
     def __init__(self):
-        
+        self.create_app_interface()
         pass
 
     def __del__(self):

@@ -7,12 +7,12 @@ import numpy as np
 
 # Import Python Files
 import Param
-import Plot_Data as plot
+# import Plot_Data as plot
 
 class Optimisation():
 
     def __init__(self):
-        self.plot_data = plot.Plot_Data()
+        # self.plot_data = plot.Plot_Data()
         # Name for the protocol of the current calculation, log file
         self.log_file_name = "log.txt"
         self.data_path = Param.data_path

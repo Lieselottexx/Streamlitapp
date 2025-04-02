@@ -14,7 +14,7 @@ class DataGenerator():
 
     def __init__(self):
         # Initiate the Class with all plot functions
-        self.plot = plot.Plot_Data()
+        # self.plot = plot.Plot_Data()
         # loading the current related data path out of the Param.py file
         self.related_path_data = Param.data_path
         # Pathname of the Log file
