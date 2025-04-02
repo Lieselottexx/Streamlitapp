@@ -35,7 +35,7 @@ class Control():
     def program_flow(self):
         profile_info = self.loading_of_categories_file()
         ''' Optimisation '''
-        # self.optimisation_process(profile_info)
+        self.optimisation_process(profile_info)
         
         ''' Analysis '''
         # info_dict = self.analysis.loading_optimised_data(profile_info)
