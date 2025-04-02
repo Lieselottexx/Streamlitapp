@@ -1,1 +1,7 @@
-streamlit
+pandas==1.5.2
+streamlit==1.44.0
+scipy==1.12.0
+numpy==1.25.2
+pvlib==0.10.3
+matpoltlib==3.8.3
+seaborn==0.13.2
