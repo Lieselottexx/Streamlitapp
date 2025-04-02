@@ -33,10 +33,10 @@ class Control():
         pass
 
     def program_flow(self):
-        # profile_info = self.loading_of_categories_file()
+        profile_info = self.loading_of_categories_file()
         ''' Optimisation '''
-        # self.optimisation_process(profile_info)
-
+        self.optimisation_process(profile_info)
+        
         ''' Analysis '''
         # info_dict = self.analysis.loading_optimised_data(profile_info)
         # for key, values in info_dict.items():
@@ -149,9 +149,11 @@ class Control():
                                                               select_opti)
         
         # calculation of the costs and store in a Dataframe to concat all together later
-        # costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, 
-        #                                                                     profile_info, 
-        #                                                                     select_opti)
+        costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, 
+                                                                            profile_info, 
+                                                                            select_opti)
+        
+        st.write(f"**Power:** {costs} Euro")
         # return costs, battery_charge
     
     def select_optimisation_behaviour(self, number_optimisation):

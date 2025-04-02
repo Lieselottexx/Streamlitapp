@@ -16,9 +16,9 @@ class Streamlit():
         st.title("Dynamic Energy Price Benefit Calculator")
     
         # Checkbox for PV system
-        has_pv = st.checkbox("Do you have a PV system?")
+        check_pv = st.checkbox("Do you have a PV system?")
         
-        if has_pv:
+        if check_pv:
             # PV Power Selection
             pv_power = st.slider("Select your PV system power (kWp)", 1, 25, 5)
             
