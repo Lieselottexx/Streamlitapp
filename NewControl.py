@@ -35,7 +35,7 @@ class Control():
 
 
     def small_opti(self):
-        Lastprofil = 7
+        Lastprofil = st.session_state.consumption
         pv_mode = 1
         pv_peak = 10
         verhalten = 1
