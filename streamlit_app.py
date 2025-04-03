@@ -35,8 +35,10 @@ class Streamlit():
         has_pv = st.checkbox("Besitzen Sie eine PV-Anlage?")
         if has_pv:
             pv_power = st.slider("Installierte PV-Leistung (kWp)", 1, 25, 5, step=1)
-            direction_map = {0: "Norden", 90: "Osten", 180: "Süden", 270: "Westen"}
-            pv_direction = st.slider("Ausrichtung der PV-Anlage", options=list(direction_map.keys()), format_func=lambda x: direction_map[x])
+            direction_map = {0: "Nord", 45: 'Nord-Ost', 90: "Ost", 135: 'Süd-Ost', 180: "Süd", 225: "Süd-West",  270: "West"}
+            pv_direction = st.select_slider("Ausrichtung der PV-Anlage", options=list(direction_map.keys()), format_func=lambda x: direction_map[x])
+            # pv_direction = st.slider("Ausrichtung der PV-Anlage", 0, 270, 180, step=90, format="%d Grad")
+
             pv_direction_label = direction_map.get(pv_direction, f"{pv_direction} Grad")
             
             # EEG-Vergütung
