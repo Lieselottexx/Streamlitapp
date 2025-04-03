@@ -27,7 +27,7 @@ class Control():
         self.static_feed_in_price, self.static_bonus_feed_in = self.get_eeg_prices(Param.year_pv_installation,Param.month_pv_installation)
         # st.title('Uber pickups in NYC')
         # self.program_flow()
-        self.small_opti()
+        # self.small_opti()
         pass
 
     def __del__(self):
