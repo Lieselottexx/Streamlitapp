@@ -36,7 +36,7 @@ class Streamlit():
         if has_pv:
             pv_power = st.slider("Installierte PV-Leistung (kWp)", 1, 25, 5, step=1)
             direction_map = {0: "Norden", 90: "Osten", 180: "Süden", 270: "Westen"}
-            pv_direction = st.slider("Ausrichtung der PV-Anlage", 0, 270, 180, step=90, format="%d Grad")
+            pv_direction = st.slider("Ausrichtung der PV-Anlage", options=list(direction_map.keys()), format_func=lambda x: direction_map[x])
             pv_direction_label = direction_map.get(pv_direction, f"{pv_direction} Grad")
             
             # EEG-Vergütung
