@@ -42,8 +42,8 @@ class DataGenerator():
         data = self.load_energy_prices(data)
         # Loading monthly average prices 
         # data = data.loc[start_date:stop_date]
-        '''Hinweis Direktvermarktung auskommentiert, wird grade nicht gebraucht'''
-        # data = self.load_direct_marketing_data(data)
+        
+        data = self.load_direct_marketing_data(data)
         
         # ------------- Limitation of the Data to the start and end date ------------------------ 
         data = data.loc[Param.start_date:Param.stop_date]
