@@ -26,3 +26,12 @@ Saved the data DataFrame to CSV!
 2025-04-04 11:06:56.123850
 Loaded the dynamic energy prices.
 
+2025-04-04 11:07:48.626445
+Loaded the static energy prices.
+
+2025-04-04 11:07:48.754942
+Loaded the time variable Netzentgelte.
+
+2025-04-04 11:07:48.757333
+Saved the data DataFrame to CSV as opti_input!
+

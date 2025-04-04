@@ -78,9 +78,9 @@ class Streamlit():
             st.session_state.progress_bar = st.progress(0)
             st.session_state.status_text = st.empty()
             
-            for progress in self.control.calculation():
-                st.session_state.progress_bar.progress(progress)
-                st.session_state.status_text.text(f"Berechnung läuft... {progress}% abgeschlossen")
+            # for progress in self.control.calculation():
+            #     st.session_state.progress_bar.progress(progress)
+            #     st.session_state.status_text.text(f"Berechnung läuft... {progress}% abgeschlossen")
             
             result = self.control.calculation()
             st.session_state.results.append(result)
