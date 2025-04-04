@@ -50,7 +50,7 @@ class Streamlit():
             # EEG-Vergütung
             st.checkbox("Erhält die Anlage eine EEG-Vergütung?", key="has_eeg", disabled=st.session_state.get("calculating", False))
             if st.session_state.has_eeg:
-                st.session_state.installation_date = pd.to_datetime(st.date_input("Installationsdatum der PV-Anlage"))
+                st.session_state.installation_date = pd.to_datetime(st.date_input("Installationsdatum der PV-Anlage", disabled=st.session_state.get("calculating", False)))
             else:
                 st.session_state.installation_date = pd.to_datetime("2024.01.01", format="%Y.%m.%d")
         else:
@@ -77,36 +77,37 @@ class Streamlit():
         if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
             st.session_state.calculating = True
             
-            st.session_state.progress_bar_loading = st.progress(0)
-            st.session_state.status_text_loading = st.empty()
+            progress_bar_loading = st.progress(0)
+            status_text_loading = st.empty()
 
-            st.session_state.progress_bar_Opti1 = st.progress(0)
-            st.session_state.status_text_Opti1 = st.empty()
+            progress_bar_Opti1 = st.progress(0)
+            status_text_Opti1 = st.empty()
 
-            st.session_state.progress_bar_Opti2 = st.progress(0)
-            st.session_state.status_text_Opti2 = st.empty()
+            progress_bar_Opti2 = st.progress(0)
+            status_text_Opti2 = st.empty()
             
-            for ben, st.session_state.progress_loading, st.session_state.progress_opti1, st.session_state.progress_opti2 in self.control.calculation():
-                st.session_state.progress_bar_loading.progress(st.session_state.progress_loading)
-                st.session_state.status_text_loading.text(f"Berechnung läuft... {st.session_state.progress_loading}% abgeschlossen")
+            # for ben, st.session_state.progress_loading, st.session_state.progress_opti1, st.session_state.progress_opti2 in self.control.calculation():
+            #     st.session_state.progress_bar_loading.progress(st.session_state.progress_loading)
+            #     st.session_state.status_text_loading.text(f"Berechnung läuft... {st.session_state.progress_loading}% abgeschlossen")
 
-                st.session_state.progress_bar_Opti1.progress(st.session_state.progress_opti1)
-                st.session_state.status_text_Opti1.text(f"Berechnung läuft... {st.session_state.progress_opti1}% abgeschlossen")
+            #     st.session_state.progress_bar_Opti1.progress(st.session_state.progress_opti1)
+            #     st.session_state.status_text_Opti1.text(f"Berechnung läuft... {st.session_state.progress_opti1}% abgeschlossen")
 
-                st.session_state.progress_bar_Opti2.progress(st.session_state.progress_opti2)
-                st.session_state.status_text_Opti2.text(f"Berechnung läuft... {st.session_state.progress_opti2}% abgeschlossen")
+            #     st.session_state.progress_bar_Opti2.progress(st.session_state.progress_opti2)
+            #     st.session_state.status_text_Opti2.text(f"Berechnung läuft... {st.session_state.progress_opti2}% abgeschlossen")
             
-            result = self.control.calculation()
+            result = self.control.calculation(progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
+                                              progress_bar_Opti2, status_text_Opti2)
             st.session_state.results.append(result)
             
-            st.session_state.progress_bar_loading.empty()
-            st.session_state.status_text_loading.text("Berechnung abgeschlossen!")
+            progress_bar_loading.empty()
+            status_text_loading.text("Berechnung abgeschlossen!")
 
-            st.session_state.progress_bar_Opti1.empty()
-            st.session_state.status_text_Opti1.text("Berechnung abgeschlossen!")
+            progress_bar_Opti1.empty()
+            status_text_Opti1.text("Berechnung abgeschlossen!")
 
-            st.session_state.progress_bar_Opti2.empty()
-            st.session_state.status_text_Opti2.text("Berechnung abgeschlossen!")
+            progress_bar_Opti2.empty()
+            status_text_Opti2.text("Berechnung abgeschlossen!")
 
             st.session_state.calculating = False
         

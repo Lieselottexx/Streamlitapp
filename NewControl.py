@@ -33,29 +33,49 @@ class Control():
         pass
 
 
-    def calculation(self):
+    def calculation(self, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
+                         progress_bar_Opti2, status_text_Opti2):
 
-        st.session_state.progress_loading = 5
+        progress_loading = 5
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Berechnung läuft... {progress_loading}% abgeschlossen")
+
         ''' Lastprofile, PV Daten und Börsenstrompreise einlesen '''
         loadprofiles = {1000: 1, 1500: 2, 2000: 3, 2500: 4, 3000: 5, 3500: 6,  4000: 7,
                         4500: 8, 5000: 9, 5500: 10, 6000: 11, 6500: 12, 7000: 13,  7500: 14, 8000: 15}
-        st.session_state.progress_loading = 7
+        
+        progress_loading = 7
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Berechnung läuft... {progress_loading}% abgeschlossen")
+
         st.session_state.loadprofile = loadprofiles[st.session_state.consumption]
         print(f"Lastprofil: {st.session_state.loadprofile}")
         del(loadprofiles)
-        st.session_state.progress_loading = 10
+
+        progress_loading = 10
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Berechnung läuft... {progress_loading}% abgeschlossen")
+
         self.data, averageEnergyHousehold = self.data_generator.loadData(st.session_state.loadprofile,
                                                                          st.session_state.pv_direction, 
                                                                          st.session_state.pv_power) 
-        st.session_state.progress_loading = 70
+        progress_loading = 70
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Berechnung läuft... {progress_loading}% abgeschlossen")
+
         st.write("Daten einladen ist fertig")
 
         '''Stromtarife berechnen'''
         self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
                                                                  st.session_state.controllable_device)
-        st.session_state.progress_loading = 100
+        progress_loading = 100
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Berechnung läuft... {progress_loading}% abgeschlossen")
         
-        st.session_state.progress_opti1 = 5
+        progress_Opti1 = 5
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Berechnung läuft... {progress_Opti1}% abgeschlossen")
+
         st.write("Strompreise sind berechnet")
         '''Wenn das ein dann nur statisch mit Zeitvariablen Netzentgelten rechnen'''
         if st.session_state.static_ZVNE == 1:
@@ -70,7 +90,9 @@ class Control():
                 if st.session_state.controllable_device:
                     select_opti = self.select_optimisation_behaviour(11)
         
-        st.session_state.progress_opti1 = 10
+        progress_Opti1 = 10
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Berechnung läuft... {progress_Opti1}% abgeschlossen")
         
         st.write(f"Das ausgewählte Verhalten ist: {select_opti[0]}")
    
@@ -85,33 +107,49 @@ class Control():
                                  battery_power, 
                                  Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
         
-        st.session_state.progress_opti1 = 20
+        progress_Opti1 = 20
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Berechnung läuft... {progress_Opti1}% abgeschlossen")
         
         
         data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
                                                               input_optimisation, 
                                                               select_opti)
-        st.session_state.progress_opti1 = 90
+        progress_Opti1 = 90
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Berechnung läuft... {progress_Opti1}% abgeschlossen")
         st.write("erste Optimierung ist fertig")
         
         # calculation of the costs and store in a Dataframe to concat all together later
         costs_selected, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
-        st.session_state.progress_opti1 = 100
-        st.session_state.progress_opti2 = 5
+        progress_Opti1 = 100
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Berechnung läuft... {progress_Opti1}% abgeschlossen")
+
+        progress_Opti2 = 5
+        progress_bar_Opti2.progress(progress_Opti2)
+        status_text_Opti2.text(f"Berechnung läuft... {progress_Opti2}% abgeschlossen")
+
         select_opti = self.select_optimisation_behaviour(1)
-        st.session_state.progress_opti2 = 10
+        progress_Opti2 = 10
+        progress_bar_Opti2.progress(progress_Opti2)
+        status_text_Opti2.text(f"Berechnung läuft... {progress_Opti2}% abgeschlossen")
         data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
                                                               input_optimisation, 
                                                               select_opti)
-        st.session_state.progress_opti2 = 90
+        progress_Opti2 = 90
+        progress_bar_Opti2.progress(progress_Opti2)
+        status_text_Opti2.text(f"Berechnung läuft... {progress_Opti2}% abgeschlossen")
         st.write("Die Optimierung der Eigenverbrauchsoptimierung ist fertig")
         
         # calculation of the costs and store in a Dataframe to concat all together later
         costs_evo, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
-        st.session_state.progress_opti2 = 100
+        progress_Opti2 = 100
+        progress_bar_Opti2.progress(progress_Opti2)
+        status_text_Opti2.text(f"Berechnung läuft... {progress_Opti2}% abgeschlossen")
 
         benefit = costs_evo - costs_selected
-        return benefit, st.session_state.progress_loading, st.session_state.progress_opti1, st.session_state.progress_opti2
+        return benefit, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
 
     def program_flow(self):
         profile_info = self.loading_of_categories_file()
