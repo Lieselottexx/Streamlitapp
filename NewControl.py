@@ -45,13 +45,13 @@ class Control():
         self.data, averageEnergyHousehold = self.data_generator.loadData(st.session_state.loadprofile,
                                                                          st.session_state.pv_direction, 
                                                                          st.session_state.pv_power) 
-        st.write("erstes ist fertig")
+        st.write("Daten einladen ist fertig")
 
         '''Stromtarife berechnen'''
         self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
                                                                  st.session_state.controllable_device)
         
-        st.write("zweites Fertig!")
+        st.write("Strompreise sind berechnet")
         '''Wenn das ein dann nur statisch mit Zeitvariablen Netzentgelten rechnen'''
         if st.session_state.static_ZVNE == 1:
             select_opti = self.select_optimisation_behaviour(9)
@@ -78,16 +78,26 @@ class Control():
                                  battery_power, 
                                  Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
         
-        st.write("vietes ist fertig")
+        
         data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
                                                               input_optimisation, 
                                                               select_opti)
-        st.write("alles ist fertig")
+        st.write("erste Optimierung ist fertig")
         
         # calculation of the costs and store in a Dataframe to concat all together later
-        costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        costs_selected, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
         
-        return costs
+        select_opti = self.select_optimisation_behaviour(1)
+        data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+                                                              input_optimisation, 
+                                                              select_opti)
+        st.write("Die Optimierung der Eigenverbrauchsoptimierung ist fertig")
+        
+        # calculation of the costs and store in a Dataframe to concat all together later
+        costs_evo, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+
+        benefit = costs_evo - costs_selected
+        return benefit
 
     def program_flow(self):
         profile_info = self.loading_of_categories_file()
