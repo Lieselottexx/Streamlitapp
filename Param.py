@@ -65,10 +65,10 @@ optimise_time = 24 # h
 # time duration of new calculation 
 step_time = 12 # h
 
-# Year of installation of the pv system
+'''Year of installation of the pv system, nicht mehr benutzt'''
 # derive the feed-in price 
-year_pv_installation  = 2024
-month_pv_installation = 12
+# year_pv_installation  = 2024
+# month_pv_installation = 12
 
 
 ''' Energy Price Parameter '''

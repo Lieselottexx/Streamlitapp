@@ -20,7 +20,7 @@ class Analysis():
 
 
     ''' Function to calculate the costs of the optimised load profile and the battery cycles for every year'''
-    def single_cost_batterycycle_calculation(self, data, info_dict_key, select_opti):
+    def single_cost_batterycycle_calculation(self, data, select_opti):
         result_column_names =   ['Battery Charge [kWh]', 'Battery Discharge[kWh]', 
                                 'Battery SOC', 'Supply from Grid [kWh]', 
                                 'Grid Feed-in [kWh]']
@@ -33,11 +33,11 @@ class Analysis():
         costs = costs_of_grid_supply - payment_of_feed_in
         costs_of_grid_supply = costs_of_grid_supply.resample('1Y').sum()
         payment_of_feed_in = payment_of_feed_in.resample('1Y').sum() 
-        # costs = costs.resample('1Y').sum()
+        costs = costs.resample('1Y').sum()
         # Calculation of the yearly battery cycles
-        battery_charge = pd.DataFrame(index=data.index)
-        battery_charge = data[result_column_names[0]].copy().resample('1Y').sum() / info_dict_key['Battery']
-        return costs, battery_charge
+        # battery_charge = pd.DataFrame(index=data.index)
+        # battery_charge = data[result_column_names[0]].copy().resample('1Y').sum() / info_dict_key['Battery']
+        return costs #, battery_charge
 
     '''Loading all stored inforamtions to the profile infos of the optimisations'''
     def loading_optimised_data(self, profile_info):

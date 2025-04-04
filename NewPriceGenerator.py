@@ -22,13 +22,16 @@ class PriceGenerator():
     def __del__(self):
         pass
 
-    def calculate_energy_prices(self, data, averageEnergyHousehold): 
+    def calculate_energy_prices(self, data, averageEnergyHousehold, StbVE): 
         # Calculation of dynamic prices 
         data = self.dynamic_pricing(data)
         # Calculation of static prices
         data = self.static_pricing(data, averageEnergyHousehold)
         # data.to_csv(os.path.join(self.data_path, self.optimisation_input_file_name), sep=';')  
-        data = self.time_variable_Netzentgelte(data)
+        if StbVE == 1:
+            data = self.time_variable_Netzentgelte(data)
+        else:
+            pass
         
         with open(os.path.join(self.data_path, self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nSaved the data DataFrame to CSV as opti_input!\n\n'))

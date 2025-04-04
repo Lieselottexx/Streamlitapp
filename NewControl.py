@@ -10,7 +10,7 @@ import NewDataGenerator as d
 import NewPriceGenerator as p
 import NewOptimisation as o
 import NewAnalysis as a
-import streamlit_app as app
+
 
 
 
@@ -21,39 +21,63 @@ class Control():
         self.price_generator = p.PriceGenerator()
         self.opimisation = o.Optimisation()
         self.analysis = a.Analysis()
-        self.app = app.Streamlit()
         self.data_path = Param.data_path
         # get the prices once is enough
-        self.static_feed_in_price, self.static_bonus_feed_in = self.get_eeg_prices(Param.year_pv_installation,Param.month_pv_installation)
+        
         # st.title('Uber pickups in NYC')
         # self.program_flow()
-        # self.small_opti()
+
         pass
 
     def __del__(self):
         pass
 
 
-    def small_opti(self):
-        Lastprofil = st.session_state.consumption
-        pv_mode = 1
-        pv_peak = 10
-        verhalten = 1
-        battery = 10
-        battery_power = battery * 5/60
+    def calculation(self):
 
 
-        self.data, averageEnergyHousehold = self.data_generator.loadData(Lastprofil, pv_mode, pv_peak) 
+        ''' Lastprofile, PV Daten und Börsenstrompreise einlesen '''
+        loadprofiles = {1000: 1, 1500: 2, 2000: 3, 2500: 4, 3000: 5, 3500: 6,  4000: 7,
+                        4500: 8, 5000: 9, 5500: 10, 6000: 11, 6500: 12, 7000: 13,  7500: 14, 8000: 15}
+        st.session_state.loadprofile = loadprofiles[st.session_state.consumption]
+        print(f"Lastprofil: {st.session_state.loadprofile}")
+        del(loadprofiles)
+        self.data, averageEnergyHousehold = self.data_generator.loadData(st.session_state.loadprofile,
+                                                                         st.session_state.pv_direction, 
+                                                                         st.session_state.pv_power) 
         st.write("erstes ist fertig")
-        self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold)
-        st.write("zweites ist fertig")
-        select_opti = self.select_optimisation_behaviour(verhalten)
-        st.write("drittes ist fertig")
 
-        input_optimisation =    [Param.optimise_time, Param.step_time, battery,
+        '''Stromtarife berechnen'''
+        self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
+                                                                 st.session_state.controllable_device)
+        
+        st.write("zweites Fertig!")
+        '''Wenn das ein dann nur statisch mit Zeitvariablen Netzentgelten rechnen'''
+        if st.session_state.static_ZVNE == 1:
+            select_opti = self.select_optimisation_behaviour(9)
+        else:
+            if st.session_state.has_eeg:
+                select_opti = self.select_optimisation_behaviour(3)
+                if st.session_state.controllable_device:
+                    select_opti = self.select_optimisation_behaviour(10)
+            else:
+                select_opti = self.select_optimisation_behaviour(8)
+                if st.session_state.controllable_device:
+                    select_opti = self.select_optimisation_behaviour(11)
+        
+        st.write(f"Das ausgewählte Verhalten ist: {select_opti[0]}")
+   
+        month_pv_installation = st.session_state.installation_date.month
+        year_pv_installation  = st.session_state.installation_date.year
+        self.static_feed_in_price, self.static_bonus_feed_in = self.get_eeg_prices(year_pv_installation,month_pv_installation)
+
+        battery_power = st.session_state.battery_capacity * 5/60 
+
+        input_optimisation =    [Param.optimise_time, Param.step_time, st.session_state.battery_capacity,
                                  Param.battery_costs,
-                                battery_power, 
-                                Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
+                                 battery_power, 
+                                 Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
+        
         st.write("vietes ist fertig")
         data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
                                                               input_optimisation, 
@@ -61,9 +85,9 @@ class Control():
         st.write("alles ist fertig")
         
         # calculation of the costs and store in a Dataframe to concat all together later
-        # costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, 
-        #                                                                     profile_info, 
-        #                                                                     select_opti)
+        costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        
+        return costs
 
     def program_flow(self):
         profile_info = self.loading_of_categories_file()

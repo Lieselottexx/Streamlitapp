@@ -1,11 +1,13 @@
 import streamlit as st
 import time
 import pandas as pd
+import NewControl as c
 
 
 class Streamlit():
 
     def __init__(self):
+        self.control = c.Control()
         self.create_app_interface()
         pass
 
@@ -31,6 +33,9 @@ class Streamlit():
         
         # Steuerbare Verbrauchseinrichtung
         st.session_state.controllable_device = st.checkbox("Haben Sie eine steuerbare Verbrauchseinrichtung?")
+        if st.session_state.controllable_device: 
+            st.session_state.static_ZVNE = st.checkbox("Standard Stromtarif mit Zeitvariablen Netzentgelten im Vergleich")
+
         
         # PV-Anlage
         has_pv = st.checkbox("Besitzen Sie eine PV-Anlage?")
@@ -56,12 +61,13 @@ class Streamlit():
         st.session_state.has_battery = st.checkbox("Haben Sie einen Batteriespeicher?")
         if st.session_state.has_battery:
             st.session_state.battery_capacity = st.slider("Batteriekapazität (kWh)", 1, 20, 5, step=1)
-            st.session_state.is_eeg_battery = st.checkbox("Ist der Speicher eine EEG-Anlage?")
-            if st.session_state.is_eeg_battery:
+            if st.session_state.has_eeg:
                 st.session_state.battery_usage = st.selectbox("Batterieverhalten", ["Energie einspeisen", "Energie aus dem Netz beziehen"])
         else:
             st.session_state.battery_capacity = 0
             st.session_state.is_eeg_battery = 0
+
+
         # Berechnung starten
         if "results" not in st.session_state:
             st.session_state.results = []
@@ -72,11 +78,11 @@ class Streamlit():
             st.session_state.progress_bar = st.progress(0)
             st.session_state.status_text = st.empty()
             
-            for progress in self.long_running_calculation():
+            for progress in self.control.calculation():
                 st.session_state.progress_bar.progress(progress)
                 st.session_state.status_text.text(f"Berechnung läuft... {progress}% abgeschlossen")
             
-            result = self.long_running_calculation()
+            result = self.control.calculation()
             st.session_state.results.append(result)
             
             st.session_state.progress_bar.empty()

@@ -1,0 +1,19 @@
+2025-04-04 11:02:26.480801
+Household Load Profile: 3
+The average energy consumption of the household over one year is: 13705.107421875 kWh/a 
+
+2025-04-04 11:02:29.962359
+Loaded the SLP Profile.
+
+2025-04-04 11:02:29.978765
+180. Mode is selected!
+
+2025-04-04 11:02:31.271448
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-04-04 11:02:32.498403
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-04-04 11:02:33.750571
+Loaded the preprocessed Temperature Data CSV Data.
+

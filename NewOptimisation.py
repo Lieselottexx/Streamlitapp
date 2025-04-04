@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from scipy.optimize import linprog
 import numpy as np
+import streamlit as st
 
 # Import Python Files
 import Param
@@ -195,23 +196,25 @@ class Optimisation():
             for i in range(len(b_eq_cache)): b_eq.append(b_eq_cache[i])
 
             if select_opti[3] == 1:
-                # construction of the Matrix for unequality constrain equation
-                '''EEG System: Battery charge from the Grid is allowed'''
-                A_ub   =  []
-                A_ub   =  self.append_constrains(len_opti,A_ub_3,A_ub_3_1)
-                # construction of the vector for equality constrain equation 
-                b_ub   =  []
-                b_ub   =  self.append_array(1,pv_generation)
+                if st.session_state.battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                    # construction of the Matrix for unequality constrain equation
+                    '''EEG System: Battery charge from the Grid is allowed'''
+                    A_ub   =  []
+                    A_ub   =  self.append_constrains(len_opti,A_ub_3,A_ub_3_1)
+                    # construction of the vector for equality constrain equation 
+                    b_ub   =  []
+                    b_ub   =  self.append_array(1,pv_generation)
 
-                '''EEG System: Battery feed-in allowed'''
-                # A_ub   =  []
-                # A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
-                # A_ub   =  self.append_constrains(len_opti,A_ub_2,A_ub_2_1)
-                    
-                # # construction of the vector for equality constrain equation 
-                # b_ub   =  []
-                # b_ub   =  self.append_array(1,pv_generation)
-                # b_ub   =  self.append_array(1,pv_generation)
+                if st.session_state.battery_usage == "Energie einspeisen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                    '''EEG System: Battery feed-in allowed'''
+                    A_ub   =  []
+                    A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
+                    A_ub   =  self.append_constrains(len_opti,A_ub_2,A_ub_2_1)
+                        
+                    # construction of the vector for equality constrain equation 
+                    b_ub   =  []
+                    b_ub   =  self.append_array(1,pv_generation)
+                    b_ub   =  self.append_array(1,pv_generation)
             else: 
                 A_ub   =  []
                 A_ub_0 = [0, 0, 0, 0, 0]
