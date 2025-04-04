@@ -29,25 +29,26 @@ class Streamlit():
         st.title("Vergleich: Dynamische vs. Statische Energiepreise")
         
         # Stromverbrauch
-        st.session_state.consumption = st.slider("Jährlicher Stromverbrauch (kWh)", 1000, 8000, 4000, step=500)
+        st.slider("Jährlicher Stromverbrauch (kWh)", 1000, 8000, key="consumption", step=500, disabled=st.session_state.get("calculating", False))
         
         # Steuerbare Verbrauchseinrichtung
-        st.session_state.controllable_device = st.checkbox("Haben Sie eine steuerbare Verbrauchseinrichtung?")
+        st.checkbox("Haben Sie eine steuerbare Verbrauchseinrichtung?", key="controllable_device", disabled=st.session_state.get("calculating", False))
         if st.session_state.controllable_device: 
-            st.session_state.static_ZVNE = st.checkbox("Standard Stromtarif mit Zeitvariablen Netzentgelten im Vergleich")
+            st.checkbox("Standard Stromtarif mit Zeitvariablen Netzentgelten im Vergleich", key="static_ZVNE", disabled=st.session_state.get("calculating", False))
 
         
         # PV-Anlage
-        has_pv = st.checkbox("Besitzen Sie eine PV-Anlage?")
-        if has_pv:
-            st.session_state.pv_power = st.slider("Installierte PV-Leistung (kWp)", 1, 25, 5, step=1)
-            direction_map = {0: "Nord", 45: 'Nord-Ost', 90: "Ost", 135: 'Süd-Ost', 180: "Süd", 225: "Süd-West",  270: "West"}
-            st.session_state.pv_direction = st.select_slider("Ausrichtung der PV-Anlage", options=list(direction_map.keys()), format_func=lambda x: direction_map[x])
+        st.checkbox("Besitzen Sie eine PV-Anlage?", key="has_pv", disabled=st.session_state.get("calculating", False))
+        if st.session_state.has_pv:
+            st.slider("Installierte PV-Leistung (kWp)", 1, 25, 5, step=1, key="pv_power", disabled=st.session_state.get("calculating", False))
+            direction_map = { "Nord": 0, 'Nord-Ost': 45, "Ost": 90, 'Süd-Ost': 135, "Süd": 180, "Süd-West": 225,  "West": 270}
+            st.selectbox("Ausrichtung der PV-Anlage", list(direction_map.keys()), key="pv_compass", disabled=st.session_state.get("calculating", False))
+            st.session_state.pv_direction = direction_map[st.session_state.pv_compass]
 
             # pv_direction_label = direction_map.get(pv_direction, f"{pv_direction} Grad")
             
             # EEG-Vergütung
-            st.session_state.has_eeg = st.checkbox("Erhält die Anlage eine EEG-Vergütung?")
+            st.checkbox("Erhält die Anlage eine EEG-Vergütung?", key="has_eeg", disabled=st.session_state.get("calculating", False))
             if st.session_state.has_eeg:
                 st.session_state.installation_date = pd.to_datetime(st.date_input("Installationsdatum der PV-Anlage"))
             else:
@@ -58,11 +59,12 @@ class Streamlit():
             st.session_state.has_eeg = 0
             st.session_state.installation_date = pd.to_datetime("2024.01.01", format="%Y.%m.%d")
         # Batterie
-        st.session_state.has_battery = st.checkbox("Haben Sie einen Batteriespeicher?")
+        st.checkbox("Haben Sie einen Batteriespeicher?", key="has_battery", disabled=st.session_state.get("calculating", False))
         if st.session_state.has_battery:
-            st.session_state.battery_capacity = st.slider("Batteriekapazität (kWh)", 1, 20, 5, step=1)
+            st.slider("Batteriekapazität (kWh)", 1, 20, 5, step=1, key="battery_capacity", disabled=st.session_state.get("calculating", False))
             if st.session_state.has_eeg:
-                st.session_state.battery_usage = st.selectbox("Batterieverhalten", ["Energie einspeisen", "Energie aus dem Netz beziehen"])
+                st.selectbox("Batterieverhalten", ["Energie einspeisen", "Energie aus dem Netz beziehen"], 
+                                                              key="battery_usage", disabled=st.session_state.get("calculating", False))
         else:
             st.session_state.battery_capacity = 0
             st.session_state.is_eeg_battery = 0
@@ -75,18 +77,37 @@ class Streamlit():
         if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
             st.session_state.calculating = True
             
-            st.session_state.progress_bar = st.progress(0)
-            st.session_state.status_text = st.empty()
+            st.session_state.progress_bar_loading = st.progress(0)
+            st.session_state.status_text_loading = st.empty()
+
+            st.session_state.progress_bar_Opti1 = st.progress(0)
+            st.session_state.status_text_Opti1 = st.empty()
+
+            st.session_state.progress_bar_Opti2 = st.progress(0)
+            st.session_state.status_text_Opti2 = st.empty()
             
-            # for progress in self.control.calculation():
-            #     st.session_state.progress_bar.progress(progress)
-            #     st.session_state.status_text.text(f"Berechnung läuft... {progress}% abgeschlossen")
+            for ben, st.session_state.progress_loading, st.session_state.progress_opti1, st.session_state.progress_opti2 in self.control.calculation():
+                st.session_state.progress_bar_loading.progress(st.session_state.progress_loading)
+                st.session_state.status_text_loading.text(f"Berechnung läuft... {st.session_state.progress_loading}% abgeschlossen")
+
+                st.session_state.progress_bar_Opti1.progress(st.session_state.progress_opti1)
+                st.session_state.status_text_Opti1.text(f"Berechnung läuft... {st.session_state.progress_opti1}% abgeschlossen")
+
+                st.session_state.progress_bar_Opti2.progress(st.session_state.progress_opti2)
+                st.session_state.status_text_Opti2.text(f"Berechnung läuft... {st.session_state.progress_opti2}% abgeschlossen")
             
             result = self.control.calculation()
             st.session_state.results.append(result)
             
-            st.session_state.progress_bar.empty()
-            st.session_state.status_text.text("Berechnung abgeschlossen!")
+            st.session_state.progress_bar_loading.empty()
+            st.session_state.status_text_loading.text("Berechnung abgeschlossen!")
+
+            st.session_state.progress_bar_Opti1.empty()
+            st.session_state.status_text_Opti1.text("Berechnung abgeschlossen!")
+
+            st.session_state.progress_bar_Opti2.empty()
+            st.session_state.status_text_Opti2.text("Berechnung abgeschlossen!")
+
             st.session_state.calculating = False
         
         # Ergebnisse anzeigen
