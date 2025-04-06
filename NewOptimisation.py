@@ -154,7 +154,6 @@ class Optimisation():
             # current Step
 
             if select_opti[3] == 1:
-                print("EEG JA rechne ich")
                 # EEG-System: Battery charge from the grid is allowed
                 A_ub_3 =   [0, 0, 0, 0, 1] # Limitation of feed-in to PV-Generation
                 # previous Step
@@ -197,7 +196,6 @@ class Optimisation():
             for i in range(len(b_eq_cache)): b_eq.append(b_eq_cache[i])
 
             if select_opti[3] == 1:
-                print("Ich will mit EEG rechnen")
                 if session.battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
                     # construction of the Matrix for unequality constrain equation
                     '''EEG System: Battery charge from the Grid is allowed'''
