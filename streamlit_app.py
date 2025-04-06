@@ -90,7 +90,7 @@ class Streamlit():
             st.session_state.results = []
 
         if st.button("Neustart"):
-            st.experimental_rerun()
+            st.rerun()
         
         if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
             st.session_state.calculating = True
