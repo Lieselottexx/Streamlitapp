@@ -41,8 +41,8 @@ class Control():
         status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
 
         ''' Lastprofile, PV Daten und Börsenstrompreise einlesen '''
-        loadprofiles = {1000: 1, 1500: 2, 2000: 3, 2500: 4, 3000: 5, 3500: 6,  4000: 7,
-                        4500: 8, 5000: 9, 5500: 10, 6000: 11, 6500: 12, 7000: 13,  7500: 14, 8000: 15}
+        loadprofiles = {2000: 3,  3000: 5,  4000: 12,
+                        5000: 13, 6000: 17, 7000: 15, 8000: 16}
         
         progress_loading = 7
         progress_bar_loading.progress(progress_loading)

@@ -41,9 +41,8 @@ class Streamlit():
             st.title("Vergleich: Dynamische vs. Statische Energiepreise")
             
             # Stromverbrauch
-            st.slider("Jährlicher Stromverbrauch (kWh)", 1000, 8000, key="consumption", step=500) #, disabled=st.session_state.get("calculating"))
+            st.slider("Jährlicher Stromverbrauch (kWh)", 2000, 8000, key="consumption", step=1000) #, disabled=st.session_state.get("calculating"))
             
-            disable_settings = st.session_state.calculating
             # Steuerbare Verbrauchseinrichtung
             st.checkbox("Haben Sie eine steuerbare Verbrauchseinrichtung?", key="controllable_device") #, disabled=disable_settings)
 
@@ -136,7 +135,17 @@ class Streamlit():
         elif page == "Erklärung":
             st.title("Erklärung zur Berechnung")
             st.markdown("""
-            .... hier kommt noch text hin... 
+            # Lastgänge provisorich bis die Liste größer ist:
+            2000 kWh : 1957 kWh Single Woman with work 30-64  (3)
+            3000 kWh : 3050 kWh Single woman over 65 with parttime job (5)
+            4000 kWh : 3496 kWh (12)
+            5000 kWh : 4512 kWh (13)
+            6000 kWh : 5847 kWh (17)
+            7000 kWh : 6300 kWh (15)
+            8000 kWh : 8349 kWh (16)
+                        
+
+            
             """)
 
 
