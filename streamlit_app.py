@@ -112,7 +112,7 @@ class Streamlit():
                 progress_bar_Opti2 = st.progress(0)
                 status_text_Opti2 = st.empty()
                 
-                result = self.control.calculation(progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
+                result = self.control.calculation(st.session_state, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
                                                 progress_bar_Opti2, status_text_Opti2)
                 
                 st.session_state.results.append(result)
