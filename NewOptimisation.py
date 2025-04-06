@@ -26,7 +26,7 @@ class Optimisation():
         pass
 
 
-    def select_optimisation(self, data , input_optimisation, select_opti):
+    def select_optimisation(self, data , input_optimisation, select_opti, session):
 
         # Do not forget to copy the data DataFrame
         '''Input self optimisation: 
@@ -74,11 +74,11 @@ class Optimisation():
             file.write(str("Static feed-in Price EEG: "+ str(input_optimisation[6])+"  \n"))
             file.write(str("Static feed-in Bonus EEG: "+ str(input_optimisation[7])+"  \n\n"))
 
-        data_opti = self.optimisation(data.copy(), select_opti, input_optimisation)
+        data_opti = self.optimisation(data.copy(), select_opti, input_optimisation, session)
         return data_opti
 
 
-    def optimisation(self, data, select_opti, input_optimisation ):
+    def optimisation(self, data, select_opti, input_optimisation,session ):
         # initialise the result columns of the optimisation 
         result_column_names =   ['Battery Charge [kWh]', 'Battery Discharge[kWh]', 
                                 'Battery SOC', 'Supply from Grid [kWh]', 
@@ -198,7 +198,7 @@ class Optimisation():
 
             if select_opti[3] == 1:
                 print("Ich will mit EEG rechnen")
-                if st.session_state.battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                if session.battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
                     # construction of the Matrix for unequality constrain equation
                     '''EEG System: Battery charge from the Grid is allowed'''
                     A_ub   =  []
@@ -207,7 +207,7 @@ class Optimisation():
                     b_ub   =  []
                     b_ub   =  self.append_array(1,pv_generation)
 
-                if st.session_state.battery_usage == "Energie einspeisen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                if session.battery_usage == "Energie einspeisen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
                     '''EEG System: Battery feed-in allowed'''
                     A_ub   =  []
                     A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
