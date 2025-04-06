@@ -8,7 +8,7 @@ class Streamlit():
 
     def __init__(self):
         self.control = c.Control()
-        self.page_structure()
+        self.page_calculation()
         pass
 
     def __del__(self):
@@ -139,7 +139,7 @@ class Streamlit():
             .... hier kommt noch text hin... 
             """)
 
-            
+
         # =====================================
         # SEITE 3: ERWEITERTE ERGEBNISSE
         # =====================================
