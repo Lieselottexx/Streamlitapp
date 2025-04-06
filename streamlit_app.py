@@ -89,11 +89,13 @@ class Streamlit():
         if "results" not in st.session_state:
             st.session_state.results = []
 
-        if st.button("Neustart"):
+        st.button("Berechnung starten", key="calc_button", disabled=st.session_state.get("calculating", False))
+
+        if st.button("Alle Berechnungen stoppen"):
             st.session_state.calculating = False
             st.rerun()
-        
-        if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
+
+        if st.session_state.calc_button:
             st.session_state.calculating = True
             
             progress_bar_loading = st.progress(0)
@@ -126,14 +128,14 @@ class Streamlit():
         for i, res in enumerate(st.session_state.results, start=1):
             st.write(f"{i}. Ergebnis: {round(res[0],2)} Euro Ersparnis")
 
-    def page_explanation():
+    def page_explanation(self):
 
         st.title("Erklärung zur Berechnung")
         st.markdown("""
          .... hier kommt noch text hin... 
         """)
 
-    def page_thesis():
+    def page_thesis(self):
         st.title("Erweiterte Ergebnisse")
 
         
