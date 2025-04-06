@@ -16,6 +16,10 @@ class Streamlit():
 
     
     def page_calculation(self):
+        # Notiz an mich: eine Pages mit Navigation
+        # sieht zwar schöner aus aber beim pages wechseln reset die Berechnungsseite
+        # mit Sidebar Radio nicht!
+
         # Sidebar Navigation
         st.sidebar.title("Navigation")
         page = st.sidebar.radio("Seite auswählen", ["Berechnung", "Erklärung", "Erweiterte Ergebnisse"])
@@ -26,7 +30,7 @@ class Streamlit():
         if page == "Berechnung":
             if "calculating" not in st.session_state:
                 st.session_state.calculating = False
-                st.session_state.consumption = 2500
+                st.session_state.consumption = 3000
                 st.session_state.controllable_device = False
                 st.session_state.static_ZVNE = False
                 st.session_state.has_pv = False
