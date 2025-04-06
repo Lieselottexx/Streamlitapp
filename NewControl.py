@@ -189,10 +189,20 @@ class Control():
 
 
     def get_eeg_prices(self, yearofinstallation, monthofinstallation):
-        if   yearofinstallation == 2014: 
+        if   yearofinstallation == 2012: 
             eeg_prices = pd.DataFrame({
-                        'static_bonus_feed_in': [12.70, 12.70, 12.70, 12.70, 12.67, 12.64, 12.60, 13.15, 13.08, 13.05, 13.02, 12.99],
-                        'static_feed_in_price': [12.30, 12.30, 12.30, 12.30, 12.27, 12.24, 12.20, 12.75, 12.69, 12.65, 12.62, 12.59]
+                        'static_bonus_feed_in': [19.50, 19.50, 19.50, 19.50, 19.31, 18.92, 18.73, 18.54, 18.36, 17.90, 17.45, 17.02],
+                        'static_feed_in_price': [19.50, 19.50, 19.50, 19.50, 19.31, 18.92, 18.73, 18.54, 18.36, 17.90, 17.45, 17.02]
+                        }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif   yearofinstallation == 2013: 
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [16.64, 16.28, 16.28, 15.92, 15.63, 15.35, 15.07, 14.80, 14.54, 14.27, 14.07, 13.88],
+                        'static_feed_in_price': [16.64, 16.28, 16.28, 15.92, 15.63, 15.35, 15.07, 14.80, 14.54, 14.27, 14.07, 13.88]
+                        }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif   yearofinstallation == 2014: 
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [13.07, 13.55, 13.41, 13.28, 13.14, 13.01, 12.88, 13.15, 13.08, 13.05, 13.02, 12.99],
+                        'static_feed_in_price': [13.07, 13.55, 13.41, 13.28, 13.14, 13.01, 12.88, 12.75, 12.69, 12.65, 12.62, 12.59]
                         }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
         elif   yearofinstallation == 2015: 
             eeg_prices = pd.DataFrame({

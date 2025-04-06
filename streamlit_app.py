@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import pandas as pd
+import datetime
 import NewControl as c
 
 
@@ -69,7 +70,10 @@ class Streamlit():
                 # EEG-Vergütung
                 st.checkbox("Erhält die Anlage eine EEG-Vergütung?", key="has_eeg") #, disabled=st.session_state.get("calculating", False))
                 if st.session_state.get("has_eeg", False):
-                    st.session_state.installation_date = pd.to_datetime(st.date_input("Installationsdatum der PV-Anlage")) #, disabled=st.session_state.get("calculating", False)))
+                    st.session_state.installation_date = pd.to_datetime(st.date_input("Installationsdatum der PV-Anlage", 
+                                                                                      value=datetime.date(2024, 1, 1), 
+                                                                                      min_value=datetime.date(2012, 1, 1), 
+                                                                                      max_value=datetime.date.today())) #, disabled=st.session_state.get("calculating", False)))
                 else:
                     st.session_state.installation_date = pd.to_datetime("2024.01.01", format="%Y.%m.%d")
             else:
