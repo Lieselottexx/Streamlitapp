@@ -902,3 +902,34 @@ Loaded the montly average market prices.
 2025-04-05 16:19:31.084343
 Saved the data DataFrame to CSV!
 
+2025-04-07 13:12:24.111251
+Household Load Profile: 17
+The average energy consumption of the household over one year is: 40948.4765625 kWh/a 
+
+2025-04-07 13:12:25.178118
+Loaded the SLP Profile.
+
+2025-04-07 13:12:25.182637
+0. Mode is selected!
+
+2025-04-07 13:12:25.602265
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-04-07 13:12:26.033040
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-04-07 13:12:26.476323
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-04-07 13:13:37.074314
+Loaded the Energy Prices.
+
+2025-04-07 13:14:59.204537
+Loaded the montly average market prices.
+
+2025-04-07 13:14:59.206543
+Saved the data DataFrame to CSV!
+
+2025-04-07 13:14:59.441281
+Loaded the dynamic energy prices.
+

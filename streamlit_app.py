@@ -31,6 +31,7 @@ class Streamlit():
         if page == "Berechnung":
             if "calculating" not in st.session_state:
                 st.session_state.calculating = False
+                st.session_state.calc_button = False
                 st.session_state.consumption = 3000
                 st.session_state.controllable_device = False
                 st.session_state.static_ZVNE = False
@@ -143,16 +144,16 @@ class Streamlit():
         elif page == "Erklärung":
             st.title("Erklärung zur Berechnung")
             st.markdown("""
-            # Lastgänge provisorich bis die Liste größer ist:
-            2000 kWh : 1957 kWh Single Woman with work 30-64  (3)
-            3000 kWh : 3050 kWh Single woman over 65 with parttime job (5)
-            4000 kWh : 3496 kWh (12)
-            5000 kWh : 4512 kWh (13)
-            6000 kWh : 5847 kWh (17)
-            7000 kWh : 6300 kWh (15)
-            8000 kWh : 8349 kWh (16)
+            # Lastgänge provisorich bis die Liste größer ist:\n
+            2000 kWh : 1957 kWh Single Woman with work 30-64  (3)\n
+            3000 kWh : 3050 kWh Single woman over 65 with parttime job (5)\n
+            4000 kWh : 3496 kWh (12)\n
+            5000 kWh : 4512 kWh (13)\n
+            6000 kWh : 5847 kWh (17)\n
+            7000 kWh : 6300 kWh (15)\n
+            8000 kWh : 8349 kWh (16)\n\n
                         
-
+            # Einspeisevergütung aktuell nur von PV Anlagen < 10kWp\n
             
             """)
 
