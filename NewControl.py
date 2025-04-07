@@ -112,6 +112,7 @@ class Control():
         data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
                                                               input_optimisation, 
                                                               select_opti, session)
+        print("1. Opti fertig")
         progress_Opti1 = 90
         progress_bar_Opti1.progress(progress_Opti1)
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
@@ -128,12 +129,14 @@ class Control():
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
 
         select_opti = self.select_optimisation_behaviour(1)
+        print(select_opti[0])
         progress_Opti2 = 10
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
         data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
                                                               input_optimisation, 
                                                               select_opti, session)
+        print("zweite Opti fertig")
         progress_Opti2 = 90
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
@@ -144,8 +147,9 @@ class Control():
         progress_Opti2 = 100
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
-
+        print(costs_evo, ' - ', costs_selected)
         benefit = costs_evo - costs_selected
+        print('= ',benefit)
         status_text_Opti2.text(f"Einsparungen werden berechnet... {progress_Opti2}% abgeschlossen")
         return benefit, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
         
