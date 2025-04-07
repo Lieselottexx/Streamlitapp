@@ -135,7 +135,7 @@ class Streamlit():
             # Ergebnisse anzeigen
             st.write("### Ergebnisse")
             for i, res in enumerate(st.session_state.results, start=1):
-                st.write(f"{i}. Ergebnis: {round(res[0],2)} Euro Ersparnis")
+                st.write(f"{i}. Ergebnis: {round(res,2)} Euro Ersparnis")
 
         # =====================================
         # SEITE 2: ERKLÄRUNG
