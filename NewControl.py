@@ -151,7 +151,7 @@ class Control():
         benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
         print('= ',benefit)
         status_text_Opti2.text(f"Einsparungen werden berechnet... {progress_Opti2}% abgeschlossen")
-        return benefit, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
+        return benefit, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
         
     
     def select_optimisation_behaviour(self, number_optimisation):
