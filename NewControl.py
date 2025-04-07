@@ -91,7 +91,7 @@ class Control():
         progress_bar_Opti1.progress(progress_Opti1)
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
         
-        st.write(f"Das ausgewählte Verhalten ist: {select_opti[0]}")
+        #st.write(f"Das ausgewählte Verhalten ist: {select_opti[0]}")
    
         month_pv_installation = session.installation_date.month
         year_pv_installation  = session.installation_date.year
