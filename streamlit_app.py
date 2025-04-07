@@ -31,7 +31,6 @@ class Streamlit():
         if page == "Berechnung":
             if "calculating" not in st.session_state:
                 st.session_state.calculating = False
-                st.session_state.calc_button = False
                 st.session_state.consumption = 3000
                 st.session_state.controllable_device = False
                 st.session_state.static_ZVNE = False
@@ -99,13 +98,12 @@ class Streamlit():
             if "results" not in st.session_state:
                 st.session_state.results = []
 
-            st.button("Berechnung starten", key="calc_button", disabled=st.session_state.get("calculating", False))
 
             if st.button("Alle Berechnungen stoppen"):
                 st.session_state.calculating = False
                 st.rerun()
 
-            if st.session_state.calc_button:
+            if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
                 st.session_state.calculating = True
                 
                 progress_bar_loading = st.progress(0)
