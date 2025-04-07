@@ -2,7 +2,7 @@
 import pandas as pd
 import multiprocessing
 import os
-import streamlit as st
+
 
 # Import Python Files
 import Param
@@ -45,17 +45,17 @@ class Control():
         progress_bar_loading.progress(progress_loading)
         status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
 
-        st.session_state.loadprofile = loadprofiles[st.session_state.consumption]
-        print(f"Lastprofil: {st.session_state.loadprofile}")
+        session.loadprofile = loadprofiles[session.consumption]
+        print(f"Lastprofil: {session.loadprofile}")
         del(loadprofiles)
 
         progress_loading = 10
         progress_bar_loading.progress(progress_loading)
         status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
 
-        self.data, averageEnergyHousehold = self.data_generator.loadData(st.session_state.loadprofile,
-                                                                         st.session_state.pv_direction, 
-                                                                         st.session_state.pv_power) 
+        self.data, averageEnergyHousehold = self.data_generator.loadData(session.loadprofile,
+                                                                         session.pv_direction, 
+                                                                         session.pv_power) 
         progress_loading = 70
         progress_bar_loading.progress(progress_loading)
         status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
@@ -64,7 +64,7 @@ class Control():
 
         '''Stromtarife berechnen'''
         self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
-                                                                 st.session_state.controllable_device)
+                                                                 session.controllable_device)
         progress_loading = 100
         progress_bar_loading.progress(progress_loading)
         status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
@@ -75,16 +75,16 @@ class Control():
 
 
         '''Wenn das ein dann nur statisch mit Zeitvariablen Netzentgelten rechnen'''
-        if st.session_state.static_ZVNE == 1:
+        if session.static_ZVNE == 1:
             select_opti = self.select_optimisation_behaviour(9)
         else:
-            if st.session_state.has_eeg:
+            if session.has_eeg:
                 select_opti = self.select_optimisation_behaviour(3)
-                if st.session_state.controllable_device:
+                if session.controllable_device:
                     select_opti = self.select_optimisation_behaviour(10)
             else:
                 select_opti = self.select_optimisation_behaviour(8)
-                if st.session_state.controllable_device:
+                if session.controllable_device:
                     select_opti = self.select_optimisation_behaviour(11)
         
         progress_Opti1 = 10
@@ -93,13 +93,13 @@ class Control():
         
         st.write(f"Das ausgewählte Verhalten ist: {select_opti[0]}")
    
-        month_pv_installation = st.session_state.installation_date.month
-        year_pv_installation  = st.session_state.installation_date.year
+        month_pv_installation = session.installation_date.month
+        year_pv_installation  = session.installation_date.year
         self.static_feed_in_price, self.static_bonus_feed_in = self.get_eeg_prices(year_pv_installation,month_pv_installation)
 
-        battery_power = st.session_state.battery_capacity * 5/60 
+        battery_power = session.battery_capacity * 5/60 
 
-        input_optimisation =    [Param.optimise_time, Param.step_time, st.session_state.battery_capacity,
+        input_optimisation =    [Param.optimise_time, Param.step_time, session.battery_capacity,
                                  Param.battery_costs,
                                  battery_power, 
                                  Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
