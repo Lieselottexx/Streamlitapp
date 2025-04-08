@@ -133,9 +133,9 @@ class Control():
         progress_Opti2 = 10
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
-        data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
-                                                              input_optimisation, 
-                                                              select_opti, session)
+        # data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+        #                                                       input_optimisation, 
+        #                                                       select_opti, session)
         print("zweite Opti fertig")
         progress_Opti2 = 90
         progress_bar_Opti2.progress(progress_Opti2)
@@ -151,6 +151,7 @@ class Control():
         benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
         print('= ',benefit)
         status_text_Opti2.text(f"Einsparungen werden berechnet... {progress_Opti2}% abgeschlossen")
+        # benefit = 815
         return benefit, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
         
     
