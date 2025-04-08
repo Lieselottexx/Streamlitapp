@@ -2,7 +2,7 @@
 import pandas as pd
 import multiprocessing
 import os
-import streamlit as st
+
 
 # Import Python Files
 import Param
@@ -10,7 +10,7 @@ import NewDataGenerator as d
 import NewPriceGenerator as p
 import NewOptimisation as o
 import NewAnalysis as a
-import streamlit_app as app
+
 
 
 
@@ -21,140 +21,139 @@ class Control():
         self.price_generator = p.PriceGenerator()
         self.opimisation = o.Optimisation()
         self.analysis = a.Analysis()
-        self.app = app.Streamlit()
         self.data_path = Param.data_path
-        # get the prices once is enough
-        self.static_feed_in_price, self.static_bonus_feed_in = self.get_eeg_prices(Param.year_pv_installation,Param.month_pv_installation)
-        # st.title('Uber pickups in NYC')
-        self.program_flow()
+
+
         pass
 
     def __del__(self):
         pass
 
-    def program_flow(self):
-        profile_info = self.loading_of_categories_file()
-        ''' Optimisation '''
-        self.optimisation_process(profile_info)
+
+    def calculation(self, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
+                         progress_bar_Opti2, status_text_Opti2):
+
+        progress_loading = 5
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+
+        ''' Lastprofile, PV Daten und Börsenstrompreise einlesen '''
+        loadprofiles = {2000: 3,  3000: 5,  4000: 12,
+                        5000: 13, 6000: 17, 7000: 15, 8000: 16}
         
-        ''' Analysis '''
-        # info_dict = self.analysis.loading_optimised_data(profile_info)
-        # for key, values in info_dict.items():
-        #     info_dict[key]['Select Opti'] = self.select_optimisation_behaviour(values['Behaviour'])
-        '''Cost and battery cycle analysis for one specific profile out of the dict'''
-        # num = 3
-        # select_opti = self.select_optimisation_behaviour(9)
-        # costs = self.analysis.single_cost_batterycycle_calculation(info_dict[num]['Original Data'], profile_info.iloc[num], select_opti)
-        # print(costs)
+        progress_loading = 7
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+
+        session.loadprofile = loadprofiles[session.consumption]
+        print(f"Lastprofil: {session.loadprofile}")
+        del(loadprofiles)
+
+        progress_loading = 10
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+
+        self.data, averageEnergyHousehold = self.data_generator.loadData(session.loadprofile,
+                                                                         session.pv_direction, 
+                                                                         session.pv_power) 
+        progress_loading = 70
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+
+
+
+        '''Stromtarife berechnen'''
+        self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
+                                                                 session.controllable_device)
+        progress_loading = 100
+        progress_bar_loading.progress(progress_loading)
+        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+        
+        progress_Opti1 = 5
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+
+
+        '''Wenn das ein dann nur statisch mit Zeitvariablen Netzentgelten rechnen'''
+        if session.static_ZVNE == 1:
+            select_opti = self.select_optimisation_behaviour(9)
+        else:
+            if session.has_eeg:
+                select_opti = self.select_optimisation_behaviour(3)
+                if session.controllable_device:
+                    select_opti = self.select_optimisation_behaviour(10)
+            else:
+                select_opti = self.select_optimisation_behaviour(8)
+                if session.controllable_device:
+                    select_opti = self.select_optimisation_behaviour(11)
+        
+        progress_Opti1 = 10
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+        
+        #st.write(f"Das ausgewählte Verhalten ist: {select_opti[0]}")
+   
+        month_pv_installation = session.installation_date.month
+        year_pv_installation  = session.installation_date.year
+        self.static_feed_in_price, self.static_bonus_feed_in = self.get_eeg_prices(year_pv_installation,month_pv_installation)
+
+        battery_power = session.battery_capacity * 5/60 
+
+        input_optimisation =    [Param.optimise_time, Param.step_time, session.battery_capacity,
+                                 Param.battery_costs,
+                                 battery_power, 
+                                 Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
+        
+        progress_Opti1 = 20
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+        
+        
+        data_optimised, session = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+                                                              input_optimisation, 
+                                                              select_opti, session)
+        print("1. Opti fertig")
+        progress_Opti1 = 90
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
 
         
-        '''Calculation of the costs files of the different optimisation types'''
-        # cost1  = self.analysis.calculate_combine_costs_optimisationwise(info_dict, 1,  'costs_1.csv')
-        # cost3  = self.analysis.calculate_combine_costs_optimisationwise(info_dict, 3,  'costs_3.csv')
-        # cost8  = self.analysis.calculate_combine_costs_optimisationwise(info_dict, 8,  'costs_8.csv')
-        # cost9  = self.analysis.calculate_combine_costs_optimisationwise(info_dict, 9,  'costs_9.csv')
-        # cost10 = self.analysis.calculate_combine_costs_optimisationwise(info_dict, 10, 'costs_10.csv')
-        # cost11 = self.analysis.calculate_combine_costs_optimisationwise(info_dict, 11, 'costs_11.csv')
+        # calculation of the costs and store in a Dataframe to concat all together later
+        costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        progress_Opti1 = 100
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
 
-        ''' Open Presaved Cost Files '''
-        # column_names = ['Datetime', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-        #                             '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
-        #                             '21', '22', '23', '24', '25', '26', '27', '28', '29', '30',
-        #                             '31', '32', '33', '34', '35', '36', '37', '38', '39', '40',
-        #                             '41', '42', '43', '44', '45', '46', '47', '48', '49', '50',
-        #                             '51', '52', '53', '54', '55', '56', '57', '58', '59', '60',
-        #                             '61', '62', '63', '64']
-        # cost1         = pd.read_csv(os.path.join(self.data_path, 'costs_1.csv'),    delimiter=';', header=0, names=column_names, index_col='Datetime')
-        # cost1.index   = pd.to_datetime(cost1.index, format='%Y-%m-%d %H:%M:%S')
-        # # cost3         = pd.read_csv(os.path.join(self.data_path, 'costs_3.csv'),    delimiter=';', header=0, names=column_names, index_col='Datetime')
-        # # cost3.index   = pd.to_datetime(cost3.index, format='%Y-%m-%d %H:%M:%S')
-        # # cost8         = pd.read_csv(os.path.join(self.data_path, 'costs_8.csv'),    delimiter=';', header=0, names=column_names, index_col='Datetime')
-        # # cost8.index   = pd.to_datetime(cost8.index, format='%Y-%m-%d %H:%M:%S')
-        # # cost9         = pd.read_csv(os.path.join(self.data_path, 'costs_9.csv'),    delimiter=';', header=0, names=column_names, index_col='Datetime')
-        # # cost9.index   = pd.to_datetime(cost9.index, format='%Y-%m-%d %H:%M:%S')
-        # # cost10        = pd.read_csv(os.path.join(self.data_path, 'costs_10.csv'),  delimiter=';', header=0, names=column_names, index_col='Datetime')
-        # # cost10.index  = pd.to_datetime(cost10.index, format='%Y-%m-%d %H:%M:%S')
-        # cost11        = pd.read_csv(os.path.join(self.data_path, 'costs_11.csv'),  delimiter=';', header=0, names=column_names, index_col='Datetime')
-        # cost11.index  = pd.to_datetime(cost11.index, format='%Y-%m-%d %H:%M:%S')
+        progress_Opti2 = 5
+        progress_bar_Opti2.progress(progress_Opti2)
+        status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+
+        select_opti = self.select_optimisation_behaviour(1)
+        print(select_opti[0])
+        progress_Opti2 = 10
+        progress_bar_Opti2.progress(progress_Opti2)
+        status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+        data_optimised, session = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+                                                              input_optimisation, 
+                                                              select_opti, session)
+        print("zweite Opti fertig")
+        progress_Opti2 = 90
+        progress_bar_Opti2.progress(progress_Opti2)
+        status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
         
-        # ''' Calculation of the Differential-Costs between two Optimisations '''
-        # self.analysis.differential_costs_yearly(profile_info, cost1, cost11) # 1 - statisch , 2 - dynamisch 
-
-
-        ''' Ploting the time based Results of the Optimisation '''
-        # number_load_profile = 383
-        # result_column_names =   ['Battery Charge [kWh]', 'Battery Discharge[kWh]', 
-        #                         'Battery SOC', 'Supply from Grid [kWh]', 
-        #                         'Grid Feed-in [kWh]']  # Könnte man mal vereinheitlichen!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        # self.analysis.plot.print_self_consumption_optimisation(info_dict[number_load_profile]['Original Data'], info_dict[number_load_profile]['Select Opti'], result_column_names)
-
-        ''' Ploting average time based Results'''
-        # list_beh = [63,                             127,               191,         255,                319,            383]
-        # name_beh = ['Eigenverbrauchsoptimierung',   'dyn. Stromtarif', 'ohne EEG',  'Eig. mit ZVNE',    'dyn. ZVNE',    'ZVNE ohne EEG']
-        # self.analysis.average_load_profiles(info_dict, list_beh, name_beh)
-
-        ''' Plot show only once in the end of the script '''
-        # self.analysis.plot.show()
-
-
-
-
-
-    def loading_of_categories_file(self):
-        # Loading of the Parameter for the different Optimisations
-        profile_info = pd.DataFrame()
-        profile_info = pd.read_csv(os.path.join(self.data_path, 'Load_profile_informations_csv.csv'), delimiter=';')
-        return profile_info
-
-    def optimisation_process(self, profile_info):
-        # seperate the inputs, every row is a new optimisation
-        input_list = [row for _, row in profile_info.iterrows()]
-
-        # seperate Optimisation Processes at the same time as many as the cpu can process
-        with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
-            # return costs for each year
-        #     self.pool_costs, self.pool_battery_cycles = pool.map(self.loading_optimisation, input_list)
-            pool.map(self.loading_optimisation, input_list)
-        # # concat the costs results into a big dataframe
-        # result_costs = pd.concat(self.pool_result, axis=1)
-        # result_battery_cycles = pd.concat(self.pool_battery_cycles, axis=1)
-        # # save the costs results to a csv file
-        # result_costs.to_csv(os.path.join(self.data_path, 'costs.csv'), sep=';') 
-        # result_battery_cycles.to_csv(os.path.join(self.data_path, 'batterycycles.csv'), sep=';')
-
-    def loading_optimisation(self, profile_info):
-        self.data, averageEnergyHousehold = self.data_generator.loadData(profile_info['Load profile'], 
-                                                                         profile_info['PV Mode'], 
-                                                                         profile_info['PV System']) 
-            
-        # Calculating the Electricity prices dynamic and static 
-        self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold)
-
-        select_opti = self.select_optimisation_behaviour(profile_info['Behaviour'])
-
-        # correct of the blindspace data name with the info of the optimisation
-        select_opti[4] = str('L'+str(int(profile_info['Load profile']))
-                             +'Behav'+str(int(profile_info['Behaviour']))
-                             +'Batt'+str(int(profile_info['Battery']))
-                             +'PV'+str(int(profile_info['PV System']))      +'.csv')
         
-        # eventuell input loading übergeben und alles andere im optimisation task festlegen aus param
-        # input_optimisation =    [Param.optimise_time, Param.step_time, profile_info['Battery'],
-        #                          Param.battery_costs,
-        #                         profile_info['Battery Power'], 
-        #                         Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
+        # calculation of the costs and store in a Dataframe to concat all together later
+        costs_evo = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        progress_Opti2 = 100
+        progress_bar_Opti2.progress(progress_Opti2)
+        status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+        print(costs_evo, ' - ', costs_selected)
+        benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
+        print('= ',benefit)
+        status_text_Opti2.text(f"Einsparungen werden berechnet... {progress_Opti2}% abgeschlossen")
+        # benefit = 815
+        return benefit, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
         
-        # data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
-        #                                                       input_optimisation, 
-        #                                                       select_opti)
-        
-        # # calculation of the costs and store in a Dataframe to concat all together later
-        # costs, battery_charge = self.analysis.single_cost_batterycycle_calculation(data_optimised, 
-        #                                                                     profile_info, 
-        #                                                                     select_opti)
-        
-        st.write("Hi ich bin fertig mit rechnen!")#(f"**Power:** {costs} Euro")
-        # return costs, battery_charge
     
     def select_optimisation_behaviour(self, number_optimisation):
         ''' Select Opti:
@@ -195,7 +194,37 @@ class Control():
 
 
     def get_eeg_prices(self, yearofinstallation, monthofinstallation):
-        if   yearofinstallation == 2018: 
+        if   yearofinstallation == 2012: 
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [19.50, 19.50, 19.50, 19.50, 19.31, 18.92, 18.73, 18.54, 18.36, 17.90, 17.45, 17.02],
+                        'static_feed_in_price': [19.50, 19.50, 19.50, 19.50, 19.31, 18.92, 18.73, 18.54, 18.36, 17.90, 17.45, 17.02]
+                        }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif   yearofinstallation == 2013: 
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [16.64, 16.28, 16.28, 15.92, 15.63, 15.35, 15.07, 14.80, 14.54, 14.27, 14.07, 13.88],
+                        'static_feed_in_price': [16.64, 16.28, 16.28, 15.92, 15.63, 15.35, 15.07, 14.80, 14.54, 14.27, 14.07, 13.88]
+                        }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif   yearofinstallation == 2014: 
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [13.07, 13.55, 13.41, 13.28, 13.14, 13.01, 12.88, 13.15, 13.08, 13.05, 13.02, 12.99],
+                        'static_feed_in_price': [13.07, 13.55, 13.41, 13.28, 13.14, 13.01, 12.88, 12.75, 12.69, 12.65, 12.62, 12.59]
+                        }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif   yearofinstallation == 2015: 
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [12.95, 12.92, 12.89, 12.86, 12.82, 12.97, 12.76, 12.73, 12.70, 12.70, 12.70, 12.70],
+                        'static_feed_in_price': [12.56, 12.53, 12.50, 12.47, 12.43, 12.40, 12.37, 12.34, 12.31, 12.31, 12.31, 12.31]
+                        }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif   yearofinstallation == 2016: 
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [12.70, 12.70, 12.70, 12.70, 12.70, 12.70, 12.70, 12.70, 12.70, 12.70, 12.70, 12.70],
+                        'static_feed_in_price': [12.31, 12.31, 12.31, 12.31, 12.31, 12.31, 12.31, 12.31, 12.31, 12.31, 12.31, 12.31]
+                        }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif   yearofinstallation == 2017: 
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [12.70, 12.70, 12.70, 12.70, 12.67, 12.64, 12.60, 12.60, 12.60, 12.60, 12.60, 12.60],
+                        'static_feed_in_price': [12.30, 12.30, 12.30, 12.30, 12.27, 12.24, 12.20, 12.20, 12.20, 12.20, 12.20, 12.20]
+                        }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif   yearofinstallation == 2018: 
             eeg_prices = pd.DataFrame({
                         'static_bonus_feed_in': [12.60, 12.60, 12.60, 12.60, 12.60, 12.60, 12.60, 12.48, 12.35, 12.23, 12.11, 11.99],
                         'static_feed_in_price': [12.20, 12.20, 12.20, 12.20, 12.20, 12.20, 12.20, 12.08, 11.95, 11.83, 11.71, 11.59]
@@ -230,6 +259,11 @@ class Control():
                         'static_bonus_feed_in': [8.60, 8.51, 8.51, 8.51, 8.51, 8.51, 8.51, 8.43, 8.43, 8.43, 8.43, 8.43],
                         'static_feed_in_price': [8.20, 8.11, 8.11, 8.11, 8.11, 8.11, 8.11, 8.03, 8.03, 8.03, 8.03, 8.03]
                         }, index=[1,2,3,4,5,6,7,8,9,10,11,12])
+        elif yearofinstallation == 2025:
+            eeg_prices = pd.DataFrame({
+                        'static_bonus_feed_in': [8.43, 8.34, 8.34, 8.34, 8.34, 8.34, 8.34],
+                        'static_feed_in_price': [8.30, 7.94, 7.94, 7.94, 7.94, 7.94, 7.94]
+                        }, index=[1,2,3,4,5,6,7])
         else: pass
                 
         return eeg_prices.at[monthofinstallation, 'static_feed_in_price'],  eeg_prices.at[monthofinstallation, 'static_bonus_feed_in'] 

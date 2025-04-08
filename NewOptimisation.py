@@ -25,7 +25,7 @@ class Optimisation():
         pass
 
 
-    def select_optimisation(self, data , input_optimisation, select_opti):
+    def select_optimisation(self, data , input_optimisation, select_opti, session):
 
         # Do not forget to copy the data DataFrame
         '''Input self optimisation: 
@@ -73,11 +73,11 @@ class Optimisation():
             file.write(str("Static feed-in Price EEG: "+ str(input_optimisation[6])+"  \n"))
             file.write(str("Static feed-in Bonus EEG: "+ str(input_optimisation[7])+"  \n\n"))
 
-        data_opti = self.optimisation(data.copy(), select_opti, input_optimisation)
-        return data_opti
+        data_opti, session = self.optimisation(data.copy(), select_opti, input_optimisation, session)
+        return data_opti, session
 
 
-    def optimisation(self, data, select_opti, input_optimisation ):
+    def optimisation(self, data, select_opti, input_optimisation,session ):
         # initialise the result columns of the optimisation 
         result_column_names =   ['Battery Charge [kWh]', 'Battery Discharge[kWh]', 
                                 'Battery SOC', 'Supply from Grid [kWh]', 
@@ -195,23 +195,25 @@ class Optimisation():
             for i in range(len(b_eq_cache)): b_eq.append(b_eq_cache[i])
 
             if select_opti[3] == 1:
-                # construction of the Matrix for unequality constrain equation
-                '''EEG System: Battery charge from the Grid is allowed'''
-                A_ub   =  []
-                A_ub   =  self.append_constrains(len_opti,A_ub_3,A_ub_3_1)
-                # construction of the vector for equality constrain equation 
-                b_ub   =  []
-                b_ub   =  self.append_array(1,pv_generation)
+                if session.battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                    # construction of the Matrix for unequality constrain equation
+                    '''EEG System: Battery charge from the Grid is allowed'''
+                    A_ub   =  []
+                    A_ub   =  self.append_constrains(len_opti,A_ub_3,A_ub_3_1)
+                    # construction of the vector for equality constrain equation 
+                    b_ub   =  []
+                    b_ub   =  self.append_array(1,pv_generation)
 
-                '''EEG System: Battery feed-in allowed'''
-                # A_ub   =  []
-                # A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
-                # A_ub   =  self.append_constrains(len_opti,A_ub_2,A_ub_2_1)
-                    
-                # # construction of the vector for equality constrain equation 
-                # b_ub   =  []
-                # b_ub   =  self.append_array(1,pv_generation)
-                # b_ub   =  self.append_array(1,pv_generation)
+                if session.battery_usage == "Energie einspeisen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                    '''EEG System: Battery feed-in allowed'''
+                    A_ub   =  []
+                    A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
+                    A_ub   =  self.append_constrains(len_opti,A_ub_2,A_ub_2_1)
+                        
+                    # construction of the vector for equality constrain equation 
+                    b_ub   =  []
+                    b_ub   =  self.append_array(1,pv_generation)
+                    b_ub   =  self.append_array(1,pv_generation)
             else: 
                 A_ub   =  []
                 A_ub_0 = [0, 0, 0, 0, 0]
@@ -257,11 +259,11 @@ class Optimisation():
             file.write(str(str(datetime.now())+'\nFinished optimisation calculation.\n\n'))
 
         # # Save Data as Self Consumption optimised    
-        data.to_csv(os.path.join( self.data_path, select_opti[4]), sep=';')
+        # data.to_csv(os.path.join( self.data_path, select_opti[4]), sep=';')
 
         # print the optimisation result 
         # self.plot_data.print_self_consumption_optimisation(data, price_column_name, result_column_names)
-        return data
+        return data, session
     
 
     def append_array(self, len_opti, values):
