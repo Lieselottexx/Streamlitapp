@@ -30,7 +30,7 @@ class Control():
         pass
 
     def opti_und_cost_calc(self, data, input_optimisation, select_opti, session):
-        data_optimised = self.opimisation.select_optimisation(data.astype(Param.datatype), 
+        data_optimised = self.opimisation.select_optimisation(data,# .astype(Param.datatype), 
                                                               input_optimisation, 
                                                               select_opti, session)
         costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
