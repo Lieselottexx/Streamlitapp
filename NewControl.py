@@ -135,7 +135,7 @@ class Control():
 
         def opti_und_cost_calc_wrapper(args):
             data, select_opti, input_optimisation = args
-            return select_opti(data, input_optimisation)
+            return self.opti_und_cost_calc(data, select_opti, input_optimisation)
         
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
             result1, result2 = pool.map(opti_und_cost_calc_wrapper, input_list)
