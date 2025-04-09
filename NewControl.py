@@ -34,7 +34,7 @@ class Control():
                                                               input_optimisation, 
                                                               select_opti, session)
         costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
-        return costs_selected
+        return costs_selected, session
     
     
 
