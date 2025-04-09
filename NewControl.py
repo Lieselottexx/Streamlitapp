@@ -115,12 +115,10 @@ class Control():
         progress_Opti1 = 20
         progress_bar_Opti1.progress(progress_Opti1)
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
-
         input_list = []
         input_list.append((self.data, input_optimisation, select_opti, session))
         
         ''' Inputs für Opti 2: Eigenverbrauchsoptimierung'''
-
         progress_Opti2 = 5
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
@@ -133,11 +131,15 @@ class Control():
         input_list.append((self.data, input_optimisation, select_opti, session))
 
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
-            costs_selected, costs_evo = pool.map(self.opti_und_cost_calc, input_list)
-        # data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
-                                                            #   input_optimisation, 
-                                                            #   select_opti, session)
-        # print("1. Opti fertig")
+            result1, result2 = pool.map(self.opti_und_cost_calc, input_list)
+        
+        costs_selected = result1[]
+        session = result1[1]
+        costs_evo = result2[0]
+        # data_optimised, session = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+        #                                                       input_optimisation, 
+        #                                                       select_opti, session)
+        print("1. Opti fertig")
         progress_Opti1 = 90
         progress_bar_Opti1.progress(progress_Opti1)
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
@@ -150,7 +152,7 @@ class Control():
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
 
         
-        # data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+        # data_optimised, session = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
         #                                                       input_optimisation, 
         #                                                       select_opti, session)
         print("zweite Opti fertig")
@@ -168,6 +170,7 @@ class Control():
         benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
         print('= ',benefit)
         status_text_Opti2.text(f"Einsparungen werden berechnet... {progress_Opti2}% abgeschlossen")
+        # benefit = 815
         return benefit, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
         
     

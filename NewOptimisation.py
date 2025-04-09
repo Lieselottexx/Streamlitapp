@@ -73,8 +73,8 @@ class Optimisation():
             file.write(str("Static feed-in Price EEG: "+ str(input_optimisation[6])+"  \n"))
             file.write(str("Static feed-in Bonus EEG: "+ str(input_optimisation[7])+"  \n\n"))
 
-        data_opti = self.optimisation(data.copy(), select_opti, input_optimisation, session)
-        return data_opti
+        data_opti, session = self.optimisation(data.copy(), select_opti, input_optimisation, session)
+        return data_opti, session
 
 
     def optimisation(self, data, select_opti, input_optimisation,session ):
@@ -263,7 +263,7 @@ class Optimisation():
 
         # print the optimisation result 
         # self.plot_data.print_self_consumption_optimisation(data, price_column_name, result_column_names)
-        return data
+        return data, session
     
 
     def append_array(self, len_opti, values):

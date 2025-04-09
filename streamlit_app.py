@@ -20,6 +20,7 @@ class Streamlit():
         # Notiz an mich: eine Pages mit Navigation
         # sieht zwar schöner aus aber beim pages wechseln reset die Berechnungsseite
         # mit Sidebar Radio nicht!
+        # grade mit Radio auch nicht... :(
 
         # Sidebar Navigation
         st.sidebar.title("Navigation")
@@ -42,7 +43,7 @@ class Streamlit():
                 st.session_state.has_battery = False
                 st.session_state.battery_capacity = 3
                 st.session_state.battery_usage = "Energie einspeisen"
-            st.write("Session initialized:", st.session_state)
+            # st.write("Session initialized:", st.session_state)
 
             st.title("Vergleich: Dynamische vs. Statische Energiepreise")
             
@@ -143,7 +144,8 @@ class Streamlit():
         elif page == "Erklärung":
             st.title("Erklärung zur Berechnung")
             st.markdown("""
-            # Lastgänge provisorich bis die Liste größer ist:\n
+            # Lastgänge
+            Provisorich bis die Liste größer ist:\n
             2000 kWh : 1957 kWh Single Woman with work 30-64  (3)\n
             3000 kWh : 3050 kWh Single woman over 65 with parttime job (5)\n
             4000 kWh : 3496 kWh (12)\n
@@ -151,8 +153,9 @@ class Streamlit():
             6000 kWh : 5847 kWh (17)\n
             7000 kWh : 6300 kWh (15)\n
             8000 kWh : 8349 kWh (16)\n\n
-                        
-            # Einspeisevergütung aktuell nur von PV Anlagen < 10kWp\n
+
+            # Einspeisevergütung            
+            Einspeisevergütung aktuell nur von PV Anlagen < 10kWp\n
             
             """)
 
