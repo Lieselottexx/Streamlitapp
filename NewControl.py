@@ -131,11 +131,11 @@ class Control():
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
         # input_list.append(self.data, input_optimisation, select_opti, session)
-        input_list = [(self.data, select_opti, input_optimisation), (self.data, select_opti2, input_optimisation)]
+        input_list = [(self, self.data, select_opti, input_optimisation), (self, self.data, select_opti2, input_optimisation)]
 
         def opti_und_cost_calc_wrapper(args):
-            data, select_opti, input_optimisation = args
-            return self.opti_und_cost_calc(data, select_opti, input_optimisation)
+            self_obj, data, select_opti, input_optimisation = args
+            return self.opti_und_cost_calc(self_obj, data, select_opti, input_optimisation)
         
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
             result1, result2 = pool.map(opti_und_cost_calc_wrapper, input_list)
