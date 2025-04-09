@@ -29,6 +29,13 @@ class Control():
     def __del__(self):
         pass
 
+    def opti_und_cost_calc(self, data, input_optimisation, select_opti, session):
+        data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+                                                              input_optimisation, 
+                                                              select_opti, session)
+        costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        return costs_selected
+
 
     def calculation(self, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
                          progress_bar_Opti2, status_text_Opti2):
@@ -87,6 +94,7 @@ class Control():
                 if session.controllable_device:
                     select_opti = self.select_optimisation_behaviour(11)
         
+        ''' Inputs für Opti 1: Selected'''
         progress_Opti1 = 10
         progress_bar_Opti1.progress(progress_Opti1)
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
@@ -107,22 +115,11 @@ class Control():
         progress_Opti1 = 20
         progress_bar_Opti1.progress(progress_Opti1)
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
-        
-        
-        data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
-                                                              input_optimisation, 
-                                                              select_opti, session)
-        print("1. Opti fertig")
-        progress_Opti1 = 90
-        progress_bar_Opti1.progress(progress_Opti1)
-        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
 
+        input_list = []
+        input_list.append((self.data, input_optimisation, select_opti, session))
         
-        # calculation of the costs and store in a Dataframe to concat all together later
-        costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
-        progress_Opti1 = 100
-        progress_bar_Opti1.progress(progress_Opti1)
-        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+        ''' Inputs für Opti 2: Eigenverbrauchsoptimierung'''
 
         progress_Opti2 = 5
         progress_bar_Opti2.progress(progress_Opti2)
@@ -133,9 +130,29 @@ class Control():
         progress_Opti2 = 10
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
-        data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
-                                                              input_optimisation, 
-                                                              select_opti, session)
+        input_list.append((self.data, input_optimisation, select_opti, session))
+
+        with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
+            costs_selected, costs_evo = pool.map(self.opti_und_cost_calc, input_list)
+        # data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+                                                            #   input_optimisation, 
+                                                            #   select_opti, session)
+        # print("1. Opti fertig")
+        progress_Opti1 = 90
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+
+        
+        # calculation of the costs and store in a Dataframe to concat all together later
+        # costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        progress_Opti1 = 100
+        progress_bar_Opti1.progress(progress_Opti1)
+        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+
+        
+        # data_optimised = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
+        #                                                       input_optimisation, 
+        #                                                       select_opti, session)
         print("zweite Opti fertig")
         progress_Opti2 = 90
         progress_bar_Opti2.progress(progress_Opti2)
@@ -143,7 +160,7 @@ class Control():
         
         
         # calculation of the costs and store in a Dataframe to concat all together later
-        costs_evo = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        # costs_evo = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
         progress_Opti2 = 100
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
