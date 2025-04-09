@@ -35,6 +35,10 @@ class Control():
                                                               select_opti, session)
         costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
         return costs_selected
+    
+    def opti_und_cost_calc_wrapper(self, args):
+        data, select_opti, input_optimisation = args
+        return select_opti(data, input_optimisation)
 
 
     def calculation(self, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
@@ -130,8 +134,9 @@ class Control():
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
         # input_list.append(self.data, input_optimisation, select_opti, session)
         input_list = [(self.data, select_opti, input_optimisation), (self.data, select_opti2, input_optimisation)]
+
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
-            result1, result2 = pool.map(self.opti_und_cost_calc, input_list)
+            result1, result2 = pool.map(self.opti_und_cost_calc_wrapper, input_list)
         
         costs_selected = result1[0]
         session = result1[1]
