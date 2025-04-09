@@ -116,7 +116,7 @@ class Control():
         progress_bar_Opti1.progress(progress_Opti1)
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
         input_list = []
-        input_list.append((self.data, input_optimisation, select_opti, session))
+        input_list.append(self.data, input_optimisation, select_opti, session)
         
         ''' Inputs für Opti 2: Eigenverbrauchsoptimierung'''
         progress_Opti2 = 5
@@ -128,7 +128,7 @@ class Control():
         progress_Opti2 = 10
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
-        input_list.append((self.data, input_optimisation, select_opti, session))
+        input_list.append(self.data, input_optimisation, select_opti, session)
 
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
             result1, result2 = pool.map(self.opti_und_cost_calc, input_list)
