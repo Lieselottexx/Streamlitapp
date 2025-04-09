@@ -135,7 +135,7 @@ class Control():
         
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
             result1, result2 = pool.map(opti_und_cost_calc_wrapper, input_list)
-        
+        print(result1, result2)
         costs_selected = result1[0]
         session = result1[1]
         costs_evo = result2[0]
