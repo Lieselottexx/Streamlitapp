@@ -133,7 +133,7 @@ class Control():
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
             result1, result2 = pool.map(self.opti_und_cost_calc, input_list)
         
-        costs_selected = result1[]
+        costs_selected = result1[0]
         session = result1[1]
         costs_evo = result2[0]
         # data_optimised, session = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
