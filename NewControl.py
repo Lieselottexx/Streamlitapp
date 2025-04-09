@@ -33,7 +33,9 @@ class Control():
         data_optimised, session = self.opimisation.select_optimisation(data,# .astype(Param.datatype), 
                                                               input_optimisation, 
                                                               select_opti, session)
+        print(data_optimised)
         costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        print(costs_selected)
         return costs_selected, session
     
     
