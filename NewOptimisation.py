@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from scipy.optimize import linprog
 import numpy as np
+import time
 
 # Import Python Files
 import Param
@@ -109,8 +110,9 @@ class Optimisation():
         4 - Name of the CSV of the Optimisation [4]
         5 - energy price name of the column[5] 
         6 - feed in name of the column[6]'''
-
+        counter = 1
         for date in pd.date_range(start=data.index.min(), end=data.index.max(),freq=timedelta(hours=input_optimisation[1])):
+            start_function = time.time()
             # Collection Inputs over the Time duration of the optimisation step
             load_data = data.loc[date:date+timedelta(hours=input_optimisation[0]),'Load Energy [kWh]'].copy().values
             pv_generation = data.loc[date:date+timedelta(hours=input_optimisation[0]),'PV-Energy [kWh]'].copy().values
@@ -220,9 +222,10 @@ class Optimisation():
                 A_ub   =  self.append_constrains(len_opti,A_ub_0,A_ub_0)
                 b_ub   =  []
                 b_ub   =  self.append_array(len_opti,[0])
-
+            start_opti = time.time()
             # calculation of the Linear Optimisation
             result = linprog(c, A_eq=A_eq, b_eq=b_eq, A_ub=A_ub, b_ub=b_ub, bounds=limits)
+            end_opti = time.time()
 
             # Help date array
             date_ind = [date + i * timedelta(minutes=5) for i in range(len_opti)]
@@ -248,6 +251,12 @@ class Optimisation():
 
                 # Store Result in the data DataFrame
                 data.update(results_data[result_column_names].astype(self.str_datatype))
+                end_function = time.time()
+                
+                print(f"Optimierung {counter}:\nDie Funktion hat gebraucht: {(end_function-start_function)}\nDie Optimierung hat gebraucht: {(end_opti - start_opti)}\n")
+                counter = counter +1 
+
+                
                     
             else: # if the Optimisation does not converge or something else went wrong Print an error in Terminal
                 print("Optimierung fehlgeschlagen. Datum: ", date)

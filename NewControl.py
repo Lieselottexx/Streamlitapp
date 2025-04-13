@@ -2,6 +2,7 @@
 import pandas as pd
 import multiprocessing
 import os
+import time
 
 
 # Import Python Files
@@ -43,7 +44,7 @@ class Control():
 
     def calculation(self, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
                          progress_bar_Opti2, status_text_Opti2):
-
+        start_calc = time.time()
         progress_loading = 5
         progress_bar_loading.progress(progress_loading)
         status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
@@ -70,8 +71,9 @@ class Control():
         progress_loading = 70
         progress_bar_loading.progress(progress_loading)
         status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
-
-
+    	
+        print(f"Daten Laden dauerte {(time.time()-start_calc)}")
+        start_calc = time.time()
 
         '''Stromtarife berechnen'''
         self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
@@ -83,8 +85,8 @@ class Control():
         progress_Opti1 = 5
         progress_bar_Opti1.progress(progress_Opti1)
         status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
-
-
+        print(f"Berechnung Preise dauerte {(time.time()-start_calc)}")
+        start_calc = time.time()
         '''Wenn das ein dann nur statisch mit Zeitvariablen Netzentgelten rechnen'''
         if session.static_ZVNE == 1:
             select_opti = self.select_optimisation_behaviour(9)
@@ -138,6 +140,7 @@ class Control():
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
             result1, result2 = pool.map(opti_und_cost_calc_wrapper, input_list)
             print("Igotout!...")
+        print(f"Opti dauerte {(time.time()-start_calc)}")
         print(result1, result2)
         costs_selected = result1[0]
         session = result1[1]

@@ -1207,3 +1207,224 @@ Static feed-in Bonus EEG: 8.6
 2025-04-07 17:13:04.499121
 Finished optimisation calculation.
 
+2025-04-13 17:33:28.149336
+Household Load Profile: 5
+The average energy consumption of the household over one year is: 21357.884765625 kWh/a 
+
+2025-04-13 17:33:31.072864
+Loaded the SLP Profile.
+
+2025-04-13 17:33:31.082842
+0. Mode is selected!
+
+2025-04-13 17:33:32.116409
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-04-13 17:33:33.277330
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-04-13 17:33:34.390571
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-04-13 17:37:15.461212
+Loaded the Energy Prices.
+
+2025-04-13 17:41:08.676255
+Loaded the montly average market prices.
+
+2025-04-13 17:41:08.676255
+Saved the data DataFrame to CSV!
+
+2025-04-13 17:41:09.160591
+Loaded the dynamic energy prices.
+
+2025-04-13 17:42:13.230738
+Loaded the static energy prices.
+
+2025-04-13 17:42:13.322324
+Loaded the time variable Netzentgelte.
+
+2025-04-13 17:42:13.330299
+Saved the data DataFrame to CSV as opti_input!
+
+2025-04-13 17:42:21.705159
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 5
+Variable Battery Costs: 10
+Battery Power: 0.4166666666666667
+Grid Power: 0.9166666666666666  
+Static feed-in Price EEG: 8.2  
+Static feed-in Bonus EEG: 8.6  
+
+2025-04-13 17:42:21.745923
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 5
+Variable Battery Costs: 10
+Battery Power: 0.4166666666666667
+Grid Power: 0.9166666666666666  
+Static feed-in Price EEG: 8.2  
+Static feed-in Bonus EEG: 8.6  
+
+2025-04-13 17:47:51.952471
+Household Load Profile: 5
+The average energy consumption of the household over one year is: 21357.884765625 kWh/a 
+
+2025-04-13 17:47:54.541656
+Loaded the SLP Profile.
+
+2025-04-13 17:47:54.550717
+0. Mode is selected!
+
+2025-04-13 17:47:55.654691
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-04-13 17:47:56.566703
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-04-13 17:47:57.489795
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-04-13 17:52:14.347528
+Household Load Profile: 5
+The average energy consumption of the household over one year is: 21357.884765625 kWh/a 
+
+2025-04-13 17:52:16.578712
+Loaded the SLP Profile.
+
+2025-04-13 17:52:16.596365
+0. Mode is selected!
+
+2025-04-13 17:52:17.464863
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-04-13 17:52:18.276647
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-04-13 17:52:19.166720
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-04-13 17:55:14.804076
+Loaded the Energy Prices.
+
+2025-04-13 17:58:16.431973
+Loaded the montly average market prices.
+
+2025-04-13 17:58:16.431973
+Saved the data DataFrame to CSV!
+
+2025-04-13 17:58:16.967904
+Loaded the dynamic energy prices.
+
+2025-04-13 18:00:24.816895
+Household Load Profile: 5
+The average energy consumption of the household over one year is: 21357.884765625 kWh/a 
+
+2025-04-13 18:00:27.021520
+Loaded the SLP Profile.
+
+2025-04-13 18:00:27.038213
+0. Mode is selected!
+
+2025-04-13 18:00:27.910034
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-04-13 18:00:28.722614
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-04-13 18:00:29.575657
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-04-13 18:03:21.140671
+Loaded the Energy Prices.
+
+2025-04-13 18:06:13.975287
+Loaded the montly average market prices.
+
+2025-04-13 18:06:13.977116
+Saved the data DataFrame to CSV!
+
+2025-04-13 18:06:14.415300
+Loaded the dynamic energy prices.
+
+2025-04-13 18:07:05.632768
+Loaded the static energy prices.
+
+2025-04-13 18:07:05.723371
+Loaded the time variable Netzentgelte.
+
+2025-04-13 18:07:05.723371
+Saved the data DataFrame to CSV as opti_input!
+
+2025-04-13 18:17:09.059715
+Household Load Profile: 5
+The average energy consumption of the household over one year is: 21357.884765625 kWh/a 
+
+2025-04-13 18:17:09.978386
+Loaded the SLP Profile.
+
+2025-04-13 18:17:09.987415
+0. Mode is selected!
+
+2025-04-13 18:17:10.334708
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-04-13 18:17:10.711210
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-04-13 18:17:11.047281
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-04-13 18:18:16.503724
+Loaded the Energy Prices.
+
+2025-04-13 18:19:19.306109
+Loaded the montly average market prices.
+
+2025-04-13 18:19:19.306109
+Saved the data DataFrame to CSV!
+
+2025-04-13 18:19:19.455029
+Loaded the dynamic energy prices.
+
+2025-04-13 18:19:38.196229
+Loaded the static energy prices.
+
+2025-04-13 18:19:38.229261
+Loaded the time variable Netzentgelte.
+
+2025-04-13 18:19:38.229261
+Saved the data DataFrame to CSV as opti_input!
+
+2025-04-13 18:19:45.759689
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 5
+Variable Battery Costs: 10
+Battery Power: 0.4166666666666667
+Grid Power: 0.9166666666666666  
+Static feed-in Price EEG: 8.2  
+Static feed-in Bonus EEG: 8.6  
+
+2025-04-13 18:19:45.765016
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 5
+Variable Battery Costs: 10
+Battery Power: 0.4166666666666667
+Grid Power: 0.9166666666666666  
+Static feed-in Price EEG: 8.2  
+Static feed-in Bonus EEG: 8.6  
+
+2025-04-13 18:22:05.513815
+Finished optimisation calculation.
+

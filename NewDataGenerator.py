@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import pvlib 
 import numpy as np
+import time
 
 # Import Python Files
 import Param
@@ -336,7 +337,7 @@ class DataGenerator():
         # --------------End Import Weatherdata --------------------------------------------------
             
         # --------------Calculation of the PV Energy -------------------------------------------
-
+        start_function = time.time()
         # Set Location for the PV System to Soest, Fachhochschule Suedwestfalen
         latitude = 51.560376
         longitude = 8.113911
@@ -425,13 +426,15 @@ class DataGenerator():
 
         # plot the PV-Power
         # self.plot.print_pv_energy(data)
-
+        end_function = time.time()
+        print(f"Das Berechnen der PV-Daten dauert: {(end_function - start_function)}\n")
         
         # -------------End PV-Generation --------------------------------------------------------
         return data    
 
 
     def load_energy_prices(self, data):
+        start_function = time.time()
         prices_path = os.path.join(self.related_path_data, self.original_data_path, 'Energy_Prices')       
         prices = pd.DataFrame()        
         new_data = pd.DataFrame()
@@ -443,7 +446,6 @@ class DataGenerator():
         for filename in filenames:
             path_prices = os.path.join(prices_path, filename)
             new_data = pd.read_csv(os.path.join(path_prices), delimiter=',', header=0, skiprows=2, names=column_names, dtype=dtype_dict, on_bad_lines='skip')
-            
             # convert from Euro per MWh to Cent per kWh
             new_data['Energy Price [Cent/kWh]'] *= 0.1                    
             # convert to datetime format
@@ -454,6 +456,7 @@ class DataGenerator():
             new_data.set_index('Datetime', inplace=True)
             # concatenate the individual files to Price Dataframe
             prices = pd.concat([prices,new_data], axis=0)
+            
         # finished loading the original data
 
         # Check whether the index is unique and, if necessary, ensure that it is unique (got error without)
@@ -464,17 +467,23 @@ class DataGenerator():
         data['Energy Price [Cent/kWh]'] = data['Energy Price [Cent/kWh]'].ffill()
         data['Energy Price [Cent/kWh]'] = data['Energy Price [Cent/kWh]'].astype(self.str_datatype)
         print("Finished to load the energy prices!")
-        
+        start_time = time.time()
         with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nLoaded the Energy Prices.\n\n'))
         
+        end_time = time.time()
+        print(f"Das schreiben ins Log dauert: {(end_time - start_time)}\n")
+            
+        
         # self.plot.print_energy_prices(data)
-    
+        end_function = time.time()
+        print(f"Das Einlesen der Börsenstrompreise dauert: {(end_function - start_function)}\n")
         return data
 
 
 
     def load_direct_marketing_data(self, data):
+        start_function = time.time()
         # Average monthly market value : Marktwert Solar 
         # source: https://www.netztransparenz.de/de-de/Erneuerbare-Energien-und-Umlagen/EEG/Transparenzanforderungen/Marktpr%C3%A4mie/Marktwert%C3%BCbersicht
         a_2018 = ( 3.440,  4.038,  3.698,  2.954,  3.186,  4.251,  4.900,  5.595,  5.210,  5.325,  5.976,  5.612)
@@ -498,6 +507,8 @@ class DataGenerator():
 
         with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nLoaded the montly average market prices.\n\n'))
+        end_function = time.time()
+        print(f"Das Einlesen der Monatsmarktwerte dauert: {(end_function - start_function)}\n")
         return data
 
     def add_average_prices(self, data, timestamp, year, array_prices):    
