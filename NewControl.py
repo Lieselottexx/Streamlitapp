@@ -23,6 +23,7 @@ class Control():
         self.opimisation = o.Optimisation()
         self.analysis = a.Analysis()
         self.data_path = Param.data_path
+        multiprocessing.set_start_method("spawn", force=True)
 
 
         pass

@@ -49,7 +49,7 @@ class Optimisation():
         6 - feed in name of the column[6]'''
         
         
-
+        start_function = time.time()
         # Calculation of the Feed-in price 
         data['Dynamic Feed-in Price [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
         market_bonus = input_optimisation[7] - data['Monthly Average Price [Cent/kWh]']
@@ -75,6 +75,7 @@ class Optimisation():
             file.write(str("Static feed-in Bonus EEG: "+ str(input_optimisation[7])+"  \n\n"))
 
         data_opti, session = self.optimisation(data.copy(), select_opti, input_optimisation, session)
+        print(f"Die ganze Optimierung hat {(time.time()-start_function)/60} Minuten gedauert.")
         return data_opti, session
 
 
