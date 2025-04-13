@@ -43,7 +43,7 @@ class Streamlit():
                 st.session_state.has_battery = False
                 st.session_state.battery_capacity = 3
                 st.session_state.battery_usage = "Energie einspeisen"
-            # st.write("Session initialized:", st.session_state)
+            st.write("Session initialized:", st.session_state)
 
             st.title("Vergleich: Dynamische vs. Statische Energiepreise")
             
