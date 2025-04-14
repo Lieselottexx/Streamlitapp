@@ -45,6 +45,7 @@ class Control():
 
     def calculation(self, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
                          progress_bar_Opti2, status_text_Opti2):
+        start_programm = time.time()
         start_calc = time.time()
         progress_loading = 5
         progress_bar_loading.progress(progress_loading)
@@ -180,6 +181,8 @@ class Control():
         benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
         print('= ',benefit)
         status_text_Opti2.text(f"Einsparungen werden berechnet... {progress_Opti2}% abgeschlossen")
+        end_programm = time.time()
+        print(f"Das ganze Programm lief nun in {(end_programm - start_programm )} Sekunden durch")
         # benefit = 815
         return benefit, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
         
