@@ -489,7 +489,7 @@ class DataGenerator():
         column_names = ['Datetime', 'Monthly Average Price [Cent/kWh]']
         dtype_dict = {col: self.str_datatype for col in column_names if col != 'Datetime'}
         new_data = pd.read_csv(path_prices, delimiter=';', header=0, names=column_names, dtype=dtype_dict, index_col='Datetime')
-        new_data.index  = pd.to_datetime(new_data.index, format='%Y-%m-%d %H:%M:%S')
+        new_data.index  = pd.to_datetime(new_data.index, format='%d-%m-%Y %H:%M')
         data = pd.concat([data, new_data], axis=1)
         print(f"Das Einlesen der Monatsmarktwerte dauert: {(time.time() - start_function)}\n")
         return data
