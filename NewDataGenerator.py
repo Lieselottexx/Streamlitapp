@@ -484,33 +484,43 @@ class DataGenerator():
 
     def load_direct_marketing_data(self, data):
         start_function = time.time()
-        # Average monthly market value : Marktwert Solar 
-        # source: https://www.netztransparenz.de/de-de/Erneuerbare-Energien-und-Umlagen/EEG/Transparenzanforderungen/Marktpr%C3%A4mie/Marktwert%C3%BCbersicht
-        a_2018 = ( 3.440,  4.038,  3.698,  2.954,  3.186,  4.251,  4.900,  5.595,  5.210,  5.325,  5.976,  5.612)
-        a_2019 = ( 5.906,  4.213,  3.075,  3.172,  3.530,  2.910,  3.917,  3.376,  3.345,  3.788,  4.383,  3.696)
-        a_2020 = ( 3.831,  2.319,  1.618,  0.890,  1.413,  2.473,  2.623,  3.321,  3.981,  3.269,  3.998,  4.811)
-        a_2021 = ( 5.543,  4.499,  4.105,  4.551,  4.187,  6.864,  7.409,  7.681, 11.715, 12.804, 18.307, 27.075)
-        a_2022 = (17.838, 11.871, 20.712, 14.566, 15.132, 18.940, 26.093, 39.910, 31.673, 12.904, 15.374, 24.661)
-        a_2023 = (12.291, 12.343,  8.883,  8.002,  5.356,  7.124,  5.173,  7.334,  7.447,  6.763,  8,525,  6.592)
-        a_2024 = ( 7.535,  5.875,  4.965,  3.795,  3.161,  4.635,  3.554,  4.263,  4.512,  6.752, 10.076, 11.171)
-
-        data['Monthly Average Price [Cent/kWh]'] = pd.Series(dtype=self.datatype)
-            
-        for timestamp, row in data.iterrows():
-            self.add_average_prices(data, timestamp, 2018, a_2018)
-            self.add_average_prices(data, timestamp, 2019, a_2019)
-            self.add_average_prices(data, timestamp, 2020, a_2020)
-            self.add_average_prices(data, timestamp, 2021, a_2021)
-            self.add_average_prices(data, timestamp, 2022, a_2022)
-            self.add_average_prices(data, timestamp, 2023, a_2023)
-            self.add_average_prices(data, timestamp, 2024, a_2024)
-
-        with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
-            file.write(str(str(datetime.now())+'\nLoaded the montly average market prices.\n\n'))
-        end_function = time.time()
-        print(f"Das Einlesen der Monatsmarktwerte dauert: {(end_function - start_function)}\n")
+        path_prices = os.path.join(self.related_path_data, self.original_data_path, 'Market_Values')       
+        prices = pd.DataFrame()
+        column_names = ['Datetime', 'Monthly Average Price [Cent/kWh]']
+        dtype_dict = {col: self.str_datatype for col in column_names if col != 'Datetime'}
+        new_data = pd.read_csv(os.path.join(path_prices), delimiter=',', header=0, skiprows=2, names=column_names, dtype=dtype_dict, index_col='Datetime')
+        new_data.index  = pd.to_datetime(new_data.index, format='%Y-%m-%d %H:%M:%S')
+        data = pd.concat([data, new_data], axis=1)
+        print(f"Das Einlesen der Monatsmarktwerte dauert: {(time.time() - start_function)}\n")
         return data
+    #     start_function = time.time()
+    #     # Average monthly market value : Marktwert Solar 
+    #     # source: https://www.netztransparenz.de/de-de/Erneuerbare-Energien-und-Umlagen/EEG/Transparenzanforderungen/Marktpr%C3%A4mie/Marktwert%C3%BCbersicht
+    #     a_2018 = ( 3.440,  4.038,  3.698,  2.954,  3.186,  4.251,  4.900,  5.595,  5.210,  5.325,  5.976,  5.612)
+    #     a_2019 = ( 5.906,  4.213,  3.075,  3.172,  3.530,  2.910,  3.917,  3.376,  3.345,  3.788,  4.383,  3.696)
+    #     a_2020 = ( 3.831,  2.319,  1.618,  0.890,  1.413,  2.473,  2.623,  3.321,  3.981,  3.269,  3.998,  4.811)
+    #     a_2021 = ( 5.543,  4.499,  4.105,  4.551,  4.187,  6.864,  7.409,  7.681, 11.715, 12.804, 18.307, 27.075)
+    #     a_2022 = (17.838, 11.871, 20.712, 14.566, 15.132, 18.940, 26.093, 39.910, 31.673, 12.904, 15.374, 24.661)
+    #     a_2023 = (12.291, 12.343,  8.883,  8.002,  5.356,  7.124,  5.173,  7.334,  7.447,  6.763,  8,525,  6.592)
+    #     a_2024 = ( 7.535,  5.875,  4.965,  3.795,  3.161,  4.635,  3.554,  4.263,  4.512,  6.752, 10.076, 11.171)
 
-    def add_average_prices(self, data, timestamp, year, array_prices):    
-        if timestamp.year == year:
-            data.at[timestamp, 'Monthly Average Price [Cent/kWh]'] = array_prices[timestamp.month-1]
+    #     data['Monthly Average Price [Cent/kWh]'] = pd.Series(dtype=self.datatype)
+            
+    #     for timestamp, row in data.iterrows():
+    #         self.add_average_prices(data, timestamp, 2018, a_2018)
+    #         self.add_average_prices(data, timestamp, 2019, a_2019)
+    #         self.add_average_prices(data, timestamp, 2020, a_2020)
+    #         self.add_average_prices(data, timestamp, 2021, a_2021)
+    #         self.add_average_prices(data, timestamp, 2022, a_2022)
+    #         self.add_average_prices(data, timestamp, 2023, a_2023)
+    #         self.add_average_prices(data, timestamp, 2024, a_2024)
+
+    #     with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
+    #         file.write(str(str(datetime.now())+'\nLoaded the montly average market prices.\n\n'))
+    #     end_function = time.time()
+    #     print(f"Das Einlesen der Monatsmarktwerte dauert: {(end_function - start_function)}\n")
+    #     return data
+
+    # def add_average_prices(self, data, timestamp, year, array_prices):    
+    #     if timestamp.year == year:
+    #         data.at[timestamp, 'Monthly Average Price [Cent/kWh]'] = array_prices[timestamp.month-1]
