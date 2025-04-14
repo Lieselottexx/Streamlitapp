@@ -119,6 +119,7 @@ class Control():
                                  Param.battery_costs,
                                  battery_power, 
                                  Param.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
+        battery_usage = session.battery_usage
         
         progress_Opti1 = 20
         progress_bar_Opti1.progress(progress_Opti1)
@@ -137,16 +138,12 @@ class Control():
         progress_bar_Opti2.progress(progress_Opti2)
         status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
         # input_list.append(self.data, input_optimisation, select_opti, session)
-        input_list = [(self, self.data,input_optimisation, select_opti, session), (self, self.data, input_optimisation, select_opti2, session)]
+        input_list = [(self, self.data,input_optimisation, select_opti, battery_usage), (self, self.data, input_optimisation, select_opti2, battery_usage)]
         
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
-            result1, result2 = pool.map(opti_und_cost_calc_wrapper, input_list)
+            costs_selected, costs_evo = pool.map(opti_und_cost_calc_wrapper, input_list)
             print("Igotout!...")
         print(f"Opti dauerte {(time.time()-start_calc)}")
-        print(result1, result2)
-        costs_selected = result1[0]
-        session = result1[1]
-        costs_evo = result2[0]
         # data_optimised, session = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
         #                                                       input_optimisation, 
         #                                                       select_opti, session)
