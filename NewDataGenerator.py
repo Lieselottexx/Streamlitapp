@@ -191,7 +191,7 @@ class DataGenerator():
         else: 
             print("Loading the SLP Data failed. Please Check the  File.")
                    
-        
+        print(slp_energy)
         # denormalise with the average energy consumtion over a year 
         slp_energy['SLP-Energy [kWh]'] = slp_energy['SLP-Energy [kWh]'] * averageEnergyHousehold / 1000
         
