@@ -28,12 +28,13 @@ class DataGenerator():
 
         # loading of the Load profile, slp, pv, energy prices and average monthly market value 
         # out of the original data
-    def loadData(self, profile_num, pv_direction, peak_power_pv):
+    def loadData(self, profile_num, pv_direction, peak_power_pv, battery_cap):
         data = pd.DataFrame()
         # Loading the choosen load profile of the household
         data, averageEnergyHousehold = self.load_loadprofile_household(data, profile_num)
         # Loading the H0 SLP Profile an scale it with he average Energy consumption of the Household in a year
-        data = self.load_slp_profile(data, averageEnergyHousehold)
+        # data = self.load_slp_profile(data, averageEnergyHousehold)
+        data = self.load_slp_profile_h25(data, averageEnergyHousehold, peak_power_pv, battery_cap)
         # Loading the PV-Generation Profile 
         if peak_power_pv == 0:
             data["PV-Energy [kWh]"] = 0.0
@@ -162,6 +163,48 @@ class DataGenerator():
 
         return data
     
+
+    def load_slp_profile_h25(self, data, averageEnergyHousehold, peak_power_pv, battery_cap):
+        # ----------------------Loading the Standard load profile --------------------------------
+        if peak_power_pv < 1:
+            slp_path = os.path.join(self.related_path_data, self.original_data_path, 'SLP_H25')
+            slp_energy_save = 'h25_2024.csv'
+        else:
+            slp_path = os.path.join(self.related_path_data, self.original_data_path, 'SLP_H25')
+            slp_energy_save = 'p25_2024.csv'
+            if battery_cap < 1:
+                pass
+            else:
+                slp_path = os.path.join(self.related_path_data, self.original_data_path, 'SLP_H25')
+                slp_energy_save = 's25_2024.csv'
+        if os.path.exists(os.path.join(slp_path,slp_energy_save)):
+            print(slp_energy_save)
+            # Read the csv File to DataFrame
+            column_names = ['Datetime','SLP-Energy [kWh]']
+            dtype_dict = {col: self.str_datatype for col in column_names if col != 'Datetime'}
+            slp_energy = pd.read_csv(os.path.join(slp_path,slp_energy_save), delimiter=';', header=0, names=column_names, dtype=dtype_dict, index_col='Datetime')
+            # print(slp_energy)
+            # Convert the Time column to Datetime Format and shift -15 m
+            slp_energy.index = pd.to_datetime(slp_energy.index, format='%Y-%m-%d %H:%M:%S')# - pd.Timedelta(minutes=15)
+            # Set the Datetime to Index of the DataFrame
+            print("Load the SLP from the preprocessed File. File name: ", slp_energy_save)
+        else: 
+            print("Loading the SLP Data failed. Please Check the  File.")
+                   
+        
+        # denormalise with the average energy consumtion over a year 
+        slp_energy['SLP-Energy [kWh]'] = slp_energy['SLP-Energy [kWh]'] * averageEnergyHousehold / 1000
+        
+        # Write the SLP-Profile in the Data-DataFrame
+        data = pd.concat([data, slp_energy], axis=1)
+        data['SLP-Energy [kWh]'] = (data['SLP-Energy [kWh]'].ffill() / 3).astype(self.str_datatype)
+        
+        with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
+            file.write(str(str(datetime.now())+'\nLoaded the SLP Profile.\n\n'))
+
+        # plot the SLP Profile 
+        # self.plot.print_slp_profile(data)
+        return data
 
 
     def load_pv_generation_profile(self, data, pv_direction, peak_power_pv): 

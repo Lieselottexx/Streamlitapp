@@ -69,7 +69,8 @@ class Control():
 
         self.data, averageEnergyHousehold = self.data_generator.loadData(session.loadprofile,
                                                                          session.pv_direction, 
-                                                                         session.pv_power) 
+                                                                         session.pv_power,
+                                                                         session.battery_power) 
         progress_loading = 70
         progress_bar_loading.progress(progress_loading)
         status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
