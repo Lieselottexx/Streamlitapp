@@ -148,11 +148,11 @@ class Streamlit():
             Provisorich bis die Liste größer ist:\n
             2000 kWh : 1957 kWh Single Woman with work 30-64  (3)\n
             3000 kWh : 3050 kWh Single woman over 65 with parttime job (5)\n
-            4000 kWh : 3496 kWh (12)\n
-            5000 kWh : 4512 kWh (13)\n
-            6000 kWh : 5847 kWh (17)\n
-            7000 kWh : 6300 kWh (15)\n
-            8000 kWh : 8349 kWh (16)\n\n
+            4000 kWh : 3496 kWh Family 1 child both at work (12)\n
+            5000 kWh : 4512 kWh Family with 1 child 1 at work 1 part time job (13)\n
+            6000 kWh : 5847 kWh Family with 2 Children, Man at work (17)\n
+            7000 kWh : 6300 kWh Family, 3 Children, voth with Work (15)\n
+            8000 kWh : 8349 kWh one at home one work home 3 children (16)\n\n
 
             # Einspeisevergütung            
             Einspeisevergütung aktuell nur von PV Anlagen < 10kWp\n

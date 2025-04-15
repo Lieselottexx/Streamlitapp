@@ -63,7 +63,7 @@ grid_power = 11 * 5/60 # kW * 5/60 h
 optimise_time = 24 # h
 
 # time duration of new calculation 
-step_time = 12 # h
+step_time = 18 # h
 
 '''Year of installation of the pv system, nicht mehr benutzt'''
 # derive the feed-in price 
