@@ -260,6 +260,10 @@ class Optimisation():
                 print(f"Optimierung {counter}:\nDie Funktion hat gebraucht: {(end_function-start_function)}\nDie Optimierung hat gebraucht: {(end_opti - start_opti)}\n")
                 counter = counter +1 
 
+                print(progress_visu)
+                print(progress_visu[num])
+                print(progress_visu[num+1])
+
                 progress_Opti = 500 / 733 *100
                 progress_Opti = max(0, min(100, progress_Opti))
                 progress_visu[num].progress(progress_Opti)
