@@ -19,7 +19,7 @@ class Streamlit():
 
     def progress_update(self, progress_bar, status_text, progress):
         progress_bar.progress(progress)
-        status_text.text(f"Berechnung läuft... {progress}% abgeschlossen")
+        status_text.text(f"Berechnung läuft... {round(progress*100)}% abgeschlossen")
         return progress_bar, status_text
 
     
@@ -193,7 +193,7 @@ class Streamlit():
                 # Fortschritt überwachen
                 progress_Opti1 = 0
                 progress_Opti2 = 0
-
+                
                 while process_1.is_alive() or process_2.is_alive():
                     while not queue.empty():
                         task_id, progress = queue.get()
@@ -205,10 +205,18 @@ class Streamlit():
                             progress_Opti2 = progress
                             progress_bar_Opti2.progress(progress_Opti2)
                             status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
-
+                
+                # Wait for processes to finish
                 process_1.join()
                 process_2.join()
-                print(process_1.result)
+
+                # Get results from queue
+                task_id, result = queue.get()
+                results = {}
+                results[task_id] = result
+                print(results)
+                costs_selected = results.get(1)
+                costs_evo      = results.get(2)
 
                 costs_selected = self.control.analysis.single_cost_batterycycle_calculation(process_1.result, select_opti1)
                 costs_evo      = self.control.analysis.single_cost_batterycycle_calculation(process_2.result, select_opti2)
