@@ -174,10 +174,8 @@ class Streamlit():
 
                 battery_power = st.session_state.battery_capacity * 5/60 
 
-
-                input_optimisation =    [self.control.Param.optimise_time, self.control.step_time, st.session_state.battery_capacity,
-                                            self.control.battery_costs,
-                                            battery_power, 
+                input_optimisation =    [self.control.optimise_time, self.control.step_time, st.session_state.battery_capacity,
+                                            self.control.battery_costs,  battery_power, 
                                             self.control.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
                 battery_usage = st.session_state.battery_usage
 

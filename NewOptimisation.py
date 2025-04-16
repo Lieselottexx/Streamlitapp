@@ -15,11 +15,15 @@ class Optimisation():
     def __init__(self):
         # self.plot_data = plot.Plot_Data()
         # Name for the protocol of the current calculation, log file
-        self.log_file_name = "log.txt"
-        self.data_path = Param.data_path
+        self.log_file_name      = "log.txt"
+        self.data_path          = Param.data_path
+        self.optimise_time      = Param.optimise_time
+        self.step_time          = Param.step_time
+        self.battery_costs      = Param.battery_costs
+        self.grid_power         = Param.grid_power
 
-        self.datatype       = Param.datatype
-        self.str_datatype   = Param.str_datatype
+        self.datatype           = Param.datatype
+        self.str_datatype       = Param.str_datatype
         pass
 
     def __del__(self):
