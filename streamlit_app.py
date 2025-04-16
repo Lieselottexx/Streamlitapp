@@ -137,14 +137,14 @@ class Streamlit():
 
                 progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 10)
 
-                self.data, averageEnergyHousehold = self.data_generator.loadData(st.session_state.loadprofile,
+                self.data, averageEnergyHousehold = self.control.data_generator.loadData(st.session_state.loadprofile,
                                                                                  st.session_state.pv_direction, 
                                                                                  st.session_state.pv_power,
                                                                                  st.session_state.battery_capacity) 
                 
                 progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 70)
                 
-                self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
+                self.data = self.control.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
                                                                          st.session_state.controllable_device)
 
 
@@ -156,21 +156,21 @@ class Streamlit():
 
                 '''Wenn das True ist, dann wird nur statisch mit Zeitvariablen Netzentgelten gerechnet'''
                 if st.session_state.static_ZVNE == 1:
-                    select_opti1 = self.select_optimisation_behaviour(9)
+                    select_opti1 = self.control.select_optimisation_behaviour(9)
                 else:
                     if st.session_state.has_eeg:
-                        select_opti1 = self.select_optimisation_behaviour(3)
+                        select_opti1 = self.control.select_optimisation_behaviour(3)
                         if st.session_state.controllable_device:
-                            select_opti1 = self.select_optimisation_behaviour(10)
+                            select_opti1 = self.control.select_optimisation_behaviour(10)
                     else:
-                        select_opti1 = self.select_optimisation_behaviour(8)
+                        select_opti1 = self.control.select_optimisation_behaviour(8)
                         if st.session_state.controllable_device:
-                            select_opti1 = self.select_optimisation_behaviour(11)
+                            select_opti1 = self.control.select_optimisation_behaviour(11)
 
 
                 month_pv_installation = st.session_state.installation_date.month
                 year_pv_installation  = st.session_state.installation_date.year
-                self.control.static_feed_in_price, self.control.static_bonus_feed_in = self.get_eeg_prices(year_pv_installation,month_pv_installation)
+                self.control.static_feed_in_price, self.control.static_bonus_feed_in = self.control.get_eeg_prices(year_pv_installation,month_pv_installation)
 
                 battery_power = st.session_state.battery_capacity * 5/60 
 
@@ -212,8 +212,8 @@ class Streamlit():
                 process_2.join()
                 print(process_1.result)
 
-                costs_selected = self.analysis.single_cost_batterycycle_calculation(process_1.result, select_opti1)
-                costs_evo      = self.analysis.single_cost_batterycycle_calculation(process_2.result, select_opti2)
+                costs_selected = self.control.analysis.single_cost_batterycycle_calculation(process_1.result, select_opti1)
+                costs_evo      = self.control.analysis.single_cost_batterycycle_calculation(process_2.result, select_opti2)
 
 
                 benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
