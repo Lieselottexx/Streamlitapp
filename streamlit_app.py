@@ -170,7 +170,7 @@ class Streamlit():
 
                 month_pv_installation = st.session_state.installation_date.month
                 year_pv_installation  = st.session_state.installation_date.year
-                self.control.static_feed_in_price, self.control.static_bonus_feed_in = self.control.get_eeg_prices(year_pv_installation,month_pv_installation)
+                self.static_feed_in_price, self.static_bonus_feed_in = self.control.get_eeg_prices(year_pv_installation,month_pv_installation)
 
                 battery_power = st.session_state.battery_capacity * 5/60 
 
