@@ -31,49 +31,55 @@ class Control():
     def __del__(self):
         pass
 
-    def opti_und_cost_calc(self, data, input_optimisation, select_opti, battery_usage):
-        data_optimised = self.opimisation.select_optimisation(data,
+    def opti_und_cost_calc(self, data, input_optimisation, select_opti, battery_usage, progress_visu, num):
+        data_optimised, progress_visu = self.opimisation.select_optimisation(data,
                                                               input_optimisation, 
-                                                              select_opti, battery_usage)
+                                                              select_opti, battery_usage, progress_visu, num)
         print(data_optimised)
         costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
         print(costs_selected)
-        return costs_selected
+        return costs_selected, progress_visu
     
     
 
 
-    def calculation(self, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
-                         progress_bar_Opti2, status_text_Opti2):
+    def calculation(self, session, progress_visu):
+        '''progress_visu: 
+        [0] progress_bar_loading
+        [1] status_text_loading
+        [2] progress_bar_Opti1
+        [3] status_text_Opti1
+        [4] progress_bar_Opti2
+        [5] status_text_Opti2'''
         start_programm = time.time()
         start_calc = time.time()
         progress_loading = 5
-        progress_bar_loading.progress(progress_loading)
-        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+        progress_visu[0].progress(progress_loading)
+        progress_visu[1].text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
 
         ''' Lastprofile, PV Daten und Börsenstrompreise einlesen '''
         loadprofiles = {2000: 3,  3000: 5,  4000: 12,
                         5000: 13, 6000: 17, 7000: 15, 8000: 16}
         
         progress_loading = 7
-        progress_bar_loading.progress(progress_loading)
-        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+        progress_visu[0].progress(progress_loading)
+        progress_visu[1].text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
 
         session.loadprofile = loadprofiles[session.consumption]
         print(f"Lastprofil: {session.loadprofile}")
         del(loadprofiles)
 
         progress_loading = 10
-        progress_bar_loading.progress(progress_loading)
-        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+        progress_visu[0].progress(progress_loading)
+        progress_visu[1].text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
 
         self.data, averageEnergyHousehold = self.data_generator.loadData(session.loadprofile,
                                                                          session.pv_direction, 
                                                                          session.pv_power,
                                                                          session.battery_capacity) 
         progress_loading = 70
-        progress_bar_loading.progress(progress_loading)
-        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+        progress_visu[0].progress(progress_loading)
+        progress_visu[1].text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
     	
         print(f"Daten Laden dauerte {(time.time()-start_calc)}")
         start_calc = time.time()
@@ -82,12 +88,12 @@ class Control():
         self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
                                                                  session.controllable_device)
         progress_loading = 100
-        progress_bar_loading.progress(progress_loading)
-        status_text_loading.text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
+        progress_visu[0].progress(progress_loading)
+        progress_visu[1].text(f"Daten werden geladen... {progress_loading}% abgeschlossen")
         
         progress_Opti1 = 5
-        progress_bar_Opti1.progress(progress_Opti1)
-        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+        progress_visu[2].progress(progress_Opti1)
+        progress_visu[3].text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
         print(f"Berechnung Preise dauerte {(time.time()-start_calc)}")
         start_calc = time.time()
         '''Wenn das ein dann nur statisch mit Zeitvariablen Netzentgelten rechnen'''
@@ -105,8 +111,8 @@ class Control():
         
         ''' Inputs für Opti 1: Selected'''
         progress_Opti1 = 10
-        progress_bar_Opti1.progress(progress_Opti1)
-        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+        progress_visu[2].progress(progress_Opti1)
+        progress_visu[3].text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
         
         #st.write(f"Das ausgewählte Verhalten ist: {select_opti[0]}")
    
@@ -123,42 +129,47 @@ class Control():
         battery_usage = session.battery_usage
         
         progress_Opti1 = 20
-        progress_bar_Opti1.progress(progress_Opti1)
-        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+        progress_visu[2].progress(progress_Opti1)
+        progress_visu[3].text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
         # input_list = []
         # input_list.append(self.data, input_optimisation, select_opti, session)
         
         ''' Inputs für Opti 2: Eigenverbrauchsoptimierung'''
         progress_Opti2 = 5
-        progress_bar_Opti2.progress(progress_Opti2)
-        status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+        progress_visu[4].progress(progress_Opti2)
+        progress_visu[5].text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
 
         select_opti2 = self.select_optimisation_behaviour(1)
         print(select_opti[0])
         progress_Opti2 = 10
-        progress_bar_Opti2.progress(progress_Opti2)
-        status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+        progress_visu[4].progress(progress_Opti2)
+        progress_visu[5].text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
         # input_list.append(self.data, input_optimisation, select_opti, session)
-        input_list = [(self, self.data,input_optimisation, select_opti, battery_usage), (self, self.data, input_optimisation, select_opti2, battery_usage)]
+        input_list = [(self, self.data,input_optimisation, select_opti, battery_usage, progress_visu, 2), (self, self.data, input_optimisation, select_opti2, battery_usage, progress_visu, 4)]
         
         with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
-            costs_selected, costs_evo = pool.map(opti_und_cost_calc_wrapper, input_list)
+            (costs_selected, progress_visu1), (costs_evo, progress_visu2) = pool.map(opti_und_cost_calc_wrapper, input_list)
             print("Igotout!...")
         print(f"Opti dauerte {(time.time()-start_calc)}")
         # data_optimised, session = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
         #                                                       input_optimisation, 
         #                                                       select_opti, session)
+        progress_visu[2] = progress_visu1[2]
+        progress_visu[3] = progress_visu1[3]
+        progress_visu[4] = progress_visu2[4]
+        progress_visu[5] = progress_visu2[5]
+
         print("1. Opti fertig")
         progress_Opti1 = 90
-        progress_bar_Opti1.progress(progress_Opti1)
-        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+        progress_visu[2].progress(progress_Opti1)
+        progress_visu[3].text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
 
         
         # calculation of the costs and store in a Dataframe to concat all together later
         # costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
         progress_Opti1 = 100
-        progress_bar_Opti1.progress(progress_Opti1)
-        status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+        progress_visu[2].progress(progress_Opti1)
+        progress_visu[3].text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
 
         
         # data_optimised, session = self.opimisation.select_optimisation(self.data.astype(Param.datatype), 
@@ -166,23 +177,23 @@ class Control():
         #                                                       select_opti, session)
         print("zweite Opti fertig")
         progress_Opti2 = 90
-        progress_bar_Opti2.progress(progress_Opti2)
-        status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+        progress_visu[4].progress(progress_Opti2)
+        progress_visu[5].text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
         
         
         # calculation of the costs and store in a Dataframe to concat all together later
         # costs_evo = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
         progress_Opti2 = 100
-        progress_bar_Opti2.progress(progress_Opti2)
-        status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+        progress_visu[4].progress(progress_Opti2)
+        progress_visu[5].text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
         print(costs_evo, ' - ', costs_selected)
         benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
         print('= ',benefit)
-        status_text_Opti2.text(f"Einsparungen werden berechnet... {progress_Opti2}% abgeschlossen")
+        progress_visu[5].text(f"Einsparungen werden berechnet... {progress_Opti2}% abgeschlossen")
         end_programm = time.time()
         print(f"Das ganze Programm lief nun in {(end_programm - start_programm )} Sekunden durch")
         # benefit = 815
-        return benefit, session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2
+        return benefit, session, progress_visu
         
     
     def select_optimisation_behaviour(self, number_optimisation):

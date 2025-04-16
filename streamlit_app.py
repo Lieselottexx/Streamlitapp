@@ -116,11 +116,14 @@ class Streamlit():
 
                 progress_bar_Opti2 = st.progress(0)
                 status_text_Opti2 = st.empty()
+
+                progress_visu = [progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2]
                 
-                result , session, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2 = self.control.calculation(st.session_state, progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, 
-                                                progress_bar_Opti2, status_text_Opti2)
+                result , session, progress_visu = self.control.calculation(st.session_state, progress_visu)
                 st.session_state = session
                 st.session_state.results.append(result)
+
+                progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2 = progress_visu
                 
                 progress_bar_loading.empty()
                 status_text_loading.text("Berechnung abgeschlossen!")
