@@ -26,7 +26,7 @@ class Optimisation():
         pass
 
 
-    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, progress_visu, num):
+    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, queue, num):
 
         # Do not forget to copy the data DataFrame
         '''Input self optimisation: 
@@ -74,12 +74,12 @@ class Optimisation():
             file.write(str("Static feed-in Price EEG: "+ str(input_optimisation[6])+"  \n"))
             file.write(str("Static feed-in Bonus EEG: "+ str(input_optimisation[7])+"  \n\n"))
 
-        data_opti, progress_visu = self.optimisation(data.copy(), select_opti, input_optimisation, battery_usage, progress_visu, num)
+        data_opti = self.optimisation(data.copy(), select_opti, input_optimisation, battery_usage, queue, num)
         print(f"Die ganze Optimierung hat {(time.time()-start_function)/60} Minuten gedauert.")
-        return data_opti, progress_visu
+        return data_opti
 
 
-    def optimisation(self, data, select_opti, input_optimisation, battery_usage, progress_visu, num):
+    def optimisation(self, data, select_opti, input_optimisation, battery_usage, queue, num):
         # initialise the result columns of the optimisation 
         result_column_names =   ['Battery Charge [kWh]', 'Battery Discharge[kWh]', 
                                 'Battery SOC', 'Supply from Grid [kWh]', 
@@ -260,14 +260,10 @@ class Optimisation():
                 print(f"Optimierung {counter}:\nDie Funktion hat gebraucht: {(end_function-start_function)}\nDie Optimierung hat gebraucht: {(end_opti - start_opti)}\n")
                 counter = counter +1 
 
-                print(progress_visu)
-                print(progress_visu[num])
-                print(progress_visu[num+1])
 
-                progress_Opti = 500 / 733 *100
-                progress_Opti = max(0, min(100, progress_Opti))
-                progress_visu[num].progress(progress_Opti)
-                progress_visu[num+1].text(f"Optimierter Lastgang wird berechnet... {progress_Opti}% abgeschlossen")
+                progress_Opti = counter / 733 *100
+                queue.put((num,progress_Opti))
+
                     
             else: # if the Optimisation does not converge or something else went wrong Print an error in Terminal
                 print("Optimierung fehlgeschlagen. Datum: ", date)
@@ -283,7 +279,7 @@ class Optimisation():
 
         # print the optimisation result 
         # self.plot_data.print_self_consumption_optimisation(data, price_column_name, result_column_names)
-        return data, progress_visu
+        return data
     
 
     def append_array(self, len_opti, values):

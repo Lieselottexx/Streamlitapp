@@ -31,14 +31,14 @@ class Control():
     def __del__(self):
         pass
 
-    def opti_und_cost_calc(self, data, input_optimisation, select_opti, battery_usage, progress_visu, num):
-        data_optimised, progress_visu = self.opimisation.select_optimisation(data,
+    def opti_und_cost_calc(self, data, input_optimisation, select_opti, battery_usage, queue, num):
+        data_optimised = self.opimisation.select_optimisation(data,
                                                               input_optimisation, 
-                                                              select_opti, battery_usage, progress_visu, num)
+                                                              select_opti, battery_usage, queue, num)
         print(data_optimised)
         costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
         print(costs_selected)
-        return costs_selected, progress_visu
+        return costs_selected
     
     
 

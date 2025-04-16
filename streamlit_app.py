@@ -3,6 +3,7 @@ import time
 import pandas as pd
 import datetime
 import NewControl as c
+import multiprocessing
 
 
 class Streamlit():
@@ -14,6 +15,12 @@ class Streamlit():
 
     def __del__(self):
         pass
+
+
+    def progress_update(self, progress_bar, status_text, progress):
+        progress_bar.progress(progress)
+        status_text.text(f"Berechnung läuft... {progress}% abgeschlossen")
+        return progress_bar, status_text
 
     
     def page_calculation(self):
@@ -117,13 +124,103 @@ class Streamlit():
                 progress_bar_Opti2 = st.progress(0)
                 status_text_Opti2 = st.empty()
 
-                progress_visu = [progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2]
                 
-                result , session, progress_visu = self.control.calculation(st.session_state, progress_visu)
-                st.session_state = session
-                st.session_state.results.append(result)
+                
+                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 5)
 
-                progress_bar_loading, status_text_loading, progress_bar_Opti1, status_text_Opti1, progress_bar_Opti2, status_text_Opti2 = progress_visu
+                loadprofiles = {2000: 3,  3000: 5,  4000: 12,
+                        5000: 13, 6000: 17, 7000: 15, 8000: 16}
+                
+                st.session_state.loadprofile = loadprofiles[st.session_state.consumption]
+                print(f"Lastprofil: {st.session_state.loadprofile}")
+                del(loadprofiles)
+
+                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 10)
+
+                self.data, averageEnergyHousehold = self.data_generator.loadData(st.session_state.loadprofile,
+                                                                                 st.session_state.pv_direction, 
+                                                                                 st.session_state.pv_power,
+                                                                                 st.session_state.battery_capacity) 
+                
+                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 70)
+                
+                self.data = self.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
+                                                                         st.session_state.controllable_device)
+
+
+                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 100)
+
+                progress_bar_Opti1, status_text_Opti1 = self.progress_update(progress_bar_Opti1, status_text_Opti1, 0)
+
+                progress_bar_Opti2, status_text_Opti2 = self.progress_update(progress_bar_Opti2, status_text_Opti2, 0)
+
+                '''Wenn das True ist, dann wird nur statisch mit Zeitvariablen Netzentgelten gerechnet'''
+                if st.session_state.static_ZVNE == 1:
+                    select_opti1 = self.select_optimisation_behaviour(9)
+                else:
+                    if st.session_state.has_eeg:
+                        select_opti1 = self.select_optimisation_behaviour(3)
+                        if st.session_state.controllable_device:
+                            select_opti1 = self.select_optimisation_behaviour(10)
+                    else:
+                        select_opti1 = self.select_optimisation_behaviour(8)
+                        if st.session_state.controllable_device:
+                            select_opti1 = self.select_optimisation_behaviour(11)
+
+
+                month_pv_installation = st.session_state.installation_date.month
+                year_pv_installation  = st.session_state.installation_date.year
+                self.control.static_feed_in_price, self.control.static_bonus_feed_in = self.get_eeg_prices(year_pv_installation,month_pv_installation)
+
+                battery_power = st.session_state.battery_capacity * 5/60 
+
+
+                input_optimisation =    [self.control.Param.optimise_time, self.control.step_time, st.session_state.battery_capacity,
+                                            self.control.battery_costs,
+                                            battery_power, 
+                                            self.control.grid_power, self.static_feed_in_price, self.static_bonus_feed_in]
+                battery_usage = st.session_state.battery_usage
+
+                select_opti2 = self.control.select_optimisation_behaviour(1)
+
+                queue = multiprocessing.Queue()
+
+                # Prozesse starten
+                process_1 = multiprocessing.Process(target=self.control.opimisation.select_optimisation, args=(self.data, input_optimisation, select_opti1, battery_usage, queue, 1))
+                process_2 = multiprocessing.Process(target=self.control.opimisation.select_optimisation, args=(self.data, input_optimisation, select_opti2, battery_usage, queue, 2))
+
+                process_1.start()
+                process_2.start()
+
+                # Fortschritt überwachen
+                progress_Opti1 = 0
+                progress_Opti2 = 0
+
+                while process_1.is_alive() or process_2.is_alive():
+                    while not queue.empty():
+                        task_id, progress = queue.get()
+                        if task_id == 1:
+                            progress_Opti1 = progress
+                            progress_bar_Opti1.progress(progress_Opti1)
+                            status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+                        elif task_id == 2:
+                            progress_Opti2 = progress
+                            progress_bar_Opti2.progress(progress_Opti2)
+                            status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+
+                process_1.join()
+                process_2.join()
+                print(process_1.result)
+
+                costs_selected = self.analysis.single_cost_batterycycle_calculation(process_1.result, select_opti1)
+                costs_evo      = self.analysis.single_cost_batterycycle_calculation(process_2.result, select_opti2)
+
+
+                benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
+                st.session_state.results.append(benefit)  # Beispiel für die Berechnung der Einsparung
+
+                st.success("Berechnung abgeschlossen!")
+                st.session_state.calculating = False
                 
                 progress_bar_loading.empty()
                 status_text_loading.text("Berechnung abgeschlossen!")
