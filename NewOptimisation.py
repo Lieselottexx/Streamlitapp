@@ -262,7 +262,7 @@ class Optimisation():
                 counter = counter +1 
 
 
-                progress_Opti = counter / 733 *100
+                progress_Opti = counter / 740
                 queue.put((num,progress_Opti))
 
                     
