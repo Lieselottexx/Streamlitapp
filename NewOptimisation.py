@@ -17,10 +17,7 @@ class Optimisation():
         # Name for the protocol of the current calculation, log file
         self.log_file_name      = "log.txt"
         self.data_path          = Param.data_path
-        self.optimise_time      = Param.optimise_time
-        self.step_time          = Param.step_time
-        self.battery_costs      = Param.battery_costs
-        self.grid_power         = Param.grid_power
+
 
         self.datatype           = Param.datatype
         self.str_datatype       = Param.str_datatype

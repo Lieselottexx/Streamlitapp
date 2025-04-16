@@ -25,6 +25,12 @@ class Control():
         self.data_path = Param.data_path
         multiprocessing.set_start_method("spawn", force=True)
 
+            
+        self.optimise_time      = Param.optimise_time
+        self.step_time          = Param.step_time
+        self.battery_costs      = Param.battery_costs
+        self.grid_power         = Param.grid_power
+
 
         pass
 
