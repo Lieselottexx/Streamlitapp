@@ -145,7 +145,7 @@ class Optimisation():
             
             A_eq_1 = [-1,   0.96,    0, 1, -1]
             if input_optimisation[2] <= 0:
-                A_eq_2 = [1/0.01 -1/0.01, -1,  0, 0]
+                A_eq_2 = [1/0.01, -1/0.01, -1,  0, 0]
             else:
                 A_eq_2 = [1/input_optimisation[2], -1/input_optimisation[2], -1,  0, 0]
             
