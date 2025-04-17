@@ -198,21 +198,29 @@ class Streamlit():
                             progress_bar_Opti1, status_text_Opti1 = self.progress_update(progress_bar_Opti1, status_text_Opti1, progress)
                         elif task_id == 2:
                             progress_bar_Opti2, status_text_Opti2 = self.progress_update(progress_bar_Opti2, status_text_Opti2, progress)
+                        elif task_id == f"Result 1:":
+                            result1 = progress 
+                            print("Result 1 stored.")
+                        elif task_id == f"Result 2:":
+                            result2 = progress 
+                            print("Result 2 stored.")
                 
                 # Wait for processes to finish
                 process_1.join()
                 process_2.join()
 
-                # Get results from queue
-                task_id, result = queue.get()
-                results = {}
-                results[task_id] = result
-                print(results)
-                costs_selected = results.get(1)
-                costs_evo      = results.get(2)
+                print(queue)
 
-                costs_selected = self.control.analysis.single_cost_batterycycle_calculation(process_1.result, select_opti1)
-                costs_evo      = self.control.analysis.single_cost_batterycycle_calculation(process_2.result, select_opti2)
+                # Get results from queue
+                # task_id, result = queue.get()
+                # results = {}
+                # results[task_id] = result
+                # print(results)
+                # costs_selected = results.get(1)
+                # costs_evo      = results.get(2)
+
+                costs_selected = self.control.analysis.single_cost_batterycycle_calculation(result2, select_opti1)
+                costs_evo      = self.control.analysis.single_cost_batterycycle_calculation(result2, select_opti2)
 
 
                 benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']

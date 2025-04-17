@@ -282,7 +282,7 @@ class Optimisation():
         # self.plot_data.print_self_consumption_optimisation(data, price_column_name, result_column_names)
         #return data
 
-        queue.put((num,data))
+        queue.put((f"Result {num}:",data))
     
 
     def append_array(self, len_opti, values):
