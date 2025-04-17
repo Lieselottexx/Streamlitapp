@@ -222,8 +222,8 @@ class Streamlit():
                 costs_selected = self.control.analysis.single_cost_batterycycle_calculation(result2, select_opti1)
                 costs_evo      = self.control.analysis.single_cost_batterycycle_calculation(result2, select_opti2)
 
-
                 benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
+                print(f"{benefit} = {costs_evo['2024-12-31']} - {costs_selected['2024-12-31']}")
                 st.session_state.results.append(benefit)  # Beispiel für die Berechnung der Einsparung
 
                 st.success("Berechnung abgeschlossen!")
