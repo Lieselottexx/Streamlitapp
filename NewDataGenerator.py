@@ -50,7 +50,7 @@ class DataGenerator():
         # ------------- Limitation of the Data to the start and end date ------------------------ 
         data = data.loc[Param.start_date:Param.stop_date]
 
-        data_resample = data.resample('10T').sum()
+        data_resample = data.resample('15T').sum()
 
         with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nSaved the data DataFrame to CSV!\n\n'))
