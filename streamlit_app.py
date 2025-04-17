@@ -126,7 +126,7 @@ class Streamlit():
 
                 
                 
-                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 5)
+                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 0.05)
 
                 loadprofiles = {2000: 3,  3000: 5,  4000: 12,
                         5000: 13, 6000: 17, 7000: 15, 8000: 16}
@@ -135,20 +135,20 @@ class Streamlit():
                 print(f"Lastprofil: {st.session_state.loadprofile}")
                 del(loadprofiles)
 
-                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 10)
+                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading,0.10)
 
                 self.data, averageEnergyHousehold = self.control.data_generator.loadData(st.session_state.loadprofile,
                                                                                  st.session_state.pv_direction, 
                                                                                  st.session_state.pv_power,
                                                                                  st.session_state.battery_capacity) 
                 
-                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 70)
+                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 0.70)
                 
                 self.data = self.control.price_generator.calculate_energy_prices(self.data, averageEnergyHousehold,
                                                                          st.session_state.controllable_device)
 
 
-                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 100)
+                progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 1)
 
                 progress_bar_Opti1, status_text_Opti1 = self.progress_update(progress_bar_Opti1, status_text_Opti1, 0)
 
