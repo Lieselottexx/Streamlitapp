@@ -190,21 +190,14 @@ class Streamlit():
                 process_1.start()
                 process_2.start()
 
-                # Fortschritt überwachen
-                progress_Opti1 = 0
-                progress_Opti2 = 0
                 
                 while process_1.is_alive() or process_2.is_alive():
                     while not queue.empty():
                         task_id, progress = queue.get()
                         if task_id == 1:
-                            progress_Opti1 = progress
-                            progress_bar_Opti1.progress(progress_Opti1)
-                            status_text_Opti1.text(f"Optimierter Lastgang wird berechnet... {progress_Opti1}% abgeschlossen")
+                            progress_bar_Opti1, status_text_Opti1 = self.progress_update(progress_bar_Opti1, status_text_Opti1, progress)
                         elif task_id == 2:
-                            progress_Opti2 = progress
-                            progress_bar_Opti2.progress(progress_Opti2)
-                            status_text_Opti2.text(f"Eigenverbrauchsoptimierung wird berechnet... {progress_Opti2}% abgeschlossen")
+                            progress_bar_Opti2, status_text_Opti2 = self.progress_update(progress_bar_Opti2, status_text_Opti2, progress)
                 
                 # Wait for processes to finish
                 process_1.join()
