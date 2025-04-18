@@ -30,6 +30,7 @@ class Control():
         self.step_time          = Param.step_time
         self.battery_costs      = Param.battery_costs
         self.grid_power         = Param.grid_power
+        self.min_data           = Param.min_data
 
 
         pass
@@ -126,7 +127,7 @@ class Control():
         year_pv_installation  = session.installation_date.year
         self.static_feed_in_price, self.static_bonus_feed_in = self.get_eeg_prices(year_pv_installation,month_pv_installation)
 
-        battery_power = session.battery_capacity * 5/60 
+        battery_power = session.battery_capacity * self.min_data/60 
 
         input_optimisation =    [Param.optimise_time, Param.step_time, session.battery_capacity,
                                  Param.battery_costs,

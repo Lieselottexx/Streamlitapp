@@ -24,6 +24,10 @@ import numpy as np
 
 
 ''' General Parameters '''
+# Time-steps of the Data
+min_data = 15
+
+
 # Number of years considered
 num_years = 1  # nessesary?
 
@@ -56,7 +60,7 @@ data_path = '' # "C:\\Users\\lwegh\\Documents\\Study\\MasterThesis"
 battery_costs = 10 # Cent/kWh
 
 # the power with which the household can get energy from the grid
-grid_power = 11 * 5/60 # kW * 5/60 h 
+grid_power = 11 * min_data/60 # kW * 5/60 h 
 
 # The time over how long an optimisation step should be calculated
 # how long the optimisation should be able to take a prediction into account
