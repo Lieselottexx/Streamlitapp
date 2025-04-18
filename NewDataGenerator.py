@@ -52,7 +52,7 @@ class DataGenerator():
         				
         # Resample the Data to 15 min 
         # Preise behalten den ersten und Energiedaten werden aufsummiert
-        data_resample = data.resample('10min').agg({
+        data_resample = data.resample('15min').agg({
                                                     "Load Energy [kWh]"                 : "sum",
                                                     "SLP-Energy [kWh]"                  : "sum",
                                                     "PV-Energy [kWh]"                   : "sum",
