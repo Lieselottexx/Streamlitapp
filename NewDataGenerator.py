@@ -49,8 +49,17 @@ class DataGenerator():
         
         # ------------- Limitation of the Data to the start and end date ------------------------ 
         data = data.loc[Param.start_date:Param.stop_date]
-
-        data_resample = data.resample('15T').sum()
+        				
+        # Resample the Data to 15 min 
+        # Preise behalten den ersten und Energiedaten werden aufsummiert
+        data_resample = data.resample('15T').agg({
+                                                    "Load Energy [kWh]"                 : "sum",
+                                                    "SLP-Energy [kWh]"                  : "sum",
+                                                    "PV-Energy [kWh]"                   : "sum",
+                                                    "Energy Price [Cent/kWh]"           : "first",
+                                                    "Monthly Average Price [Cent/kWh]"  : "first"
+                                                })
+        
 
         with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nSaved the data DataFrame to CSV!\n\n'))
