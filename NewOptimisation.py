@@ -76,6 +76,8 @@ class Optimisation():
             file.write(str("Static feed-in Bonus EEG: "+ str(input_optimisation[7])+"  \n\n"))
 
         data_opti = self.optimisation(data.copy(), select_opti, input_optimisation, battery_usage, queue, num)
+
+        print(data_opti)
         print(f"Die ganze Optimierung hat {(time.time()-start_function)/60} Minuten gedauert.")
         return data_opti
 
