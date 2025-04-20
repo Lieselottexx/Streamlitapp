@@ -60,7 +60,7 @@ class DataGenerator():
                                                     "Monthly Average Price [Cent/kWh]"  : "first"
                                                 })
         ''' # test mean'''
-        print(data_resample)
+        # print(data_resample)
         
 
         with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
