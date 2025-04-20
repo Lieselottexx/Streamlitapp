@@ -235,7 +235,7 @@ class Optimisation():
             end_opti = time.time()
 
             # Help date array
-            date_ind = [date + i * timedelta(minutes=5) for i in range(len_opti)]
+            date_ind = [date + i * timedelta(minutes=Param.min_data) for i in range(len_opti)]
 
             # store the results if the optimisation was successful  
             if result.success:
@@ -278,7 +278,7 @@ class Optimisation():
             file.write(str(str(datetime.now())+'\nFinished optimisation calculation.\n\n'))
 
         # # Save Data as Self Consumption optimised    
-        # data.to_csv(os.path.join( self.data_path, select_opti[4]), sep=';')
+        # data.to_csv(os.path.join( self.data_path, '15er.csv'), sep=';')
 
         # print the optimisation result 
         # self.plot_data.print_self_consumption_optimisation(data, price_column_name, result_column_names)

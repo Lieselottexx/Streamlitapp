@@ -209,8 +209,6 @@ class Streamlit():
                 process_1.join()
                 process_2.join()
 
-                print(queue)
-
 
                 # Get results from queue
                 # task_id, result = queue.get()

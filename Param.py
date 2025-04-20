@@ -25,7 +25,7 @@ import numpy as np
 
 ''' General Parameters '''
 # Time-steps of the Data
-min_data = 10
+min_data = 15
 
 
 # Number of years considered

@@ -59,6 +59,7 @@ class DataGenerator():
                                                     "Energy Price [Cent/kWh]"           : "first",
                                                     "Monthly Average Price [Cent/kWh]"  : "first"
                                                 })
+        ''' # test mean'''
         print(data_resample)
         
 
