@@ -32,7 +32,7 @@ class Streamlit():
 
         # Sidebar Navigation
         st.sidebar.title("Navigation")
-        page = st.sidebar.radio("Seite auswählen", ["Berechnung", "Erklärung", "Erweiterte Ergebnisse"])
+        page = st.sidebar.radio("Seite auswählen", ["Berechnung", "Erklärungen zum Rechner", "Erweiterte Ergebnisse"])
 
         # =====================================
         # SEITE 1: BERECHNUNG
@@ -261,7 +261,7 @@ class Streamlit():
                 - EEG-Vergütung für PV-Anlagen mit fester Einspeisevergütung
                 - Optional: Entfall der EEG-Vergütung für Einspeisung, Einspeisung wird mit dem passenden Börsenstrompreis vergütet
                 """)
-                
+
             with st.expander("Was ist **nicht** berücksichtigt?"):
                 st.markdown("""
                 - Bewusste Verhaltensänderungen in Verbindung mit einem dynamischen Stromtarif
