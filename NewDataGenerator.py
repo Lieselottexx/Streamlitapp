@@ -34,6 +34,7 @@ class DataGenerator():
         data, averageEnergyHousehold = self.load_loadprofile_household(data, profile_num)
         # Loading the H0 SLP Profile an scale it with he average Energy consumption of the Household in a year
         # data = self.load_slp_profile(data, averageEnergyHousehold)
+        # Vorsicht nur 2024er Daten
         data = self.load_slp_profile_h25(data, averageEnergyHousehold, peak_power_pv, battery_cap)
         # Loading the PV-Generation Profile 
         if peak_power_pv == 0:
@@ -49,7 +50,7 @@ class DataGenerator():
         
         # ------------- Limitation of the Data to the start and end date ------------------------ 
         data = data.loc[Param.start_date:Param.stop_date]
-        				
+        print("Data vergleichen vor dem Resamplen: \n", data)
         # Resample the Data to 15 min 
         # Preise behalten den ersten und Energiedaten werden aufsummiert
         data_resample = data.resample(f'{Param.min_data}min').agg({
@@ -121,7 +122,8 @@ class DataGenerator():
             data = pd.concat([data, Load_data], axis=0)
             print("Load the Load Profile Number ", profile_num, ".")
             averageEnergyHousehold = 0
-            averageEnergyHousehold = Load_data['Load Energy [kWh]'].sum() / Param.num_years
+            averageEnergyHousehold = Load_data['Load Energy [kWh]'].sum() / 7 # NICHT: Param.num_years, weil die Daten immer über 7 Jahre bleiben!
+            print("Im Load data fuction ist es : ", averageEnergyHousehold)
             # Check whether the index is unique and, if necessary, ensure that it is unique (got error without)
             if not Load_data.index.is_unique:
                 Load_data = Load_data.groupby(level=0).first()  # save the first     
@@ -203,11 +205,14 @@ class DataGenerator():
             print("Load the SLP from the preprocessed File. File name: ", slp_energy_save)
         else: 
             print("Loading the SLP Data failed. Please Check the  File.")
-                   
-        print(slp_energy)
+        average_SLP = slp_energy['SLP-Energy [kWh]'].sum()
+        print("Vor hochskallierung: ", average_SLP)
         # denormalise with the average energy consumtion over a year 
         slp_energy['SLP-Energy [kWh]'] = slp_energy['SLP-Energy [kWh]'] * averageEnergyHousehold / 1000
-        
+
+        average_SLP = slp_energy['SLP-Energy [kWh]'].sum()
+        print("Nach hochskallierung: ", average_SLP)
+        print("Zum Vergleich: ", averageEnergyHousehold)
         # Write the SLP-Profile in the Data-DataFrame
         data = pd.concat([data, slp_energy], axis=1)
         data['SLP-Energy [kWh]'] = (data['SLP-Energy [kWh]'].ffill() / 3).astype(self.str_datatype)
@@ -403,7 +408,7 @@ class DataGenerator():
         # cec_inverters = pvlib.pvsystem.retrieve_sam('cecinverter')
         cec_module = sand_modules['SolarWorld_Sunmodule_250_Poly__2013_']
         # cec_inverter = cec_inverters['Delta_Electronics__M6_TL_US__240V_']
-
+        print("PV-Ausrichtung: ", pv_direction)
         # Konfiguration of the PV System
         system = {
             # 'number of modules' : 24, # Anzahl der Module in der PV Anlage
@@ -467,15 +472,17 @@ class DataGenerator():
         # calculate the Output power of the inverter, input dc power, east + west
         ac_power = pvlib.inverter.pvwatts(dc_power_south, 1000) # W
             
-
+        ac_power = ac_power.loc[Param.start_date:Param.stop_date]
         # save the AC Power of the Inverter in the data DataFrame 
         data['PV-Energy [kWh]'] = ac_power / (6*1000) # kWh ;  Umwandlung von Leistung in Energie 
 
         # resample to 5 Min and decrease the energy per 10 min to the half in 5 min
         data['PV-Energy [kWh]'] = (data['PV-Energy [kWh]'].ffill() / 2).astype(self.str_datatype)
+        print("PV Daten: ", data["PV-Energy [kWh]"])	
+        
+        # Problem weil das neue SLP nur für das Jahr 2024 ist und die PV Daten für 7 Jahre
 
-        pv_south = data['PV-Energy [kWh]'].copy()
-        pv_south.to_csv(os.path.join(directory_precalculated, south_pv_file), sep=';')
+        # pv_south.to_csv(os.path.join(directory_precalculated, south_pv_file), sep=';')
 
         data['PV-Energy [kWh]'] = data['PV-Energy [kWh]']  * peak_power_pv
         

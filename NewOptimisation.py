@@ -277,8 +277,8 @@ class Optimisation():
         with open(os.path.join(self.data_path,self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nFinished optimisation calculation.\n\n'))
 
-        # # Save Data as Self Consumption optimised    
-        # data.to_csv(os.path.join( self.data_path, '15er.csv'), sep=';')
+        # Save Data as Self Consumption optimised    
+        data.to_csv(os.path.join( self.data_path, f'result{num}.csv'), sep=';')
 
         # print the optimisation result 
         # self.plot_data.print_self_consumption_optimisation(data, price_column_name, result_column_names)
