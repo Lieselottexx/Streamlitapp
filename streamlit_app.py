@@ -38,6 +38,7 @@ class Streamlit():
         # SEITE 1: BERECHNUNG
         # =====================================
         if page == "Berechnung":
+            st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
             if "calculating" not in st.session_state:
                 st.session_state.calculating = False
                 st.session_state.consumption = 3000
@@ -53,19 +54,34 @@ class Streamlit():
                 st.session_state.battery_usage = "Energie einspeisen"
             # st.write("Session initialized:", st.session_state)
 
-            st.title("Vergleich: Dynamische vs. Statische Energiepreise")
-            
             # Stromverbrauch
+            st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
+            st.markdown("""##### Lastgangauswahl über dem durchschnittlichen Stromverbrauch eines Jahres""")
+            st.info("""Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchter Photovoltaikstrom und die Batterieladung wird seperat betrachtet.
+            """)
             st.slider("Jährlicher Stromverbrauch (kWh)", 2000, 8000, key="consumption", step=1000) #, disabled=st.session_state.get("calculating"))
             
             # Steuerbare Verbrauchseinrichtung
-            st.checkbox("Haben Sie eine steuerbare Verbrauchseinrichtung?", key="controllable_device") #, disabled=disable_settings)
-
+            st.markdown("""##### Steuerbare Verbrauchseinrichtung nach EnWG 14a""")
+            with st.expander("Informationen: Haben Sie eine steuerbare Verbrauchseinrichtungen nach dem §14a im Energiewirtschaftsgesetzes? "):
+                st.info("""
+                    Darunter fallen alle steuerbaren Verbraucher, Wallboxen, Batteriespeicher, Wärmepumpen und Klimageräte, ab einer Leistung von 4,2 kW die nach dem 01.01.2024 installiert worden sind.
+                    Seit dem 01.04.2025 besteht die Möglichkeit zusätzlich zum Modul 1 das Modul 3 zu wählen, welches zeitvariable Netzentgelte ermöglicht.
+                    \n **Bei Wahl der folgenden Einstellung wird die Berechnung mit zeitvariablen Netzentgelten vorgenommen.**""")
+            st.checkbox("Berechnung mit zeitvariablen Netzentgelten nach EnWG 14a Modul 3", key="controllable_device") #, disabled=disable_settings)
+            # Statischer Stromtarif nur mit zeitvariablen Netzentgelten
+            with st.expander("Informationen: Möchten Sie eine Berechnung durchführen nur mit zeitvariablen Netzentgelten mit dem normalen statischen Stromtarif? "):
+                st.info("""Wählen Sie die Folgende Möglichkeit aus wenn sie keinen dynamischen Stromtarif berechnen wollen, aber die zeitvariablen Netzentgelte ihrer steuerbaren Verbrauchseinrichtung mit dem normalen Stromtarif kombinieren wollen. 
+                        """)
             if st.session_state.get("controllable_device", False): 
-                st.checkbox("Standard Stromtarif mit Zeitvariablen Netzentgelten im Vergleich", key="static_ZVNE") #, disabled=st.session_state.get("calculating", False))
+                st.checkbox("Zeitvariable Netzentgelte mit normalen Stromtarif", key="static_ZVNE") #, disabled=st.session_state.get("calculating", False))
 
             
             # PV-Anlage
+            st.markdown("""##### Angaben zur installierten Photovoltaik Anlage""")
+            with st.expander("Informationen: Besitzen Sie eine PV-Anlage?"):
+                st.info("""Wenn Sie eine PV-Anlage besitzen die in der Teileinspeisung läuft, sprich die erzeugte Energie im Haushalt genutzt werden kann, geben Sie bitte die Peak-Leistung Ihrer Anlage an die Ausrichtung der Module.
+                    """)            
             st.checkbox("Besitzen Sie eine PV-Anlage?", key="has_pv") #, disabled=st.session_state.get("calculating", False))
             if st.session_state.get("has_pv", False):
                 st.slider("Installierte PV-Leistung (kWp)", 1, 25, 5, step=1, key="pv_power") #, disabled=st.session_state.get("calculating", False))
@@ -74,11 +90,12 @@ class Streamlit():
                     st.session_state.pv_compass = "Süd"
                 st.selectbox("Ausrichtung der PV-Anlage", list(direction_map.keys()), key="pv_compass") #, disabled=st.session_state.get("calculating", False))
                 st.session_state.pv_direction = direction_map[st.session_state.pv_compass]
-
-                # pv_direction_label = direction_map.get(pv_direction, f"{pv_direction} Grad")
-                
+                with st.expander("Informationen: Bekommen Sie auf die eingespeiste Energie ins Netz eine Einspeisevergütung die aus dem EEG gefördert ist?"):
+                    st.info("""Wenn Sie eine feste Einspeisevergütung über 20 Jahre gefördert aus dem Erneuerbaren Energiengesetz (EEG) erhalten, geben Sie bitte das Installationsdatum Ihrer PV-Anlage an.
+                        Wichtig ist die passende Angabe von Jahr und Monat des Installationsdatums. 
+                    """)            
                 # EEG-Vergütung
-                st.checkbox("Erhält die Anlage eine EEG-Vergütung?", key="has_eeg") #, disabled=st.session_state.get("calculating", False))
+                st.checkbox("Erhält Sie für die Einspeisung der Energie ins Netz eine Einspeisevergütung gefördert aus dem EEG?", key="has_eeg") #, disabled=st.session_state.get("calculating", False))
                 if st.session_state.get("has_eeg", False):
                     st.session_state.installation_date = pd.to_datetime(st.date_input("Installationsdatum der PV-Anlage", 
                                                                                       value=datetime.date(2024, 1, 1), 
@@ -91,19 +108,40 @@ class Streamlit():
                 st.session_state.pv_direction = 0
                 st.session_state.has_eeg = 0
                 st.session_state.installation_date = pd.to_datetime("2024.01.01", format="%Y.%m.%d")
+
             # Batterie
-            st.checkbox("Haben Sie einen Batteriespeicher?", key="has_battery") #, disabled=st.session_state.get("calculating", False))
+            st.markdown("""##### Angaben zum Batteriespeicher""")
+            with st.expander("Informationen: Batteriespeicher"):
+                st.info("""Wenn Sie einen Batteriespeicher in Kombination mit Ihrer Photovoltaikanlage haben geben Sie bitte die Kapazität des Batteriespeichers an. 
+                        Eine Angabe auch ohne PV-Anlage ist zulässig.
+                        Sollten Sie eine aus dem EEG geförderte Anlage besitzen, können Sie für den Batteriespeicher angegeben haben ob dieser nur Energie ans Netz abgeben oder aufnehmen darf.
+                        Eine Anlage die keine Förderung erhält, kann gegebenfalls beliebig Energie aus dem Netz in die Batterie speichern und auch ans Netz abgeben.
+                        """)  
+            st.checkbox("Besitzen Sie einen Batteriespeicher?", key="has_battery") #, disabled=st.session_state.get("calculating", False))
 
             if st.session_state.get("has_battery", False):
                 st.slider("Batteriekapazität (kWh)", 1, 20, 5, step=1, key="battery_capacity") #, disabled=st.session_state.get("calculating", False))
                 if st.session_state.get("has_eeg", False):
-                    st.selectbox("Batterieverhalten", ["Energie einspeisen", "Energie aus dem Netz beziehen"], 
+                    st.selectbox("Batterieverhalten zum Netz bei EEG-Förderung", ["Energie einspeisen", "Energie aus dem Netz beziehen"], 
                                                                 key="battery_usage") #, disabled=st.session_state.get("calculating", False))
             else:
                 st.session_state.battery_capacity = 0
                 st.session_state.is_eeg_battery = 0
 
-
+            st.markdown("""##### Auswahl des Stromtarifs""")
+            text_info_optimisation = st.empty()
+            if st.session_state.static_ZVNE == 1:
+                    text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis wenn man den normalen Stromtarif mit zeitvariablen Netzentgelten kombiniert, die durch eine **Steuerbare Verbrauchseinrichtung** ermöglicht werden, die nach dem Energiewirtschaftsgesetz $14a als solche definiert ist. ") 
+            else:
+                if st.session_state.has_eeg:
+                    text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif, mit einer bestehenden Einspeisevergütung gefördert aus dem EEG.") 
+                    if st.session_state.controllable_device:
+                        text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif in Kombination mit zeitvariablen Netzentgelten, mit einer bestehenden Einspeisevergütung gefördert aus dem EEG.") 
+                else:
+                    text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif, die eingespeiste elektrische Energie ins Netz wird mit dem aktuellen Börsenstrompreis vergütet.") 
+                    if st.session_state.controllable_device:
+                        text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif in Kombination mit zeitvariablen Netzentgelten, die eingespeiste elektrische Energie ins Netz wird mit dem aktuellen Börsenstrompreis vergütet.") 
+                  
             # Berechnung starten
             if "results" not in st.session_state:
                 st.session_state.results = []
@@ -154,7 +192,7 @@ class Streamlit():
                 progress_bar_Opti1, status_text_Opti1 = self.progress_update(progress_bar_Opti1, status_text_Opti1, 0)
 
                 progress_bar_Opti2, status_text_Opti2 = self.progress_update(progress_bar_Opti2, status_text_Opti2, 0)
-
+                
                 '''Wenn das True ist, dann wird nur statisch mit Zeitvariablen Netzentgelten gerechnet'''
                 if st.session_state.static_ZVNE == 1:
                     select_opti1 = self.control.select_optimisation_behaviour(9)
@@ -241,19 +279,21 @@ class Streamlit():
         # =====================================
         elif page == "Erklärungen zum Rechner":
             st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
-            st.markdown("Auf dieser Seite werden alle Einstellmöglichkeiten sowie die Annhamen des Rechners erklärt. Des Weiteren sind auf dieser Seite der Optimierungsprozess und die Interpretation des Ergebnisses erklärt.")
+            st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
+            st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
+            st.markdown("Auf dieser Seite werden alle Einstellmöglichkeiten sowie die Annahmen des Rechners erklärt. Des Weiteren sind auf dieser Seite der Optimierungsprozess und die Interpretation des Ergebnisses erklärt.")
 
             st.header("📌 Ziel der Berechnung")
             st.info("""
             Die Berechnung soll dazu dienen, für sich selbst eine Einschätzung zu bekommen, ob sich ein Wechsel auf einen dynamischen Stromtarif lohnen würde.
-            Sie basiert auf dem Jahresdurchschnittsverbrauch des Haushalts, sowie Optional auf der Erzeugung einer vorhandenen PV-Anlage, die Nutzung einer Batteriekapazität in Kombination mit einem intelligenten Heim-Energiemanagement-System (HEMS) der den Energiefluss intelligent steuern kann.
+            Sie basiert auf dem Jahresdurchschnittsverbrauch des Haushalts, sowie Optional auf der Erzeugung einer vorhandenen PV-Anlage, die Nutzung einer Batteriekapazität in Kombination mit einem intelligenten Heim-Energiemanagement-System (HEMS) das den Energiefluss intelligent steuern kann.
             """)
 
             st.header("🔍 Annahmen & Grenzen der Betrachtung")
             with st.expander("Was ist berücksichtigt?"):
                 st.markdown("""
                 - Dynamischer Stromtarif von Tibber (stündliche Preisanpassungen)
-                - Vergleich zu dem Haushalt mit **normalen** festem Stromtarif, optional mit Eigenverbrauchsoptimierung des HEMS
+                - Vergleich zu dem Haushalt mit festem Stromtarif, optional mit Eigenverbrauchsoptimierung des HEMS
                 - Typische Lastverläufe für verschiedene Jahresdurchschnittsverbräuche
                 - Optimierung der Stromkosten des Haushalts
                 - Eigene PV-Erzeugung, sowie der flexible Einsatz einer Batterie
@@ -282,7 +322,7 @@ class Streamlit():
             Ein Fall der hingegen höhere Kosten verursachen kann ist die schnelle Beladung der Fahrzeugbatterie nach Feierabend in den Abendstunden, wo es aktuell häufig zu hohen Börsenstrompreisen kommt. 
             """)
             st.warning("""
-                       Diese Flexibilität der individuellen Nutzung ist nur schwer zu simulieren. ^
+                       Diese Flexibilität der individuellen Nutzung ist nur schwer zu simulieren.
                        Jeder der einen dynamischen Stromtarif in Betracht zieht sollte sich gegebenenfalls über die eigene Ambition der Verhaltensanpassung gegenüber zeitlich ändernden Stromtarifen hinterfragen, damit können zusätzliche Einsparungen erzielt werden. 
             """)
 
@@ -369,16 +409,13 @@ class Streamlit():
 
             st.header("⚙️ Optimierungen")
             st.markdown("""
-            Während der Berechnung wird angezeigt, welche Optimierung gerade läuft und welche Wirkung sie hat.
+            Anzeige was für eine Optimierung grade eingestellt ist, erste Seite!
             Relevante Optimierungsschritte: **1, 3, 8, 9, 10, 11**
             """)
 
             st.header("📈 Ergebnisse")
             st.markdown("""
-            Die Ergebnisse zeigen, wie viel bei einem Wechsel auf einen dynamischen Tarif gespart werden kann.
-            Dabei gilt:
-            - **Ohne Verhaltensänderung**: Nur durch intelligente Steuerung.
-            - **Mit Verhaltensänderung**: Noch größere Einsparpotenziale – aber auch Risiken.
+            .... Ergebnis = Eigenverbrauchsoptimierung - gewählter Stromtarif
             """)
 
 
@@ -387,6 +424,8 @@ class Streamlit():
         # =====================================
         elif page == "Erweiterte Ergebnisse":
             st.title("Erweiterte Ergebnisse")
+            st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
+            st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
 
 
         

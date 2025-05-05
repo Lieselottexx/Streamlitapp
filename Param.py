@@ -25,7 +25,7 @@ import numpy as np
 
 ''' General Parameters '''
 # Time-steps of the Data
-min_data = 5
+min_data = 15
 
 
 # Number of years considered
@@ -64,10 +64,10 @@ grid_power = 11 * min_data/60 # kW * 5/60 h
 
 # The time over how long an optimisation step should be calculated
 # how long the optimisation should be able to take a prediction into account
-optimise_time = 48 # h
+optimise_time = 24 # h
 
 # time duration of new calculation 
-step_time = 6 # h
+step_time = 12 # h
 
 '''Year of installation of the pv system, nicht mehr benutzt'''
 # derive the feed-in price 
