@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from scipy.optimize import linprog
 import numpy as np
+import time
 
 # Import Python Files
 import Param
@@ -14,18 +15,19 @@ class Optimisation():
     def __init__(self):
         # self.plot_data = plot.Plot_Data()
         # Name for the protocol of the current calculation, log file
-        self.log_file_name = "log.txt"
-        self.data_path = Param.data_path
+        self.log_file_name      = "log.txt"
+        self.data_path          = Param.data_path
 
-        self.datatype       = Param.datatype
-        self.str_datatype   = Param.str_datatype
+
+        self.datatype           = Param.datatype
+        self.str_datatype       = Param.str_datatype
         pass
 
     def __del__(self):
         pass
 
 
-    def select_optimisation(self, data , input_optimisation, select_opti, session):
+    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, queue, num):
 
         # Do not forget to copy the data DataFrame
         '''Input self optimisation: 
@@ -48,7 +50,7 @@ class Optimisation():
         6 - feed in name of the column[6]'''
         
         
-
+        start_function = time.time()
         # Calculation of the Feed-in price 
         data['Dynamic Feed-in Price [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
         market_bonus = input_optimisation[7] - data['Monthly Average Price [Cent/kWh]']
@@ -73,11 +75,14 @@ class Optimisation():
             file.write(str("Static feed-in Price EEG: "+ str(input_optimisation[6])+"  \n"))
             file.write(str("Static feed-in Bonus EEG: "+ str(input_optimisation[7])+"  \n\n"))
 
-        data_opti, session = self.optimisation(data.copy(), select_opti, input_optimisation, session)
-        return data_opti, session
+        data_opti = self.optimisation(data.copy(), select_opti, input_optimisation, battery_usage, queue, num)
+
+        print(data_opti)
+        print(f"Die ganze Optimierung hat {(time.time()-start_function)/60} Minuten gedauert.")
+        return data_opti
 
 
-    def optimisation(self, data, select_opti, input_optimisation,session ):
+    def optimisation(self, data, select_opti, input_optimisation, battery_usage, queue, num):
         # initialise the result columns of the optimisation 
         result_column_names =   ['Battery Charge [kWh]', 'Battery Discharge[kWh]', 
                                 'Battery SOC', 'Supply from Grid [kWh]', 
@@ -109,8 +114,9 @@ class Optimisation():
         4 - Name of the CSV of the Optimisation [4]
         5 - energy price name of the column[5] 
         6 - feed in name of the column[6]'''
-
+        counter = 1
         for date in pd.date_range(start=data.index.min(), end=data.index.max(),freq=timedelta(hours=input_optimisation[1])):
+            start_function = time.time()
             # Collection Inputs over the Time duration of the optimisation step
             load_data = data.loc[date:date+timedelta(hours=input_optimisation[0]),'Load Energy [kWh]'].copy().values
             pv_generation = data.loc[date:date+timedelta(hours=input_optimisation[0]),'PV-Energy [kWh]'].copy().values
@@ -141,7 +147,10 @@ class Optimisation():
                     -feed_in_price] 
             
             A_eq_1 = [-1,   0.96,    0, 1, -1]
-            A_eq_2 = [1/input_optimisation[2], -1/input_optimisation[2], -1,  0, 0]
+            if input_optimisation[2] <= 0:
+                A_eq_2 = [1/0.01, -1/0.01, -1,  0, 0]
+            else:
+                A_eq_2 = [1/input_optimisation[2], -1/input_optimisation[2], -1,  0, 0]
             
             A_eq_1_1 = [0, 0, 0, 0, 0]
             A_eq_2_1 = [0, 0, 1, 0, 0]
@@ -195,7 +204,7 @@ class Optimisation():
             for i in range(len(b_eq_cache)): b_eq.append(b_eq_cache[i])
 
             if select_opti[3] == 1:
-                if session.battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                if battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
                     # construction of the Matrix for unequality constrain equation
                     '''EEG System: Battery charge from the Grid is allowed'''
                     A_ub   =  []
@@ -204,7 +213,7 @@ class Optimisation():
                     b_ub   =  []
                     b_ub   =  self.append_array(1,pv_generation)
 
-                if session.battery_usage == "Energie einspeisen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                if battery_usage == "Energie einspeisen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
                     '''EEG System: Battery feed-in allowed'''
                     A_ub   =  []
                     A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
@@ -220,12 +229,13 @@ class Optimisation():
                 A_ub   =  self.append_constrains(len_opti,A_ub_0,A_ub_0)
                 b_ub   =  []
                 b_ub   =  self.append_array(len_opti,[0])
-
+            start_opti = time.time()
             # calculation of the Linear Optimisation
             result = linprog(c, A_eq=A_eq, b_eq=b_eq, A_ub=A_ub, b_ub=b_ub, bounds=limits)
+            end_opti = time.time()
 
             # Help date array
-            date_ind = [date + i * timedelta(minutes=5) for i in range(len_opti)]
+            date_ind = [date + i * timedelta(minutes=Param.min_data) for i in range(len_opti)]
 
             # store the results if the optimisation was successful  
             if result.success:
@@ -248,6 +258,15 @@ class Optimisation():
 
                 # Store Result in the data DataFrame
                 data.update(results_data[result_column_names].astype(self.str_datatype))
+                end_function = time.time()
+                
+                print(f"Optimierung {counter}:\nDie Funktion hat gebraucht: {(end_function-start_function)}\nDie Optimierung hat gebraucht: {(end_opti - start_opti)}\n")
+                counter = counter +1 
+
+
+                progress_Opti = counter / 740
+                queue.put((num,progress_Opti))
+
                     
             else: # if the Optimisation does not converge or something else went wrong Print an error in Terminal
                 print("Optimierung fehlgeschlagen. Datum: ", date)
@@ -258,12 +277,14 @@ class Optimisation():
         with open(os.path.join(self.data_path,self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nFinished optimisation calculation.\n\n'))
 
-        # # Save Data as Self Consumption optimised    
-        # data.to_csv(os.path.join( self.data_path, select_opti[4]), sep=';')
+        # Save Data as Self Consumption optimised    
+        data.to_csv(os.path.join( self.data_path, f'result{num}.csv'), sep=';')
 
         # print the optimisation result 
         # self.plot_data.print_self_consumption_optimisation(data, price_column_name, result_column_names)
-        return data, session
+        #return data
+
+        queue.put((f"Result {num}:",data))
     
 
     def append_array(self, len_opti, values):

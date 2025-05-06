@@ -32,7 +32,7 @@ class PriceGenerator():
             data = self.time_variable_Netzentgelte(data)
         else:
             pass
-        
+        print(data)
         with open(os.path.join(self.data_path, self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nSaved the data DataFrame to CSV as opti_input!\n\n'))
         return data

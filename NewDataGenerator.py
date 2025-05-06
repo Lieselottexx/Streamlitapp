@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import pvlib 
 import numpy as np
+import time
 
 # Import Python Files
 import Param
@@ -27,12 +28,14 @@ class DataGenerator():
 
         # loading of the Load profile, slp, pv, energy prices and average monthly market value 
         # out of the original data
-    def loadData(self, profile_num, pv_direction, peak_power_pv):
+    def loadData(self, profile_num, pv_direction, peak_power_pv, battery_cap):
         data = pd.DataFrame()
         # Loading the choosen load profile of the household
         data, averageEnergyHousehold = self.load_loadprofile_household(data, profile_num)
         # Loading the H0 SLP Profile an scale it with he average Energy consumption of the Household in a year
-        data = self.load_slp_profile(data, averageEnergyHousehold)
+        # data = self.load_slp_profile(data, averageEnergyHousehold)
+        # Vorsicht nur 2024er Daten
+        data = self.load_slp_profile_h25(data, averageEnergyHousehold, peak_power_pv, battery_cap)
         # Loading the PV-Generation Profile 
         if peak_power_pv == 0:
             data["PV-Energy [kWh]"] = 0.0
@@ -47,10 +50,23 @@ class DataGenerator():
         
         # ------------- Limitation of the Data to the start and end date ------------------------ 
         data = data.loc[Param.start_date:Param.stop_date]
+        print("Data vergleichen vor dem Resamplen: \n", data)
+        # Resample the Data to 15 min 
+        # Preise behalten den ersten und Energiedaten werden aufsummiert
+        data_resample = data.resample(f'{Param.min_data}min').agg({
+                                                    "Load Energy [kWh]"                 : "sum",
+                                                    "SLP-Energy [kWh]"                  : "sum",
+                                                    "PV-Energy [kWh]"                   : "sum",
+                                                    "Energy Price [Cent/kWh]"           : "first",
+                                                    "Monthly Average Price [Cent/kWh]"  : "first"
+                                                })
+        ''' # test mean'''
+        # print(data_resample)
+        
 
         with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nSaved the data DataFrame to CSV!\n\n'))
-        return data, averageEnergyHousehold
+        return data_resample, averageEnergyHousehold
 
 
 
@@ -106,7 +122,8 @@ class DataGenerator():
             data = pd.concat([data, Load_data], axis=0)
             print("Load the Load Profile Number ", profile_num, ".")
             averageEnergyHousehold = 0
-            averageEnergyHousehold = Load_data['Load Energy [kWh]'].sum() / Param.num_years
+            averageEnergyHousehold = Load_data['Load Energy [kWh]'].sum() / 7 # NICHT: Param.num_years, weil die Daten immer über 7 Jahre bleiben!
+            print("Im Load data fuction ist es : ", averageEnergyHousehold)
             # Check whether the index is unique and, if necessary, ensure that it is unique (got error without)
             if not Load_data.index.is_unique:
                 Load_data = Load_data.groupby(level=0).first()  # save the first     
@@ -161,6 +178,51 @@ class DataGenerator():
 
         return data
     
+
+    def load_slp_profile_h25(self, data, averageEnergyHousehold, peak_power_pv, battery_cap):
+        # ----------------------Loading the Standard load profile --------------------------------
+        if peak_power_pv < 1:
+            slp_path = os.path.join(self.related_path_data, self.original_data_path, 'SLP_H25')
+            slp_energy_save = 'h25_2024.csv'
+        else:
+            slp_path = os.path.join(self.related_path_data, self.original_data_path, 'SLP_H25')
+            slp_energy_save = 'p25_2024.csv'
+            if battery_cap < 1:
+                pass
+            else:
+                slp_path = os.path.join(self.related_path_data, self.original_data_path, 'SLP_H25')
+                slp_energy_save = 's25_2024.csv'
+        if os.path.exists(os.path.join(slp_path,slp_energy_save)):
+            print(slp_energy_save)
+            # Read the csv File to DataFrame
+            column_names = ['Datetime','SLP-Energy [kWh]']
+            dtype_dict = {col: self.str_datatype for col in column_names if col != 'Datetime'}
+            slp_energy = pd.read_csv(os.path.join(slp_path,slp_energy_save), delimiter=';', header=0, names=column_names, dtype=dtype_dict, index_col='Datetime')
+            # print(slp_energy)
+            # Convert the Time column to Datetime Format and shift -15 m
+            slp_energy.index = pd.to_datetime(slp_energy.index, format='%Y-%m-%d %H:%M:%S')# - pd.Timedelta(minutes=15)
+            # Set the Datetime to Index of the DataFrame
+            print("Load the SLP from the preprocessed File. File name: ", slp_energy_save)
+        else: 
+            print("Loading the SLP Data failed. Please Check the  File.")
+        average_SLP = slp_energy['SLP-Energy [kWh]'].sum()
+        print("Vor hochskallierung: ", average_SLP)
+        # denormalise with the average energy consumtion over a year 
+        slp_energy['SLP-Energy [kWh]'] = slp_energy['SLP-Energy [kWh]'] * averageEnergyHousehold / 1000
+
+        average_SLP = slp_energy['SLP-Energy [kWh]'].sum()
+        print("Nach hochskallierung: ", average_SLP)
+        print("Zum Vergleich: ", averageEnergyHousehold)
+        # Write the SLP-Profile in the Data-DataFrame
+        data = pd.concat([data, slp_energy], axis=1)
+        data['SLP-Energy [kWh]'] = (data['SLP-Energy [kWh]'].ffill() / 3).astype(self.str_datatype)
+        
+        with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
+            file.write(str(str(datetime.now())+'\nLoaded the SLP Profile.\n\n'))
+
+        # plot the SLP Profile 
+        # self.plot.print_slp_profile(data)
+        return data
 
 
     def load_pv_generation_profile(self, data, pv_direction, peak_power_pv): 
@@ -336,7 +398,7 @@ class DataGenerator():
         # --------------End Import Weatherdata --------------------------------------------------
             
         # --------------Calculation of the PV Energy -------------------------------------------
-
+        start_function = time.time()
         # Set Location for the PV System to Soest, Fachhochschule Suedwestfalen
         latitude = 51.560376
         longitude = 8.113911
@@ -346,7 +408,7 @@ class DataGenerator():
         # cec_inverters = pvlib.pvsystem.retrieve_sam('cecinverter')
         cec_module = sand_modules['SolarWorld_Sunmodule_250_Poly__2013_']
         # cec_inverter = cec_inverters['Delta_Electronics__M6_TL_US__240V_']
-
+        print("PV-Ausrichtung: ", pv_direction)
         # Konfiguration of the PV System
         system = {
             # 'number of modules' : 24, # Anzahl der Module in der PV Anlage
@@ -410,28 +472,32 @@ class DataGenerator():
         # calculate the Output power of the inverter, input dc power, east + west
         ac_power = pvlib.inverter.pvwatts(dc_power_south, 1000) # W
             
-
+        ac_power = ac_power.loc[Param.start_date:Param.stop_date]
         # save the AC Power of the Inverter in the data DataFrame 
         data['PV-Energy [kWh]'] = ac_power / (6*1000) # kWh ;  Umwandlung von Leistung in Energie 
 
         # resample to 5 Min and decrease the energy per 10 min to the half in 5 min
         data['PV-Energy [kWh]'] = (data['PV-Energy [kWh]'].ffill() / 2).astype(self.str_datatype)
+        print("PV Daten: ", data["PV-Energy [kWh]"])	
+        
+        # Problem weil das neue SLP nur für das Jahr 2024 ist und die PV Daten für 7 Jahre
 
-        pv_south = data['PV-Energy [kWh]'].copy()
-        pv_south.to_csv(os.path.join(directory_precalculated, south_pv_file), sep=';')
+        # pv_south.to_csv(os.path.join(directory_precalculated, south_pv_file), sep=';')
 
         data['PV-Energy [kWh]'] = data['PV-Energy [kWh]']  * peak_power_pv
         
 
         # plot the PV-Power
         # self.plot.print_pv_energy(data)
-
+        end_function = time.time()
+        print(f"Das Berechnen der PV-Daten dauert: {(end_function - start_function)}\n")
         
         # -------------End PV-Generation --------------------------------------------------------
         return data    
 
 
     def load_energy_prices(self, data):
+        start_function = time.time()
         prices_path = os.path.join(self.related_path_data, self.original_data_path, 'Energy_Prices')       
         prices = pd.DataFrame()        
         new_data = pd.DataFrame()
@@ -443,7 +509,6 @@ class DataGenerator():
         for filename in filenames:
             path_prices = os.path.join(prices_path, filename)
             new_data = pd.read_csv(os.path.join(path_prices), delimiter=',', header=0, skiprows=2, names=column_names, dtype=dtype_dict, on_bad_lines='skip')
-            
             # convert from Euro per MWh to Cent per kWh
             new_data['Energy Price [Cent/kWh]'] *= 0.1                    
             # convert to datetime format
@@ -454,6 +519,7 @@ class DataGenerator():
             new_data.set_index('Datetime', inplace=True)
             # concatenate the individual files to Price Dataframe
             prices = pd.concat([prices,new_data], axis=0)
+            
         # finished loading the original data
 
         # Check whether the index is unique and, if necessary, ensure that it is unique (got error without)
@@ -464,42 +530,60 @@ class DataGenerator():
         data['Energy Price [Cent/kWh]'] = data['Energy Price [Cent/kWh]'].ffill()
         data['Energy Price [Cent/kWh]'] = data['Energy Price [Cent/kWh]'].astype(self.str_datatype)
         print("Finished to load the energy prices!")
-        
+        start_time = time.time()
         with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nLoaded the Energy Prices.\n\n'))
         
+        end_time = time.time()
+        print(f"Das schreiben ins Log dauert: {(end_time - start_time)}\n")
+            
+        
         # self.plot.print_energy_prices(data)
-    
+        end_function = time.time()
+        print(f"Das Einlesen der Börsenstrompreise dauert: {(end_function - start_function)}\n")
         return data
 
 
 
     def load_direct_marketing_data(self, data):
-        # Average monthly market value : Marktwert Solar 
-        # source: https://www.netztransparenz.de/de-de/Erneuerbare-Energien-und-Umlagen/EEG/Transparenzanforderungen/Marktpr%C3%A4mie/Marktwert%C3%BCbersicht
-        a_2018 = ( 3.440,  4.038,  3.698,  2.954,  3.186,  4.251,  4.900,  5.595,  5.210,  5.325,  5.976,  5.612)
-        a_2019 = ( 5.906,  4.213,  3.075,  3.172,  3.530,  2.910,  3.917,  3.376,  3.345,  3.788,  4.383,  3.696)
-        a_2020 = ( 3.831,  2.319,  1.618,  0.890,  1.413,  2.473,  2.623,  3.321,  3.981,  3.269,  3.998,  4.811)
-        a_2021 = ( 5.543,  4.499,  4.105,  4.551,  4.187,  6.864,  7.409,  7.681, 11.715, 12.804, 18.307, 27.075)
-        a_2022 = (17.838, 11.871, 20.712, 14.566, 15.132, 18.940, 26.093, 39.910, 31.673, 12.904, 15.374, 24.661)
-        a_2023 = (12.291, 12.343,  8.883,  8.002,  5.356,  7.124,  5.173,  7.334,  7.447,  6.763,  8,525,  6.592)
-        a_2024 = ( 7.535,  5.875,  4.965,  3.795,  3.161,  4.635,  3.554,  4.263,  4.512,  6.752, 10.076, 11.171)
-
-        data['Monthly Average Price [Cent/kWh]'] = pd.Series(dtype=self.datatype)
-            
-        for timestamp, row in data.iterrows():
-            self.add_average_prices(data, timestamp, 2018, a_2018)
-            self.add_average_prices(data, timestamp, 2019, a_2019)
-            self.add_average_prices(data, timestamp, 2020, a_2020)
-            self.add_average_prices(data, timestamp, 2021, a_2021)
-            self.add_average_prices(data, timestamp, 2022, a_2022)
-            self.add_average_prices(data, timestamp, 2023, a_2023)
-            self.add_average_prices(data, timestamp, 2024, a_2024)
-
-        with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
-            file.write(str(str(datetime.now())+'\nLoaded the montly average market prices.\n\n'))
+        start_function = time.time()
+        path_prices = os.path.join(self.related_path_data, self.original_data_path, 'Market_Values', 'Monthly_Average_market_values.csv')       
+        new_data = pd.DataFrame()
+        column_names = ['Datetime', 'Monthly Average Price [Cent/kWh]']
+        dtype_dict = {col: self.str_datatype for col in column_names if col != 'Datetime'}
+        new_data = pd.read_csv(path_prices, delimiter=';', header=0, names=column_names, dtype=dtype_dict, index_col='Datetime')
+        new_data.index  = pd.to_datetime(new_data.index, format='%d.%m.%Y %H:%M')
+        data = pd.concat([data, new_data], axis=1)
+        print(f"Das Einlesen der Monatsmarktwerte dauert: {(time.time() - start_function)}\n")
         return data
+    #     start_function = time.time()
+    #     # Average monthly market value : Marktwert Solar 
+    #     # source: https://www.netztransparenz.de/de-de/Erneuerbare-Energien-und-Umlagen/EEG/Transparenzanforderungen/Marktpr%C3%A4mie/Marktwert%C3%BCbersicht
+    #     a_2018 = ( 3.440,  4.038,  3.698,  2.954,  3.186,  4.251,  4.900,  5.595,  5.210,  5.325,  5.976,  5.612)
+    #     a_2019 = ( 5.906,  4.213,  3.075,  3.172,  3.530,  2.910,  3.917,  3.376,  3.345,  3.788,  4.383,  3.696)
+    #     a_2020 = ( 3.831,  2.319,  1.618,  0.890,  1.413,  2.473,  2.623,  3.321,  3.981,  3.269,  3.998,  4.811)
+    #     a_2021 = ( 5.543,  4.499,  4.105,  4.551,  4.187,  6.864,  7.409,  7.681, 11.715, 12.804, 18.307, 27.075)
+    #     a_2022 = (17.838, 11.871, 20.712, 14.566, 15.132, 18.940, 26.093, 39.910, 31.673, 12.904, 15.374, 24.661)
+    #     a_2023 = (12.291, 12.343,  8.883,  8.002,  5.356,  7.124,  5.173,  7.334,  7.447,  6.763,  8,525,  6.592)
+    #     a_2024 = ( 7.535,  5.875,  4.965,  3.795,  3.161,  4.635,  3.554,  4.263,  4.512,  6.752, 10.076, 11.171)
 
-    def add_average_prices(self, data, timestamp, year, array_prices):    
-        if timestamp.year == year:
-            data.at[timestamp, 'Monthly Average Price [Cent/kWh]'] = array_prices[timestamp.month-1]
+    #     data['Monthly Average Price [Cent/kWh]'] = pd.Series(dtype=self.datatype)
+            
+    #     for timestamp, row in data.iterrows():
+    #         self.add_average_prices(data, timestamp, 2018, a_2018)
+    #         self.add_average_prices(data, timestamp, 2019, a_2019)
+    #         self.add_average_prices(data, timestamp, 2020, a_2020)
+    #         self.add_average_prices(data, timestamp, 2021, a_2021)
+    #         self.add_average_prices(data, timestamp, 2022, a_2022)
+    #         self.add_average_prices(data, timestamp, 2023, a_2023)
+    #         self.add_average_prices(data, timestamp, 2024, a_2024)
+
+    #     with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
+    #         file.write(str(str(datetime.now())+'\nLoaded the montly average market prices.\n\n'))
+    #     end_function = time.time()
+    #     print(f"Das Einlesen der Monatsmarktwerte dauert: {(end_function - start_function)}\n")
+    #     return data
+
+    # def add_average_prices(self, data, timestamp, year, array_prices):    
+    #     if timestamp.year == year:
+    #         data.at[timestamp, 'Monthly Average Price [Cent/kWh]'] = array_prices[timestamp.month-1]
