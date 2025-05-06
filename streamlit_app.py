@@ -38,7 +38,7 @@ class Streamlit():
         # SEITE 1: BERECHNUNG
         # =====================================
         if page == "Berechnung":
-            st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
+            st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """, help="Hi")
             if "calculating" not in st.session_state:
                 st.session_state.calculating = False
                 st.session_state.consumption = 3000
@@ -56,33 +56,34 @@ class Streamlit():
 
             # Stromverbrauch
             st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
-            st.markdown("""##### Lastgangauswahl über dem durchschnittlichen Stromverbrauch eines Jahres""")
-            st.info("""Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchter Photovoltaikstrom und die Batterieladung wird seperat betrachtet.
-            """)
-            st.slider("Jährlicher Stromverbrauch (kWh)", 2000, 8000, key="consumption", step=1000) #, disabled=st.session_state.get("calculating"))
+            st.markdown("""##### Lastgangauswahl über dem durchschnittlichen Stromverbrauch eines Jahres""", help="Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchte Photovoltaikstrom und die Batterieladung wird seperat betrachtet.")
+            st.slider("Jährlicher Stromverbrauch (kWh)", 2000, 8000, key="consumption", step=1000, help="Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchte Photovoltaikstrom und die Batterieladung wird seperat betrachtet.") #, disabled=st.session_state.get("calculating"))
             
             # Steuerbare Verbrauchseinrichtung
-            st.markdown("""##### Steuerbare Verbrauchseinrichtung nach EnWG 14a""")
-            with st.expander("Informationen: Haben Sie eine steuerbare Verbrauchseinrichtungen nach dem §14a im Energiewirtschaftsgesetzes? "):
-                st.info("""
-                    Darunter fallen alle steuerbaren Verbraucher, Wallboxen, Batteriespeicher, Wärmepumpen und Klimageräte, ab einer Leistung von 4,2 kW die nach dem 01.01.2024 installiert worden sind.
+            st.markdown("""##### Steuerbare Verbrauchseinrichtung nach EnWG 14a""", help=
+                    """Darunter fallen alle steuerbaren Verbraucher, Wallboxen, Batteriespeicher, Wärmepumpen und Klimageräte, ab einer Leistung von 4,2 kW die nach dem 01.01.2024 installiert worden sind.
                     Seit dem 01.04.2025 besteht die Möglichkeit zusätzlich zum Modul 1 das Modul 3 zu wählen, welches zeitvariable Netzentgelte ermöglicht.
                     \n **Bei Wahl der folgenden Einstellung wird die Berechnung mit zeitvariablen Netzentgelten vorgenommen.**""")
+            # with st.expander("Informationen: Haben Sie eine steuerbare Verbrauchseinrichtungen nach dem §14a im Energiewirtschaftsgesetzes? "):
+            #     st.info("""
+            #         Darunter fallen alle steuerbaren Verbraucher, Wallboxen, Batteriespeicher, Wärmepumpen und Klimageräte, ab einer Leistung von 4,2 kW die nach dem 01.01.2024 installiert worden sind.
+            #         Seit dem 01.04.2025 besteht die Möglichkeit zusätzlich zum Modul 1 das Modul 3 zu wählen, welches zeitvariable Netzentgelte ermöglicht.
+            #         \n **Bei Wahl der folgenden Einstellung wird die Berechnung mit zeitvariablen Netzentgelten vorgenommen.**""")
             st.checkbox("Berechnung mit zeitvariablen Netzentgelten nach EnWG 14a Modul 3", key="controllable_device") #, disabled=disable_settings)
             # Statischer Stromtarif nur mit zeitvariablen Netzentgelten
-            with st.expander("Informationen: Möchten Sie eine Berechnung durchführen nur mit zeitvariablen Netzentgelten mit dem normalen statischen Stromtarif? "):
-                st.info("""Wählen Sie die Folgende Möglichkeit aus wenn sie keinen dynamischen Stromtarif berechnen wollen, aber die zeitvariablen Netzentgelte ihrer steuerbaren Verbrauchseinrichtung mit dem normalen Stromtarif kombinieren wollen. 
-                        """)
+            # with st.expander("Informationen: Möchten Sie eine Berechnung durchführen nur mit zeitvariablen Netzentgelten mit dem normalen statischen Stromtarif? "):
+            #     st.info("""Wählen Sie die Folgende Möglichkeit aus wenn sie keinen dynamischen Stromtarif berechnen wollen, aber die zeitvariablen Netzentgelte ihrer steuerbaren Verbrauchseinrichtung mit dem normalen Stromtarif kombinieren wollen. 
+            #             """)
             if st.session_state.get("controllable_device", False): 
-                st.checkbox("Zeitvariable Netzentgelte mit normalen Stromtarif", key="static_ZVNE") #, disabled=st.session_state.get("calculating", False))
+                st.checkbox("Zeitvariable Netzentgelte mit normalen Stromtarif", key="static_ZVNE", help="""Wählen Sie die Folgende Möglichkeit aus wenn sie keinen dynamischen Stromtarif berechnen wollen, aber die zeitvariablen Netzentgelte ihrer steuerbaren Verbrauchseinrichtung mit dem normalen Stromtarif kombinieren wollen. """) #, disabled=st.session_state.get("calculating", False))
 
             
             # PV-Anlage
-            st.markdown("""##### Angaben zur installierten Photovoltaik Anlage""")
-            with st.expander("Informationen: Besitzen Sie eine PV-Anlage?"):
-                st.info("""Wenn Sie eine PV-Anlage besitzen die in der Teileinspeisung läuft, sprich die erzeugte Energie im Haushalt genutzt werden kann, geben Sie bitte die Peak-Leistung Ihrer Anlage an die Ausrichtung der Module.
-                    """)            
-            st.checkbox("Besitzen Sie eine PV-Anlage?", key="has_pv") #, disabled=st.session_state.get("calculating", False))
+            st.markdown("""##### Angaben zur installierten Photovoltaik Anlage""", help="Wenn Sie eine PV-Anlage besitzen die in der Teileinspeisung läuft, sprich die erzeugte Energie im Haushalt genutzt werden kann, geben Sie bitte die Peak-Leistung Ihrer Anlage an die Ausrichtung der Module.")
+            # with st.expander("Informationen: Besitzen Sie eine PV-Anlage?"):
+            #     st.info("""Wenn Sie eine PV-Anlage besitzen die in der Teileinspeisung läuft, sprich die erzeugte Energie im Haushalt genutzt werden kann, geben Sie bitte die Peak-Leistung Ihrer Anlage an die Ausrichtung der Module.
+            #         """)            
+            st.checkbox("Ich besitze eine PV-Anlage.", key="has_pv") #, disabled=st.session_state.get("calculating", False))
             if st.session_state.get("has_pv", False):
                 st.slider("Installierte PV-Leistung (kWp)", 1, 25, 5, step=1, key="pv_power") #, disabled=st.session_state.get("calculating", False))
                 direction_map = { "Nord": 0, 'Nord-Ost': 45, "Ost": 90, 'Süd-Ost': 135, "Süd": 180, "Süd-West": 225,  "West": 270}
@@ -95,7 +96,7 @@ class Streamlit():
                         Wichtig ist die passende Angabe von Jahr und Monat des Installationsdatums. 
                     """)            
                 # EEG-Vergütung
-                st.checkbox("Erhält Sie für die Einspeisung der Energie ins Netz eine Einspeisevergütung gefördert aus dem EEG?", key="has_eeg") #, disabled=st.session_state.get("calculating", False))
+                st.checkbox("Erhält Sie für die Einspeisung der Energie ins Netz eine Einspeisevergütung gefördert aus dem EEG?", key="has_eeg", help="Wenn Sie eine feste Einspeisevergütung über 20 Jahre gefördert aus dem Erneuerbaren Energiengesetz (EEG) erhalten, geben Sie bitte das Installationsdatum Ihrer PV-Anlage an. Wichtig ist die passende Angabe von Jahr und Monat des Installationsdatums. ") #, disabled=st.session_state.get("calculating", False))
                 if st.session_state.get("has_eeg", False):
                     st.session_state.installation_date = pd.to_datetime(st.date_input("Installationsdatum der PV-Anlage", 
                                                                                       value=datetime.date(2024, 1, 1), 
@@ -110,13 +111,13 @@ class Streamlit():
                 st.session_state.installation_date = pd.to_datetime("2024.01.01", format="%Y.%m.%d")
 
             # Batterie
-            st.markdown("""##### Angaben zum Batteriespeicher""")
-            with st.expander("Informationen: Batteriespeicher"):
-                st.info("""Wenn Sie einen Batteriespeicher in Kombination mit Ihrer Photovoltaikanlage haben geben Sie bitte die Kapazität des Batteriespeichers an. 
-                        Eine Angabe auch ohne PV-Anlage ist zulässig.
-                        Sollten Sie eine aus dem EEG geförderte Anlage besitzen, können Sie für den Batteriespeicher angegeben haben ob dieser nur Energie ans Netz abgeben oder aufnehmen darf.
-                        Eine Anlage die keine Förderung erhält, kann gegebenfalls beliebig Energie aus dem Netz in die Batterie speichern und auch ans Netz abgeben.
-                        """)  
+            st.markdown("""##### Angaben zum Batteriespeicher""", help="Wenn Sie einen Batteriespeicher in Kombination mit Ihrer Photovoltaikanlage haben geben Sie bitte die Kapazität des Batteriespeichers an. Eine Angabe auch ohne PV-Anlage ist zulässig.Sollten Sie eine aus dem EEG geförderte Anlage besitzen, können Sie für den Batteriespeicher angegeben haben ob dieser nur Energie ans Netz abgeben oder aufnehmen darf.Eine Anlage die keine Förderung erhält, kann gegebenfalls beliebig Energie aus dem Netz in die Batterie speichern und auch ans Netz abgeben.")
+            # with st.expander("Informationen: Batteriespeicher"):
+            #     st.info("""Wenn Sie einen Batteriespeicher in Kombination mit Ihrer Photovoltaikanlage haben geben Sie bitte die Kapazität des Batteriespeichers an. 
+            #             Eine Angabe auch ohne PV-Anlage ist zulässig.
+            #             Sollten Sie eine aus dem EEG geförderte Anlage besitzen, können Sie für den Batteriespeicher angegeben haben ob dieser nur Energie ans Netz abgeben oder aufnehmen darf.
+            #             Eine Anlage die keine Förderung erhält, kann gegebenfalls beliebig Energie aus dem Netz in die Batterie speichern und auch ans Netz abgeben.
+            #             """)  
             st.checkbox("Besitzen Sie einen Batteriespeicher?", key="has_battery") #, disabled=st.session_state.get("calculating", False))
 
             if st.session_state.get("has_battery", False):
@@ -131,16 +132,16 @@ class Streamlit():
             st.markdown("""##### Auswahl des Stromtarifs""")
             text_info_optimisation = st.empty()
             if st.session_state.static_ZVNE == 1:
-                    text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis wenn man den normalen Stromtarif mit zeitvariablen Netzentgelten kombiniert, die durch eine **Steuerbare Verbrauchseinrichtung** ermöglicht werden, die nach dem Energiewirtschaftsgesetz $14a als solche definiert ist. ") 
+                    text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis wenn man den normalen Stromtarif mit zeitvariablen Netzentgelten kombiniert, die durch eine **Steuerbare Verbrauchseinrichtung** ermöglicht werden, die nach dem Energiewirtschaftsgesetz $14a als solche definiert ist. ") 
             else:
                 if st.session_state.has_eeg:
-                    text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif, mit einer bestehenden Einspeisevergütung gefördert aus dem EEG.") 
+                    text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif, mit einer bestehenden Einspeisevergütung gefördert aus dem EEG.") 
                     if st.session_state.controllable_device:
-                        text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif in Kombination mit zeitvariablen Netzentgelten, mit einer bestehenden Einspeisevergütung gefördert aus dem EEG.") 
+                        text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif in Kombination mit zeitvariablen Netzentgelten, mit einer bestehenden Einspeisevergütung gefördert aus dem EEG.") 
                 else:
-                    text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif, die eingespeiste elektrische Energie ins Netz wird mit dem aktuellen Börsenstrompreis vergütet.") 
+                    text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif, die eingespeiste elektrische Energie ins Netz wird mit dem aktuellen Börsenstrompreis vergütet.") 
                     if st.session_state.controllable_device:
-                        text_info_optimisation.info("Die aktuelle Auswahl berechent die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif in Kombination mit zeitvariablen Netzentgelten, die eingespeiste elektrische Energie ins Netz wird mit dem aktuellen Börsenstrompreis vergütet.") 
+                        text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif in Kombination mit zeitvariablen Netzentgelten, die eingespeiste elektrische Energie ins Netz wird mit dem aktuellen Börsenstrompreis vergütet.") 
                   
             # Berechnung starten
             if "results" not in st.session_state:
@@ -153,6 +154,8 @@ class Streamlit():
 
             if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
                 st.session_state.calculating = True
+
+                st.warning("Die Berechnung kann 1 bis 2 Minuten dauern.")
                 
                 progress_bar_loading = st.progress(0)
                 status_text_loading = st.empty()
@@ -167,12 +170,12 @@ class Streamlit():
                 
                 progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading, 0.05)
 
-                loadprofiles = {2000: 3,  3000: 5,  4000: 12,
-                        5000: 13, 6000: 17, 7000: 15, 8000: 16}
+                # loadprofiles = {2000: 3,  3000: 5,  4000: 12,
+                #         5000: 13, 6000: 17, 7000: 15, 8000: 16}
                 
-                st.session_state.loadprofile = loadprofiles[st.session_state.consumption]
-                print(f"Lastprofil: {st.session_state.loadprofile}")
-                del(loadprofiles)
+                st.session_state.loadprofile = st.session_state.consumption # loadprofiles[st.session_state.consumption]
+                #print(f"Lastprofil: {st.session_state.loadprofile}")
+                #del(loadprofiles)
 
                 progress_bar_loading, status_text_loading = self.progress_update(progress_bar_loading, status_text_loading,0.10)
 
