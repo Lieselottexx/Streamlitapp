@@ -62,6 +62,7 @@ class DataGenerator():
                                                     "Energy Price [Cent/kWh]"           : "first",
                                                     "Monthly Average Price [Cent/kWh]"  : "first"
                                                 })
+        data_resample = data_resample.fillna(method='ffill')
         ''' # test mean'''
         # print(data_resample)
         
@@ -78,13 +79,13 @@ class DataGenerator():
         except:
             print("Chose a Load profile between 1000 kWh and 8000 kWh, please.")
 
-        column_names = ['Timestep','Datetime', 'Load Energy [kWh]']
+        column_names = ['Datetime', 'Load Energy [kWh]']
 
         if os.path.exists(os.path.join(load_path, path_energy)):
             dtype_dict = {col: self.str_datatype for col in column_names if col != 'Datetime'}
             Load_data = pd.read_csv(os.path.join(load_path, path_energy), delimiter=';', header=0, names=column_names, dtype=dtype_dict, index_col='Datetime')
-            Load_data.index = pd.to_datetime(Load_data.index, format='%d.%m.%Y %H:%M')
-            del Load_data['Timestep']
+            Load_data.index = pd.to_datetime(Load_data.index, format='%Y-%m-%d %H:%M:%S')
+
             data = pd.concat([data, Load_data], axis=0)
             print("Load the Load Profile Number ", profile_num, ".")
             averageEnergyHousehold = 0

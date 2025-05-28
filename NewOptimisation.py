@@ -53,19 +53,22 @@ class Optimisation():
         start_function = time.time()
         # Calculation of the Feed-in price 
         data['Dynamic Feed-in Price [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
+        data['Dynamic Feed-in Price U20 [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
         market_bonus = input_optimisation[7] - data['Monthly Average Price [Cent/kWh]']
         data['Dynamic Feed-in Price [Cent/kWh]'] = np.where( market_bonus > 0, # condition
         data['Energy Price [Cent/kWh]'] + market_bonus, # if condition is right
         data['Energy Price [Cent/kWh]']).astype(self.str_datatype) # otherwise and everytime store as datatype
 
-        
+        # Abzüglich 3% der Einspeisevergütung die an dem Direktvermarkter hängen bleibt
+        data['Dynamic Feed-in Price [Cent/kWh]'] = data['Dynamic Feed-in Price [Cent/kWh]'] - (data['Dynamic Feed-in Price [Cent/kWh]'] * 0.03)
+        data['Dynamic Feed-in Price U20 [Cent/kWh]'] = data['Energy Price [Cent/kWh]'] - (data['Energy Price [Cent/kWh]'] * 0.03)
         data['Static Feed-in Price [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
         # if the optimisation is in the EEG Regulation:
         if select_opti[3] == 1:
            data['Static Feed-in Price [Cent/kWh]'] = input_optimisation[6]
         # if the optimisation is out of the EEG Regulation
         elif select_opti[3] == 0:
-            data['Static Feed-in Price [Cent/kWh]'] = 0
+            data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
 
         with open(os.path.join(self.data_path,self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nStart of the calculation of the Optimisation Number'+ str(input_optimisation[0])+ '.\n'))
@@ -92,7 +95,7 @@ class Optimisation():
 
         # variable to store the last SoC of the Battery to get a continuous SoC other the Time 
         previous_SoC = 0
-
+        print('is nan? ',input_optimisation[3])
         '''Input self optimisation: 
         0 - optimise_time, input_self_optimisation[0]
         1 - step_time, input_self_optimisation[1]
@@ -125,6 +128,15 @@ class Optimisation():
             # Duration of optimisation, for all for-loops
             len_opti = len(load_data)
 
+
+            
+            if np.isnan(energy_price).any():
+                print("energy_price enthält NaN-Werte!")
+
+            if np.isnan(feed_in_price).any():
+                print("feed_in_price enthält NaN-Werte!")
+
+            
             '''
             Decision variables:
             X1 = Battery Charge

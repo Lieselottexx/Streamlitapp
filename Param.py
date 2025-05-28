@@ -80,3 +80,8 @@ step_time = 12 # h
 # Netznutzung brutto, Konzessionsabg. brutto, Stromsteuer, Offshore, KWKG, NEV Umlage, Tibber Aufschlag
 variable_costs = 11.88 + 1.571 + 2.05 + 0.816 + 0.277 + 1.558 + 2.15 
 
+
+'''U20 Einspeisevergütung Jahresmarktwert Solar'''
+u20_feed_in_2024 = 4.624 # Jahresmarktwert Solar in 2024 
+# www.netztransparenz.de/de-de/Erneuerbare-Energien-und-Umlagen/EEG/Transparenzanforderungen/Marktprämie/Marktwertübersicht
+
