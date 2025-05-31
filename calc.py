@@ -22,7 +22,7 @@ if "calculating" not in st.session_state:
     st.session_state.calculating            = False
     st.session_state.consumption            = 3000
     st.session_state.controllable_device    = False
-    st.session_state.static_ZVNE            = False
+    st.session_state.dyn_cost               = False
     st.session_state.has_pv                 = False
     st.session_state.pv_power               = 5
     st.session_state.pv_compass             = "Süd"
@@ -184,15 +184,15 @@ st.markdown("""##### Auf welchen Tarif wollen Sie wechseln?""")
 # st.toggle("💡 EEG-Vergütung EIN / Ü20-Anlage AUS", key="has_eeg", help="Erhalten Sie die Einspeisevergütung gefördert vom EEG für eigenproduzierte elektrische Energie die ins Netz eingespeist wird? Oder ist ihre Anlage bereits 20 Jahre lang gefördert worden und erhalten Sie nun den Jahresmittelwert Solar für ihre eingespeiste Energie? ")
 
 # Drei gleich breite Spalten für die Buttons
-col1, col2 = st.columns(2)
+# col1, col2 = st.columns(2)
 
 
-with col1:
-    st.toggle("Dynamischer Stromtarif", key="dyn_cost")
+# with col1:
+#     st.toggle("Dynamischer Stromtarif", key="dyn_cost")
 
 
-with col2:
-    st.toggle("Direktvermarktung", key="direct_market")    
+# with col2:
+#     st.toggle("Direktvermarktung", key="direct_market")    
 
 col3, col4 = st.columns(2)
 
@@ -200,32 +200,13 @@ with col3:
     st.toggle("steuerbare Verbrauchseinrichtung", key="controllable_device")  
 
 with col4:
-    st.toggle("EEG-Vergütung EIN / Ü20-Anlage AUS", key="has_eeg")  
+    st.toggle("Ü20-Anlage AUS / EEG-Vergütung EIN", key="has_eeg")  
 
-st.markdown("""##### Lastgangauswahl über dem durchschnittlichen Stromverbrauch eines Jahres""", help="Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchte Photovoltaikstrom und die Batterieladung wird seperat betrachtet.")
+st.markdown("""##### Lastgangauswahl über dem durchschnittlichen Stromverbrauch eines Jahres""")
 st.slider("Jährlicher Stromverbrauch (kWh)", 1000, 8000, key="consumption", step=1000, help="Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchte Photovoltaikstrom und die Batterieladung wird seperat betrachtet.") #, disabled=st.session_state.get("calculating"))
 
-# Steuerbare Verbrauchseinrichtung
-# st.markdown("""##### Steuerbare Verbrauchseinrichtung nach EnWG 14a""", help=
-#         """Darunter fallen alle steuerbaren Verbraucher, Wallboxen, Batteriespeicher, Wärmepumpen und Klimageräte, ab einer Leistung von 4,2 kW die nach dem 01.01.2024 installiert worden sind.
-#         Seit dem 01.04.2025 besteht die Möglichkeit zusätzlich zum Modul 1 das Modul 3 zu wählen, welches zeitvariable Netzentgelte ermöglicht.
-#         \n **Bei Wahl der folgenden Einstellung wird die Berechnung mit zeitvariablen Netzentgelten vorgenommen.**""")
-# with st.expander("Informationen: Haben Sie eine steuerbare Verbrauchseinrichtungen nach dem §14a im Energiewirtschaftsgesetzes? "):
-#     st.info("""
-#         Darunter fallen alle steuerbaren Verbraucher, Wallboxen, Batteriespeicher, Wärmepumpen und Klimageräte, ab einer Leistung von 4,2 kW die nach dem 01.01.2024 installiert worden sind.
-#         Seit dem 01.04.2025 besteht die Möglichkeit zusätzlich zum Modul 1 das Modul 3 zu wählen, welches zeitvariable Netzentgelte ermöglicht.
-#         \n **Bei Wahl der folgenden Einstellung wird die Berechnung mit zeitvariablen Netzentgelten vorgenommen.**""")
-# st.checkbox("Berechnung mit zeitvariablen Netzentgelten nach EnWG 14a Modul 3", key="controllable_device") #, disabled=disable_settings)
-# Statischer Stromtarif nur mit zeitvariablen Netzentgelten
-# with st.expander("Informationen: Möchten Sie eine Berechnung durchführen nur mit zeitvariablen Netzentgelten mit dem normalen statischen Stromtarif? "):
-#     st.info("""Wählen Sie die Folgende Möglichkeit aus wenn sie keinen dynamischen Stromtarif berechnen wollen, aber die zeitvariablen Netzentgelte ihrer steuerbaren Verbrauchseinrichtung mit dem normalen Stromtarif kombinieren wollen. 
-#             """)
-# if st.session_state.get("controllable_device", False): 
-#     st.checkbox("Zeitvariable Netzentgelte mit normalen Stromtarif", key="static_ZVNE", help="""Wählen Sie die Folgende Möglichkeit aus wenn sie keinen dynamischen Stromtarif berechnen wollen, aber die zeitvariablen Netzentgelte ihrer steuerbaren Verbrauchseinrichtung mit dem normalen Stromtarif kombinieren wollen. """) #, disabled=st.session_state.get("calculating", False))
-
-
 # PV-Anlage
-st.markdown("""##### Angaben zur installierten Photovoltaik Anlage""", help="Wenn Sie eine PV-Anlage besitzen die in der Teileinspeisung läuft, sprich die erzeugte Energie im Haushalt genutzt werden kann, geben Sie bitte die Peak-Leistung Ihrer Anlage an die Ausrichtung der Module.")
+st.markdown("""##### Angaben zur installierten Photovoltaik Anlage""")
 # with st.expander("Informationen: Besitzen Sie eine PV-Anlage?"):
 #     st.info("""Wenn Sie eine PV-Anlage besitzen die in der Teileinspeisung läuft, sprich die erzeugte Energie im Haushalt genutzt werden kann, geben Sie bitte die Peak-Leistung Ihrer Anlage an die Ausrichtung der Module.
 #         """)            
@@ -257,7 +238,7 @@ else:
     st.session_state.installation_date = pd.to_datetime("2024.01.01", format="%Y.%m.%d")
 
 # Batterie
-st.markdown("""##### Angaben zum Batteriespeicher""", help="Wenn Sie einen Batteriespeicher in Kombination mit Ihrer Photovoltaikanlage haben geben Sie bitte die Kapazität des Batteriespeichers an. Eine Angabe auch ohne PV-Anlage ist zulässig. Sollten Sie eine aus dem EEG geförderte Anlage besitzen, können Sie für den Batteriespeicher angegeben haben ob dieser nur Energie ans Netz abgeben oder aufnehmen darf. Eine Anlage die keine Förderung erhält, kann gegebenfalls beliebig Energie aus dem Netz in die Batterie speichern und auch ans Netz abgeben.")
+st.markdown("""##### Angaben zum Batteriespeicher""")
 # with st.expander("Informationen: Batteriespeicher"):
 #     st.info("""Wenn Sie einen Batteriespeicher in Kombination mit Ihrer Photovoltaikanlage haben geben Sie bitte die Kapazität des Batteriespeichers an. 
 #             Eine Angabe auch ohne PV-Anlage ist zulässig.
@@ -268,98 +249,82 @@ st.checkbox("Besitzen Sie einen Batteriespeicher?", key="has_battery") #, disabl
 
 if st.session_state.get("has_battery", False):
     st.slider("Batteriekapazität (kWh)", 1, 20, 5, step=1, key="battery_capacity") #, disabled=st.session_state.get("calculating", False))
-    if st.session_state.get("has_eeg", False):
-        st.selectbox("Batterieverhalten zum Netz bei EEG-Förderung", ["Energie einspeisen", "Energie aus dem Netz beziehen"], 
+    st.selectbox("Batterieverhalten zum Netz bei EEG-Förderung", ["Energie einspeisen", "Energie aus dem Netz beziehen"], 
                                                     key="battery_usage") #, disabled=st.session_state.get("calculating", False))
 else:
     st.session_state.battery_capacity = 0
     st.session_state.is_eeg_battery = 0
 
 
+# has_pv 
+# controllable_device
+# has_eeg
+opti_numbers = []
+ses = st.session_state
+if      not ses.has_pv and  not ses.controllable_device and not ses. has_eeg: 
+    opti_numbers = [5, 7]
+elif    not ses.has_pv and  not ses.controllable_device and     ses. has_eeg:
+    opti_numbers =[1, 3] 
+elif    not ses.has_pv and      ses.controllable_device and not ses. has_eeg: 
+    opti_numbers =[5, 7, 13, 15]
+elif        ses.has_pv and  not ses.controllable_device and not ses. has_eeg: 
+    opti_numbers =[5, 6, 7, 8]
+elif        ses.has_pv and  not ses.controllable_device and     ses. has_eeg: 
+    opti_numbers =[1, 2, 3, 4]
+elif        ses.has_pv and      ses.controllable_device and not ses. has_eeg: 
+    opti_numbers =[5, 6, 7, 8, 13, 14, 15, 16]
+elif        ses.has_pv and      ses.controllable_device and     ses. has_eeg: 
+    opti_numbers =[1, 2, 3, 4, 9, 10, 11, 12]
+        
+opti_dict = {i: {"select": None} for i in opti_numbers}
+
+for key in opti_dict:
+    opti_dict[key]["select"] = control.select_optimisation_behaviour(key)
+
+
+
+# if st.session_state.controllable_device == 1:
+#     if st.session_state.has_eeg == 1:
+#         select_opti1 =  control.select_optimisation_behaviour(9)
+#         if st.session_state.dyn_cost == 1:
+#             select_opti1 =  control.select_optimisation_behaviour(11)
+#             if st.session_state.direct_market == 1:
+#                 select_opti1 =  control.select_optimisation_behaviour(12)
+#         else:
+#             if st.session_state.direct_market == 1:
+#                 select_opti1 =  control.select_optimisation_behaviour(10)
+#     else: 
+#         select_opti1 =  control.select_optimisation_behaviour(13)
+#         if st.session_state.dyn_cost == 1:
+#             select_opti1 =  control.select_optimisation_behaviour(15)
+#             if st.session_state.direct_market == 1:
+#                 select_opti1 =  control.select_optimisation_behaviour(16)
+#         else:
+#             if st.session_state.direct_market == 1:
+#                 select_opti1 =  control.select_optimisation_behaviour(14)
+# else:
+#     if st.session_state.has_eeg == 1:
+#         select_opti1 =  control.select_optimisation_behaviour(1)
+#         if st.session_state.dyn_cost == 1:
+#             select_opti1 =  control.select_optimisation_behaviour(3)
+#             if st.session_state.direct_market == 1:
+#                 select_opti1 =  control.select_optimisation_behaviour(4)
+#         else:
+#             if st.session_state.direct_market == 1:
+#                 select_opti1 =  control.select_optimisation_behaviour(2)
+#     else: 
+#         select_opti1 =  control.select_optimisation_behaviour(5)
+#         if st.session_state.dyn_cost == 1:
+#             select_opti1 =  control.select_optimisation_behaviour(7)
+#             if st.session_state.direct_market == 1:
+#                 select_opti1 =  control.select_optimisation_behaviour(8)
+#         else:
+#             if st.session_state.direct_market == 1:
+#                 select_opti1 =  control.select_optimisation_behaviour(6)
 
 
 
 
-
-# st.markdown("""##### Auf welchen Tarif wollen Sie wechseln?""")
-
-
-# # Daten für Tarife, mit Tarifnamen als Index
-# tarif_data = pd.DataFrame({
-#     "Dyn. Stromtarif":          ["✅", "❌", "❌", "✅"],
-#     "Direktvermarktung":        ["❌", "✅", "❌", "❌"],
-#     "Steuerb. Verbrauchsein.":  ["❌", "❌", "✅", "✅"]
-# }, index=[f"Tarif {i+1}" for i in range(4)])
-
-# # Optionen für das Segment-Control = Indexnamen
-# tarif_options = tarif_data.index.tolist()
-
-# # Segment Control zur Auswahl
-# selected_tarif = st.segmented_control("Wähle deinen Tarif:", options=tarif_options)
-
-# # Sicherstellen, dass Auswahl gültig ist (optional)
-# if selected_tarif not in tarif_options:
-#     selected_tarif = tarif_options[0]
-
-# # Index ist jetzt der Tarifname direkt
-# selected_index = selected_tarif
-
-# # Styling-Funktion für Hervorhebung
-# def highlight_selected(row):
-#     return ['background-color: lightblue' if row.name == selected_index else '' for _ in row]
-
-# # Tabelle mit Hervorhebung anzeigen
-# st.markdown("### Tarifvergleich")
-# styled_df = tarif_data.style.apply(highlight_selected, axis=1)
-# st.dataframe(styled_df, use_container_width=True)
-
-# # Ausgabe der Auswahl
-# st.markdown(f"👉 Du hast **{selected_tarif}** gewählt")
-
-# if selected_tarif == "Tarif 1":
-#     st.session_state.static_ZVNE            = False 
-#     st.session_state.controllable_device    = False
-#     st.session_state.direct_market          = False
-#     pass
-# elif selected_tarif == "Tarif 2":
-#     st.session_state.static_ZVNE            = False 
-#     st.session_state.controllable_device    = False
-#     st.session_state.direct_market          = True
-#     pass
-# elif selected_tarif == "Tarif 3":
-#     st.session_state.static_ZVNE            = True 
-#     st.session_state.controllable_device    = True
-#     st.session_state.direct_market          = False
-#     pass
-# elif selected_tarif == "Tarif 4":
-#     st.session_state.static_ZVNE            = False 
-#     st.session_state.controllable_device    = True
-#     st.session_state.direct_market          = False
-#     pass
-
-
-
-
-text_info_optimisation = st.empty()
-if st.session_state.static_ZVNE == 1:
-    select_opti1 =  control.select_optimisation_behaviour(9)
-    text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis wenn man den normalen Stromtarif mit zeitvariablen Netzentgelten kombiniert, die durch eine **Steuerbare Verbrauchseinrichtung** ermöglicht werden, die nach dem Energiewirtschaftsgesetz §14a als solche definiert ist. ") 
-elif st.session_state.direct_market == 1:
-    select_opti1 =  control.select_optimisation_behaviour(2)
-    text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis wenn man den normalen Stromtarif mit einer Direktvermarktung der Einspeisung aus der PV-Anlage kombiniert.") 
-else:
-    if st.session_state.has_eeg:
-        select_opti1 =  control.select_optimisation_behaviour(3)
-        text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif, mit einer bestehenden Einspeisevergütung gefördert aus dem EEG.") 
-        if st.session_state.controllable_device:
-            select_opti1 =  control.select_optimisation_behaviour(10)
-            text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif in Kombination mit zeitvariablen Netzentgelten, mit einer bestehenden Einspeisevergütung gefördert aus dem EEG.") 
-    else:
-        select_opti1 =  control.select_optimisation_behaviour(8)
-        text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif, die eingespeiste elektrische Energie ins Netz wird mit dem aktuellen Börsenstrompreis vergütet.") 
-        if st.session_state.controllable_device:
-            select_opti1 =  control.select_optimisation_behaviour(11)
-            text_info_optimisation.info("Die aktuelle Auswahl berechnet die Ersparnis bei einem Wechsel auf einen dynamischen Stromtarif in Kombination mit zeitvariablen Netzentgelten, die eingespeiste elektrische Energie ins Netz wird mit dem aktuellen Börsenstrompreis vergütet.") 
 
 
 st.divider()        
@@ -375,20 +340,20 @@ if st.button("Berechnung stoppen"):
 if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
     st.session_state.calculating = True
 
-    st.warning("Die Berechnung kann 1 bis 2 Minuten dauern.")
+    st.warning("Die Berechnung kann je nach Haushaltstyp  2 bis 10 Minuten dauern, bitte haben Sie geduld.")
     
-    progress_bar_loading = st.progress(0)
-    status_text_loading = st.empty()
+    # progress_bar_loading = st.progress(0)
+    # status_text_loading = st.empty()
 
-    progress_bar_Opti1 = st.progress(0)
-    status_text_Opti1 = st.empty()
+    # progress_bar_Opti1 = st.progress(0)
+    # status_text_Opti1 = st.empty()
 
-    progress_bar_Opti2 = st.progress(0)
-    status_text_Opti2 = st.empty()
+    # progress_bar_Opti2 = st.progress(0)
+    # status_text_Opti2 = st.empty()
 
     
     
-    progress_bar_loading, status_text_loading = progress_update(progress_bar_loading, status_text_loading, 0.05, "Daten einladen")
+    # progress_bar_loading, status_text_loading = progress_update(progress_bar_loading, status_text_loading, 0.05, "Daten einladen")
 
     # loadprofiles = {2000: 3,  3000: 5,  4000: 12,
     #         5000: 13, 6000: 17, 7000: 15, 8000: 16}
@@ -397,27 +362,27 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
     #print(f"Lastprofil: {st.session_state.loadprofile}")
     #del(loadprofiles)
 
-    progress_bar_loading, status_text_loading = progress_update(progress_bar_loading, status_text_loading,0.10, "Daten einladen")
+    # progress_bar_loading, status_text_loading = progress_update(progress_bar_loading, status_text_loading,0.10, "Daten einladen")
 
     data, averageEnergyHousehold =  control.data_generator.loadData(st.session_state.loadprofile,
                                                                         st.session_state.pv_direction, 
                                                                         st.session_state.pv_power,
                                                                         st.session_state.battery_capacity) 
     
-    progress_bar_loading, status_text_loading =  progress_update(progress_bar_loading, status_text_loading, 0.70, "Daten einladen")
+    # progress_bar_loading, status_text_loading =  progress_update(progress_bar_loading, status_text_loading, 0.70, "Daten einladen")
     
     data = control.price_generator.calculate_energy_prices( data, averageEnergyHousehold,
                                                                 st.session_state.controllable_device)
 
 
-    progress_bar_loading, status_text_loading =  progress_update(progress_bar_loading, status_text_loading, 1, "Daten einladen")
+    # progress_bar_loading, status_text_loading =  progress_update(progress_bar_loading, status_text_loading, 1, "Daten einladen")
 
-    progress_bar_Opti1, status_text_Opti1 =  progress_update(progress_bar_Opti1, status_text_Opti1, 0, "Berechnung des ausgewählten Stromtarifs")
+    # progress_bar_Opti1, status_text_Opti1 =  progress_update(progress_bar_Opti1, status_text_Opti1, 0, "Berechnung des ausgewählten Stromtarifs")
 
-    progress_bar_Opti2, status_text_Opti2 =  progress_update(progress_bar_Opti2, status_text_Opti2, 0, "Berechnung des Vergleich-Stromtarifs")
+    # progress_bar_Opti2, status_text_Opti2 =  progress_update(progress_bar_Opti2, status_text_Opti2, 0, "Berechnung des Vergleich-Stromtarifs")
     
     # '''Wenn das True ist, dann wird nur statisch mit Zeitvariablen Netzentgelten gerechnet'''
-    # if st.session_state.static_ZVNE == 1:
+    # if st.session_state.dyn_cost == 1:
     #     select_opti1 =  control.select_optimisation_behaviour(9)
     # else:
     #     if st.session_state.has_eeg:
@@ -441,59 +406,129 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
                                  control.grid_power,  static_feed_in_price,  static_bonus_feed_in]
     battery_usage = st.session_state.battery_usage
 
-    select_opti2 =  control.select_optimisation_behaviour(1)
+    # select_opti2 =  control.select_optimisation_behaviour(1)
 
     queue = multiprocessing.Queue()
+    processes = {}
+    for key in opti_dict:
+        processes[key] = multiprocessing.Process(
+        target=control.opimisation.select_optimisation,
+        args=(data, input_optimisation, opti_dict[key]["select"], battery_usage, queue, key)
+        )
+        processes[key].start()
 
-    # Prozesse starten
-    process_1 = multiprocessing.Process(target= control.opimisation.select_optimisation, args=( data, input_optimisation, select_opti1, battery_usage, queue, 1))
-    process_2 = multiprocessing.Process(target= control.opimisation.select_optimisation, args=( data, input_optimisation, select_opti2, battery_usage, queue, 2))
 
-    process_1.start()
-    process_2.start()
+    with st.spinner("Ihr Lastverhalten wird berechnet..."):
+        while any(p.is_alive() for p in processes.values()):
+            while not queue.empty():
+                task_id, progress = queue.get()
+
+                if isinstance(task_id, str) and task_id.startswith("Result"):
+                    try:
+                        _, key_str = task_id.split()
+                        key = int(key_str.replace(":", ""))
+                        opti_dict[key]["result"] = progress
+                        print(f"Result {key} stored.")
+                    except Exception as e:
+                        print(f"Fehler beim Parsen von Result-ID {task_id}: {e}")
+
+
+
+
+    for key in opti_dict:
+        processes[key].join()
+    
+    for key in opti_dict:
+        opti_dict[key]["cost"] = control.analysis.single_cost_batterycycle_calculation(opti_dict[key]["result"], opti_dict[key]["select"])
+        if key == 1 or key == 5:
+            origin_key = key
+        else:
+            opti_dict[key]["benefit"] = opti_dict[origin_key]["cost"]['2024-12-31'] - opti_dict[key]["cost"]['2024-12-31']
+            # st.write(f"{benefit} = {costs_evo['2024-12-31']} - {costs_selected['2024-12-31']}")
+    print(opti_dict[key]["benefit"])
+    print(opti_dict[origin_key])
+    print(opti_dict[key])
+
+
+    # # Prozesse starten
+    # process_1 = multiprocessing.Process(target= control.opimisation.select_optimisation, args=( data, input_optimisation, select_opti1, battery_usage, queue, 1))
+    # process_2 = multiprocessing.Process(target= control.opimisation.select_optimisation, args=( data, input_optimisation, select_opti2, battery_usage, queue, 2))
+
+    # process_1.start()
+    # process_2.start()
 
     
-    while process_1.is_alive() or process_2.is_alive():
-        while not queue.empty():
-            task_id, progress = queue.get()
-            if task_id == 1:
-                progress_bar_Opti1, status_text_Opti1 =  progress_update(progress_bar_Opti1, status_text_Opti1, progress, "Berechnung des ausgewählten Stromtarifs")
-            elif task_id == 2:
-                progress_bar_Opti2, status_text_Opti2 =  progress_update(progress_bar_Opti2, status_text_Opti2, progress, "Berechnung des Vergleich-Stromtarifs")
-            elif task_id == f"Result 1:":
-                result1 = progress 
-                print("Result 1 stored.")
-            elif task_id == f"Result 2:":
-                result2 = progress 
-                print("Result 2 stored.")
+    # while process_1.is_alive() or process_2.is_alive():
+    #     while not queue.empty():
+    #         task_id, progress = queue.get()
+    #         if task_id == 1:
+    #             progress_bar_Opti1, status_text_Opti1 =  progress_update(progress_bar_Opti1, status_text_Opti1, progress, "Berechnung des ausgewählten Stromtarifs")
+    #         elif task_id == 2:
+    #             progress_bar_Opti2, status_text_Opti2 =  progress_update(progress_bar_Opti2, status_text_Opti2, progress, "Berechnung des Vergleich-Stromtarifs")
+    #         elif task_id == f"Result 1:":
+    #             result1 = progress 
+    #             print("Result 1 stored.")
+    #         elif task_id == f"Result 2:":
+    #             result2 = progress 
+    #             print("Result 2 stored.")
     
-    # Wait for processes to finish
-    process_1.join()
-    process_2.join()
+    # # Wait for processes to finish
+    # process_1.join()
+    # process_2.join()
 
-    costs_selected =  control.analysis.single_cost_batterycycle_calculation(result1, select_opti1)
-    costs_evo      =  control.analysis.single_cost_batterycycle_calculation(result2, select_opti2)
+    # costs_selected =  control.analysis.single_cost_batterycycle_calculation(result1, select_opti1)
+    # costs_evo      =  control.analysis.single_cost_batterycycle_calculation(result2, select_opti2)
 
-    benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
-    # st.write(f"{benefit} = {costs_evo['2024-12-31']} - {costs_selected['2024-12-31']}")
-    st.session_state.results.append(benefit)  
+    # benefit = costs_evo['2024-12-31'] - costs_selected['2024-12-31']
+    # # st.write(f"{benefit} = {costs_evo['2024-12-31']} - {costs_selected['2024-12-31']}")
+    # st.session_state.results.append(benefit)  
 
-    st.success("Berechnung abgeschlossen!")
-    st.session_state.calculating = False
+    # st.success("Berechnung abgeschlossen!")
+    # st.session_state.calculating = False
     
-    progress_bar_loading.empty()
-    status_text_loading.text("Berechnung abgeschlossen!")
+    # progress_bar_loading.empty()
+    # status_text_loading.text("Berechnung abgeschlossen!")
 
-    progress_bar_Opti1.empty()
-    status_text_Opti1.text("Berechnung abgeschlossen!")
+    # progress_bar_Opti1.empty()
+    # status_text_Opti1.text("Berechnung abgeschlossen!")
 
-    progress_bar_Opti2.empty()
-    status_text_Opti2.text("Berechnung abgeschlossen!")
+    # progress_bar_Opti2.empty()
+    # status_text_Opti2.text("Berechnung abgeschlossen!")
 
     st.session_state.calculating = False
 
 # Ergebnisse anzeigen
 st.write("### Ergebnisse")
 st.markdown("""Die Ergbenisse der Berechnungen geben die Kosteneinsparung an, die angefallen wären, hätte man im Jahr 2024 den Stromtarif gewechselt. Ist das Ergebnis negativ, wären höhere Kosten angefallen bei einem Wechsel gegenüber dem festen Stromtarif in Kombination mit der festen EEG-Vergütung für die ins Netz eingespeiste Energie. """)
-for i, res in enumerate(st.session_state.results, start=1):
-    st.write(f"{i}. Ergebnis: {selected_tarif} -> {round(res,2)} Euro Ersparnis")
+# for i, res in enumerate(st.session_state.results, start=1):
+#     st.write(f"{i}. Ergebnis: {selected_tarif} -> {round(res,2)} Euro Ersparnis")
+
+benefit_keys = [key for key in opti_dict if "benefit" in opti_dict[key]]
+header_cols = st.columns(4)
+header_cols[0].markdown("**Interne Nummer**")
+header_cols[1].markdown("**Stromtarif**")
+header_cols[2].markdown("**Einspeisetarif**")
+header_cols[3].markdown("**Ersparnis**")
+if not benefit_keys:
+    st.info("Es wurden noch keine Optimierungsergebnisse berechnet.")
+else:
+    try:
+        # Keys sortieren nach Benefit-Wert, absteigend
+        sorted_keys = sorted(benefit_keys, key=lambda k: opti_dict[k]["benefit"], reverse=True)
+
+        for key in sorted_keys:
+            if key in (1, 5):  # Diese ggf. ausblenden
+                continue
+
+            opti_sel = opti_dict[key].get("select", ["", "Tarif N/A", "EEG N/A"])
+            opti_ben = opti_dict[key]["benefit"]
+
+            col1, col2, col3, col4 = st.columns([1, 3, 3, 2])
+
+            col1.write(f"**{key}.**")
+            col2.write(f"**{opti_sel[1]}**")
+            col3.write(f"**{opti_sel[2]}**")
+            col4.write(f"**{round(opti_ben, 2)} €**")
+    except Exception as e:
+        st.error(f"Fehler bei der Ergebnisanzeige: {e}")
+

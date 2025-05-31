@@ -64,38 +64,46 @@ class Control():
 
         
         # Selection of the behaviour of the Optimisation
+        a = 'fester Strompreis'
+        b = 'dynamischer Strompreis'
+        c = 'fester Strompreis mit zeitvariablen Netzentgelten'
+        d = 'dynamischer Strompreis mit zeitvariablen Netzentgelten'
+
+        e = 'feste Einspeisevergütung'
+        f = 'Direktvermarktung'
+
         if number_optimisation == 1:
-            select_opti = [1, 0, 0, 1, 'eeg_static_static_optimisation.csv', 'Static Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
+            select_opti = [1, a, e, 1, 'eeg_static_static_optimisation.csv', 'Static Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         elif number_optimisation == 2:
-            select_opti = [2, 0, 1, 1, 'eeg_static_direct_optimisation.csv', 'Static Electricity Price [Cent/kWh]', 'Dynamic Feed-in Price [Cent/kWh]']
+            select_opti = [2, a, f, 1, 'eeg_static_direct_optimisation.csv', 'Static Electricity Price [Cent/kWh]', 'Dynamic Feed-in Price [Cent/kWh]']
         elif number_optimisation == 3:
-            select_opti = [3, 1, 0, 1, 'eeg_dynamic_static_optimised.csv', 'Dynamic Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
+            select_opti = [3, b, e, 1, 'eeg_dynamic_static_optimised.csv', 'Dynamic Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         elif number_optimisation == 4:
-            select_opti = [4, 1, 1, 1, 'eeg_dynamic_direct_optimisation.csv','Dynamic Electricity Price [Cent/kWh]' , 'Dynamic Feed-in Price [Cent/kWh]']
+            select_opti = [4, b, f, 1, 'eeg_dynamic_direct_optimisation.csv','Dynamic Electricity Price [Cent/kWh]' , 'Dynamic Feed-in Price [Cent/kWh]']
         elif number_optimisation == 5:
-            select_opti = [5, 0, 0, 0, 'static__static_optimisation.csv', 'Static Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
+            select_opti = [5, a, e, 0, 'static__static_optimisation.csv', 'Static Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         elif number_optimisation == 6:
-            select_opti = [6, 0, 1, 0, 'static_direct_optimisation.csv', 'Static Electricity Price [Cent/kWh]', 'Energy Price [Cent/kWh]']
+            select_opti = [6, a, f, 0, 'static_direct_optimisation.csv', 'Static Electricity Price [Cent/kWh]', 'Dynamic Feed-in Price U20 [Cent/kWh]']
         elif number_optimisation == 7:
-            select_opti = [7, 1, 0, 0, 'dynamic_static_optimised.csv', 'Dynamic Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
+            select_opti = [7, b, e, 0, 'dynamic_static_optimised.csv', 'Dynamic Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         elif number_optimisation == 8:
-            select_opti = [8, 1, 1, 0, 'alles_float16_mit_variable_2024_10_16_opti_ergebniss.csv','Dynamic Electricity Price [Cent/kWh]' , 'Energy Price [Cent/kWh]'] 
+            select_opti = [8, b, f, 0, 'alles_float16_mit_variable_2024_10_16_opti_ergebniss.csv','Dynamic Electricity Price [Cent/kWh]' , 'Dynamic Feed-in Price U20 [Cent/kWh]'] 
         elif number_optimisation == 9:
-            select_opti = [9, 0, 0, 1, 'eeg_static_static_optimisation.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
+            select_opti = [9, c, e, 1, 'eeg_static_static_optimisation.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         elif number_optimisation == 10:
-            select_opti = [10, 0, 1, 1, 'eeg_static_direct_optimisation.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Dynamic Feed-in Price [Cent/kWh]']
+            select_opti = [10, c, f, 1, 'eeg_static_direct_optimisation.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Dynamic Feed-in Price [Cent/kWh]']
         elif number_optimisation == 11:
-            select_opti = [11, 1, 0, 1, 'eeg_dynamic_static_optimised.csv', 'Dynamic Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
+            select_opti = [11, d, e, 1, 'eeg_dynamic_static_optimised.csv', 'Dynamic Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         elif number_optimisation == 12:
-            select_opti = [12, 1, 1, 1, 'eeg_dynamic_direct_optimisation.csv','Dynamic Timevariant Electricity Price [Cent/kWh]' , 'Dynamic Feed-in Price [Cent/kWh]']
+            select_opti = [12, d, f, 1, 'eeg_dynamic_direct_optimisation.csv','Dynamic Timevariant Electricity Price [Cent/kWh]' , 'Dynamic Feed-in Price [Cent/kWh]']
         elif number_optimisation == 13:
-            select_opti = [13, 0, 0, 0, 'static__static_optimisation.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
+            select_opti = [13, c, e, 0, 'static__static_optimisation.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         elif number_optimisation == 14:
-            select_opti = [14, 0, 1, 0, 'static_direct_optimisation.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Energy Price [Cent/kWh]']
+            select_opti = [14, c, f, 0, 'static_direct_optimisation.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Dynamic Feed-in Price U20 [Cent/kWh]']
         elif number_optimisation == 15:
-            select_opti = [15, 1, 0, 0, 'dynamic_static_optimised.csv', 'Dynamic Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
+            select_opti = [15, d, e, 0, 'dynamic_static_optimised.csv', 'Dynamic Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         elif number_optimisation == 16:
-            select_opti = [16, 1, 1, 0, 'alles_float16_mit_variable_2024_10_16_opti_ergebniss.csv','Dynamic Timevariant Electricity Price [Cent/kWh]' , 'Energy Price [Cent/kWh]']
+            select_opti = [16, d, f, 0, 'alles_float16_mit_variable_2024_10_16_opti_ergebniss.csv','Dynamic Timevariant Electricity Price [Cent/kWh]' , 'Dynamic Feed-in Price U20 [Cent/kWh]']
 
 
 
@@ -103,7 +111,7 @@ class Control():
         #     select_opti = [10, 1, 0, 1, 'eeg_dynamic_static_optimised.csv', 'Dynamic Timevariant Electricity Price [Cent/kWh]', 'Static Feed-in Price [Cent/kWh]']
         # elif number_optimisation == 11:
         #     select_opti = [11, 1, 1, 0, 'dynZVNEohneEEG.csv','Dynamic Timevariant Electricity Price [Cent/kWh]' , 'Energy Price [Cent/kWh]']
-        # return select_opti
+        return select_opti
         
 
 
