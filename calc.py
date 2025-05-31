@@ -251,11 +251,11 @@ st.markdown("""##### Angaben zum Batteriespeicher""")
 #             Sollten Sie eine aus dem EEG geförderte Anlage besitzen, können Sie für den Batteriespeicher angegeben haben ob dieser nur Energie ans Netz abgeben oder aufnehmen darf.
 #             Eine Anlage die keine Förderung erhält, kann gegebenfalls beliebig Energie aus dem Netz in die Batterie speichern und auch ans Netz abgeben.
 #             """)  
-st.checkbox("Besitzen Sie einen Batteriespeicher?", key="has_battery") #, disabled=st.session_state.get("calculating", False))
+st.checkbox("Ich besitze einen Batteriespeicher.", key="has_battery") #, disabled=st.session_state.get("calculating", False))
 
 if st.session_state.get("has_battery", False):
     st.slider("Batteriekapazität (kWh)", 1, 20, 5, step=1, key="battery_capacity") #, disabled=st.session_state.get("calculating", False))
-    st.selectbox("Batterieverhalten zum Netz bei EEG-Förderung", ["Energie einspeisen", "Energie aus dem Netz beziehen"], 
+    st.selectbox("Batterieverhalten zum Netz", ["Energie einspeisen", "Energie aus dem Netz beziehen"], 
                                                     key="battery_usage") #, disabled=st.session_state.get("calculating", False))
 else:
     st.session_state.battery_capacity = 0
