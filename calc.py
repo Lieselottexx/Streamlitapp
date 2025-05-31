@@ -346,7 +346,7 @@ if st.button("Berechnung stoppen"):
 if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
     st.session_state.calculating = True
 
-    st.warning("Die Berechnung kann je nach Haushaltstyp  1 bis 10 Minuten dauern, bitte haben Sie Geduld.")
+    st.warning("Die Berechnung kann je nach Haushaltstyp  1 bis 2 Minuten dauern, bitte haben Sie Geduld.")
     
     # progress_bar_loading = st.progress(0)
     # status_text_loading = st.empty()
@@ -505,7 +505,7 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
 
 # Ergebnisse anzeigen
 st.write("### Ergebnisse")
-st.markdown("""Die Ergebnisse der Berechnungen geben die Kosteneinsparung an, die angefallen wären, hätte man im Jahr 2024 den Stromtarif gewechselt. Ist das Ergebnis negativ, wären höhere Kosten angefallen bei einem Wechsel gegenüber dem festen Stromtarif in Kombination mit der festen EEG-Vergütung für die ins Netz eingespeiste Energie. """)
+st.markdown("""Die Ergebnisse der Berechnungen geben die Kosteneinsparung an, die angefallen wären, hätte man im Jahr 2024 den Stromtarif gewechselt. Ist das Ergebnis negativ, wären höhere Kosten angefallen bei einem Wechsel gegenüber dem festen Stromtarif in Kombination mit fester Einspeisevergütung für die ins Netz eingespeiste Energie. """)
 # for i, res in enumerate(st.session_state.results, start=1):
 #     st.write(f"{i}. Ergebnis: {selected_tarif} -> {round(res,2)} Euro Ersparnis")
 
