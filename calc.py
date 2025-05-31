@@ -209,7 +209,7 @@ with col4:
     st.toggle("Ü20-Anlage AUS / EEG-Vergütung EIN", key="has_eeg")  
 
 st.markdown("""##### Lastgangauswahl über dem durchschnittlichen Stromverbrauch eines Jahres""")
-st.slider("Jährlicher Stromverbrauch (kWh)", 1000, 8000, key="consumption", step=1000, help="Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchte Photovoltaikstrom und die Batterieladung wird seperat betrachtet.") #, disabled=st.session_state.get("calculating"))
+st.slider("Jährlicher Stromverbrauch (kWh)", 1000, 8000, key="consumption", step=500, help="Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchte Photovoltaikstrom und die Batterieladung wird seperat betrachtet.") #, disabled=st.session_state.get("calculating"))
 
 # PV-Anlage
 st.markdown("""##### Angaben zur installierten Photovoltaik Anlage""")
