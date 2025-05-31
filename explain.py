@@ -124,10 +124,14 @@ with st.expander("statischer und dynamischer Tarif"):
 st.header("⚙️ Optimierungen")
 st.markdown("""
             Linearer Optimierungsalgorithmus mit einer der bib und der zielfunktion ... und den aus den Tarifen ergebenen Nebenbedingungen. 
-            Nochmal mit Mark drüber nachdenken welche Optimierungen sinnvoll sind. 
+            
+            Die Optimierungen die berechnet werden ergeben sich daraus welche Möglichkeiten dem Haushalt zur Verfügung stehen. Die Optionen sind abhängig ob der Haushalt eine PV, eine steuerbare Verbrauchseinrichtung besitzt oder die PV-Anlage sich noch in den ersten 20 Jahren nach der Installation befindet, sprich noch die geförderte Einspeisevergütung erhält.
+            
+            Doofe Frage... wie sehen die Richtlinien aus wenn es keine PV gibt aber ne Batterie? Die kann ja nie ne Einspeisevergütung erhalten, läuft die dann unter gar keine Einspeisevergütung? Oder Direktvermarktung?
             """)
 
 st.header("📈 Ergebnisse")
 st.markdown("""
 .... Ergebnis = Eigenverbrauchsoptimierung - gewählter Stromtarif (Schon einmal auf der ersten seite erklärt)
+            Auflistung von Wechseloptionen immer gegen 1 oder 5. Sortiert nach größt möglicher ersparnis.
 """)
