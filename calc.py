@@ -33,6 +33,8 @@ if "calculating" not in st.session_state:
     st.session_state.battery_usage          = "Energie einspeisen"
     st.session_state.direct_market          = False
 
+# st.write(st.session_state)
+
 
 # Stromverbrauch
 st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
