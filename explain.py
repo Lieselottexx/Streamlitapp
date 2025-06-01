@@ -6,66 +6,6 @@ st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
 st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
 st.markdown("Auf dieser Seite werden alle Einstellmöglichkeiten sowie die Annahmen des Rechners erklärt. Des Weiteren sind auf dieser Seite der Optimierungsprozess und die Interpretation des Ergebnisses erklärt.")
 
-# st.header("📌 Ziel der Berechnung")
-# st.info("""
-# Die Berechnung soll dazu dienen, für sich selbst eine Einschätzung zu bekommen, ob sich ein Wechsel auf einen dynamischen Stromtarif lohnen würde.
-# Sie basiert auf dem Jahresdurchschnittsverbrauch des Haushalts, sowie Optional auf der Erzeugung einer vorhandenen PV-Anlage, die Nutzung einer Batteriekapazität in Kombination mit einem intelligenten Heim-Energiemanagement-System (HEMS) das den Energiefluss intelligent steuern kann.
-# """)
-
-# st.header("🔍 Annahmen & Grenzen der Betrachtung")
-# with st.expander("Was ist berücksichtigt?"):
-#     st.markdown("""
-#     - Dynamischer Stromtarif von Tibber (stündliche Preisanpassungen)
-#     - Vergleich zu dem Haushalt mit festem Stromtarif, optional mit Eigenverbrauchsoptimierung des HEMS
-#     - Typische Lastverläufe für verschiedene Jahresdurchschnittsverbräuche
-#     - Optimierung der Stromkosten des Haushalts
-#     - Eigene PV-Erzeugung, sowie der flexible Einsatz einer Batterie
-#     - Steuerbare Verbrauchseinrichtungen nach Energiewirtschaftsgesetz (EnWG) Paragraph 14a Modul 1 + 3 Zeitvariablen Netzentgelte (ZVNE) 
-#     - EEG-Vergütung für PV-Anlagen mit fester Einspeisevergütung
-#     - Optional: Entfall der EEG-Vergütung für Einspeisung, Einspeisung wird mit dem passenden Börsenstrompreis vergütet
-#     """)
-
-# with st.expander("Was ist **nicht** berücksichtigt?"):
-#     st.markdown("""
-#     - Bewusste Verhaltensänderungen in Verbindung mit einem dynamischen Stromtarif
-#     - Flexible einsetzbare Verbraucher wie z. B. Elektroautos, Waschmaschinen etc. durch das HEMS
-#     - Direktvermarktung der Einspeisung innerhalb des EEG
-#     """)
-
-# st.warning("""
-# Die Berechnung geht davon aus, dass sich das individuelle Verbrauchsverhalten mit dem Wechsel des Stromtarifs **nicht ändert**.
-# Es erfolgt nur eine **optimierte** Batterienutzung und der PV-Einspeisung.
-# Eine bewusste Verhaltensänderung in Verbindung mit einem dynamischen Stromtarif kann zu einer weiteren Ersparnis führen.
-# Dabei sollte bewusst sein, dass im gleichen Maße ein Verhalten ungünstig zum Börsenstrompreis auch zusätzliche Kosten verursachen.
-# """)
-
-# st.header("⚡ Beispiel für flexible Nutzung")
-# st.markdown("""Ein Beispiel für die individuelle Flexibilität, die in dieser Rechnung nicht berücksichtigt ist, aber ausschlaggebend sein kann für eine zusätzliche Kosten oder Ersparnisse, ist die Nutzung eines Elektroautos.
-# Ein Elektroauto könnte z. B. durch das HEMS automatisch bei günstigen Preisen, zum Beispiel nachts, geladen werden.
-# Ein Fall der hingegen höhere Kosten verursachen kann ist die schnelle Beladung der Fahrzeugbatterie nach Feierabend in den Abendstunden, wo es aktuell häufig zu hohen Börsenstrompreisen kommt. 
-# """)
-# st.warning("""
-#             Diese Flexibilität der individuellen Nutzung ist nur schwer zu simulieren.
-#             Jeder der einen dynamischen Stromtarif in Betracht zieht sollte sich gegebenenfalls über die eigene Ambition der Verhaltensanpassung gegenüber zeitlich ändernden Stromtarifen hinterfragen, damit können zusätzliche Einsparungen erzielt werden. 
-# """)
-
-# st.success("""
-# 👉 Wer einen dynamischen Stromtarif in Betracht zieht, sollte sich fragen, wie flexibel das eigene Verhalten gegenüber zeitlich schwankenden Preisen sein kann.
-# """)
-
-# st.header("🌱 Vorteile für das Energiesystem")
-# st.markdown("""
-# - Börsenstrompreise sind Abhängig von der Erzeugung und dem Verbrauch
-# - **Niedrige Strompreise bedeuten Überschuss an erneuerbarer Energie.**
-# - Jeder Verbrauch der in Zeiten niedriger Strompreise verschoben wird spart CO₂-Emissionen und fördert die Integrität Erneuerbarer Energien.
-# - Weniger Verbrauch in Zeiten hoher Strompreise kann lokal das Netz entlasten.  
-#                             → 
-# """)
-
-# st.header("📉 Voraussetzungen für dynamische Tarife")
-# st.markdown("""
-# Ein intelligentes Messsystem („Smart Meter“) ist Voraussetzung bei fast allen Anbietern.
-# """)
 
 st.header("📊 Erklärungen zu der Datengrundlage der Berechnung")
 st.markdown("""Der Großteil der Annahmen und Daten die in der Berechnung verwendet werden sind bereits auf der Seite Berechnung im Vortext beschrieben. Auf dieser Seite befinden sich genaure Informationen zu einzelnen Datensätzen der Berechnung.""")
@@ -112,14 +52,6 @@ with st.expander("statischer und dynamischer Tarif"):
                 Da die Fixkosten der Stromtarife auf die Menge der bezogenen Energie umgerechnet werden müssten und bei den unterschiedlichen Optimierung unterschiedlich viel Energie bezogen wird, könnten diese eine Ungenauigkeit ins Ergebnis bringen. Aufgrund dessen wird nur die Differenz der Kosten, bzw. die Einsparungen betrachtet und die Fixkosten aus der Berechnung außen vor gelassen. 
                 """)
 
-# with st.expander("Zeitvariablen Netzentgelte"):
-#     st.markdown("""
-#     Mit der Novelle des Gesetzes zur Beschleunigung der Digitalisierung der Energiewende ist in dem Energiewirtschaftsgesetz (ENWG) der Paragraph 14a zur Regelung von steuerbaren Verbrauchseinrichtungen hinzugekommen.
-#     Damit müssen steuerbare Verbrauchseinrichtungen (Wärmepumpen, Batteriespeicher, Wallboxen, Klimageräte) ab einer netzwirksamen Leistung von 4,2 kW die ab dem 01. Januar 2024 installiert worden sind, bei Netzengpässen steuerbar sein. 
-#     Als Entschädigung sieht der Netzbetreiber eine Ermäßigung der Netzentgelte vor. 
-#     Seit dem 01. April 2025 kann das Modul 3 für steuerbare Verbrauchseinrichtungen genutzt werden, mit dem zeitvariable Netzentgelte möglich sind.
-#     Jeder Netzbetreiber kann im Zeitraum von 24h ein 3 stufiges Netzentgeld erheben. In diesem Fall sind die Bedingungen des Netzbetreibers Westnetz genutzt worden. 
-#     """)
 
 st.header("⚙️ Optimierungen")
 st.markdown("""
