@@ -193,7 +193,7 @@ st.markdown("""##### Steuerbare Verbrauchseinrichtungen nach EnWG 14a """)
 st.checkbox("Ich besitze eine steuerbare Verbrauchseinrichtung.", key="controllable_device")  
 
 # PV-Anlage
-st.markdown("""##### Angaben zur installierten Photovoltaik Anlage""")
+st.markdown("""### Angaben zur installierten Photovoltaik Anlage""")
            
 st.checkbox("Ich besitze eine PV-Anlage.", key="has_pv") #, disabled=st.session_state.get("calculating", False))
 if st.session_state.get("has_pv", False):
