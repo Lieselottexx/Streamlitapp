@@ -123,15 +123,17 @@ with st.expander("statischer und dynamischer Tarif"):
 
 st.header("⚙️ Optimierungen")
 st.markdown("""
-            Linearer Optimierungsalgorithmus mit einer der bib und der zielfunktion ... und den aus den Tarifen ergebenen Nebenbedingungen. 
-            
-            Die Optimierungen die berechnet werden ergeben sich daraus welche Möglichkeiten dem Haushalt zur Verfügung stehen. Die Optionen sind abhängig ob der Haushalt eine PV, eine steuerbare Verbrauchseinrichtung besitzt oder die PV-Anlage sich noch in den ersten 20 Jahren nach der Installation befindet, sprich noch die geförderte Einspeisevergütung erhält.
-            
-            Doofe Frage... wie sehen die Richtlinien aus wenn es keine PV gibt aber ne Batterie? Die kann ja nie ne Einspeisevergütung erhalten, läuft die dann unter gar keine Einspeisevergütung? Oder Direktvermarktung?
+            Für die Erzeugung des Lastgangs je nach Stromtarif wird ein lineares Optimierungsverfahren angewendet, welches die Kosten für den Endkunden minimiert. Dafür ist die Python-Bibliothek Scipy mit der Linprog Optimierungsfunktion verwendet worden. In die Kosten-Zielfunktion gehen die Bezugskosten für Energie aus dem Netz, Einspeisevergütung sowie Kosten für die Nutzung der Batterie. Die Kosten für die Nutzung der Batterie ist mit 10 Cent/kWh angenommen. Optimiert werden die Be- und Entladung der Batterie, der Netzbezug und die Einspeiseleistung. In die Nebenbedingungen der Optimierung geht das Leistungsgleichgewicht ein, welches ebenfalls einen Batteriewirkungsgrad von 96% hinterlegt ist. Des Weiteren sind als Nebenbedingungen das Ausschließlichkeitsprinzip des EEGs und die Berechnung des State of charge (SoC) definiert. In der Limitierung der Zustandsvariablen ist die Netzanschlussleistung auf 22 kW begrenzt. Jeder Berechnungsschritt kennt Daten über 24 Stunden und optimiert auf Basis dieser. Diese Berechnung wiederholt sich alle 12 Stunden über das gesamte Jahr 2024.
+
+            Diese Berechnungen werden gleichzeitig für mehrere Stromtarife (Bezugs- und Einspeisetarife) durchgeführt. Welcher Stromtarif berechnet wird, bestimmen die Angaben über den Haushalt. Die Möglichkeiten der Wahl des Stromtarifs wird von den Tatsachen beeinflusst, ob eine steuerbare Verbrauchseinrichtung und/oder eine PV-Anlage vorhanden sind und ob diese eine geförderte Einspeisevergütung aktuell bekommt.
+    
+            Doofe Frage... wie sehen die Richtlinien aus wenn es keine PV gibt aber ne Batterie? Die kann ja nie ne Einspeisevergütung erhalten, läuft die dann unter gar keine Einspeisevergütung? Oder Direktvermarktung? Warscheinlich keine entladung möglich?
             """)
 
 st.header("📈 Ergebnisse")
 st.markdown("""
-.... Ergebnis = Eigenverbrauchsoptimierung - gewählter Stromtarif (Schon einmal auf der ersten seite erklärt)
-            Auflistung von Wechseloptionen immer gegen 1 oder 5. Sortiert nach größt möglicher ersparnis.
+            Die Kosten für den Endverbraucher jeder Optimierung werden mit einer Optimierung mit den üblichen Stromtarifen aus festem Bezugspreis und ggf. der festen Einspeisevergütung nach dem EEG verglichen. Das Ergebnis, welches im Anschluss der Berechnung angezeigt wird, ist die Ersparnis bei einem Wechsel über das gesamte Jahr 2024.
+
+            Wenn mehrere Stromtarifarten für den Haushalt zur Wahl stehen, werden die Ergebnisse von der größten zu kleinsten Ersparnis sortiert und in einer Zeile mit der Beschreibung des Stromtarifs aufgelistet.
+
 """)
