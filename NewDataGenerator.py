@@ -30,8 +30,10 @@ class DataGenerator():
         # out of the original data
     def loadData(self, profile_num, pv_direction, peak_power_pv, battery_cap):
         data = pd.DataFrame()
+        # neue Representative Lastverläufe einladen
+        data, averageEnergyHousehold = self.load_new_loadprofile_household(data, profile_num)
         # Loading the choosen load profile of the household
-        data, averageEnergyHousehold = self.load_loadprofile_household(data, profile_num)
+        # data, averageEnergyHousehold = self.load_loadprofile_household(data, profile_num)
         # Loading the H0 SLP Profile an scale it with he average Energy consumption of the Household in a year
         # data = self.load_slp_profile(data, averageEnergyHousehold)
         # Vorsicht nur 2024er Daten
@@ -60,6 +62,7 @@ class DataGenerator():
                                                     "Energy Price [Cent/kWh]"           : "first",
                                                     "Monthly Average Price [Cent/kWh]"  : "first"
                                                 })
+        data_resample = data_resample.fillna(method='ffill')
         ''' # test mean'''
         # print(data_resample)
         
@@ -68,8 +71,42 @@ class DataGenerator():
             file.write(str(str(datetime.now())+'\nSaved the data DataFrame to CSV!\n\n'))
         return data_resample, averageEnergyHousehold
 
+    def load_new_loadprofile_household(self, data, profile_num):
+         # ----- Load the Load Profile Number - choosen in the Control class --------------- 
+        load_path = os.path.join(self.related_path_data, self.original_data_path, 'Rep_Load_Profiles')
+        try:
+            path_energy = f'rep{profile_num}.csv'
+        except:
+            print("Chose a Load profile between 1000 kWh and 8000 kWh, please.")
 
+        column_names = ['Datetime', 'Load Energy [kWh]']
 
+        if os.path.exists(os.path.join(load_path, path_energy)):
+            dtype_dict = {col: self.str_datatype for col in column_names if col != 'Datetime'}
+            Load_data = pd.read_csv(os.path.join(load_path, path_energy), delimiter=';', header=0, names=column_names, dtype=dtype_dict, index_col='Datetime')
+            Load_data.index = pd.to_datetime(Load_data.index, format='%Y-%m-%d %H:%M:%S')
+
+            data = pd.concat([data, Load_data], axis=0)
+            print("Load the Load Profile Number ", profile_num, ".")
+            averageEnergyHousehold = 0
+            averageEnergyHousehold = Load_data['Load Energy [kWh]'].sum() / 1 # NICHT: Param.num_years, weil die Daten immer über 7 Jahre bleiben! # nur ein Jahr daten!
+            print("Im Load data fuction ist es : ", averageEnergyHousehold)
+            # Check whether the index is unique and, if necessary, ensure that it is unique (got error without)
+            if not Load_data.index.is_unique:
+                Load_data = Load_data.groupby(level=0).first()  # save the first     
+            # Open the Log File in 'a' append mode
+            with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
+                file.write(str(str(datetime.now())+'\n'))
+                file.write(str('Household Load Profile: '+ str(profile_num)+ '\n'))
+                file.write(str('The average energy consumption of the household over one year is: '+ str(averageEnergyHousehold) + ' kWh/a \n\n'))
+            #self.plot.print_load_profile(data)            
+
+        else:
+            print("Error while loading Houshold Load Profile!")
+            with open(os.path.join(self.related_path_data, self.log_file_name), 'a') as file:
+                file.write(datetime.now(), '/nFailed to Load the Houshold Load Data.\n\n')
+    
+        return data, averageEnergyHousehold
 
 
     def load_loadprofile_household(self, data, profile_num):

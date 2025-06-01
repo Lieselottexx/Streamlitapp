@@ -53,19 +53,22 @@ class Optimisation():
         start_function = time.time()
         # Calculation of the Feed-in price 
         data['Dynamic Feed-in Price [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
+        data['Dynamic Feed-in Price U20 [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
         market_bonus = input_optimisation[7] - data['Monthly Average Price [Cent/kWh]']
         data['Dynamic Feed-in Price [Cent/kWh]'] = np.where( market_bonus > 0, # condition
         data['Energy Price [Cent/kWh]'] + market_bonus, # if condition is right
         data['Energy Price [Cent/kWh]']).astype(self.str_datatype) # otherwise and everytime store as datatype
 
-        
+        # Abzüglich 3% der Einspeisevergütung die an dem Direktvermarkter hängen bleibt
+        data['Dynamic Feed-in Price [Cent/kWh]'] = data['Dynamic Feed-in Price [Cent/kWh]'] - (data['Dynamic Feed-in Price [Cent/kWh]'] * 0.03)
+        data['Dynamic Feed-in Price U20 [Cent/kWh]'] = data['Energy Price [Cent/kWh]'] - (data['Energy Price [Cent/kWh]'] * 0.03)
         data['Static Feed-in Price [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
         # if the optimisation is in the EEG Regulation:
         if select_opti[3] == 1:
            data['Static Feed-in Price [Cent/kWh]'] = input_optimisation[6]
         # if the optimisation is out of the EEG Regulation
         elif select_opti[3] == 0:
-            data['Static Feed-in Price [Cent/kWh]'] = 0
+            data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
 
         with open(os.path.join(self.data_path,self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nStart of the calculation of the Optimisation Number'+ str(input_optimisation[0])+ '.\n'))
@@ -92,7 +95,7 @@ class Optimisation():
 
         # variable to store the last SoC of the Battery to get a continuous SoC other the Time 
         previous_SoC = 0
-
+        print('is nan? ',input_optimisation[3])
         '''Input self optimisation: 
         0 - optimise_time, input_self_optimisation[0]
         1 - step_time, input_self_optimisation[1]
@@ -125,6 +128,15 @@ class Optimisation():
             # Duration of optimisation, for all for-loops
             len_opti = len(load_data)
 
+
+            
+            if np.isnan(energy_price).any():
+                print("energy_price enthält NaN-Werte!")
+
+            if np.isnan(feed_in_price).any():
+                print("feed_in_price enthält NaN-Werte!")
+
+            
             '''
             Decision variables:
             X1 = Battery Charge
@@ -161,22 +173,22 @@ class Optimisation():
             # Matrix for unequality constrain equation
             # current Step
 
-            if select_opti[3] == 1:
-                # EEG-System: Battery charge from the grid is allowed
-                A_ub_3 =   [0, 0, 0, 0, 1] # Limitation of feed-in to PV-Generation
-                # previous Step
-                A_ub_3_1 = [0, 0, 0, 0, 0]
-                
-                # EEG-System: Battery feed-in allowed
-                A_ub_1 =   [0, -1, 0, 0, 1] # Limitation of feed-in to PV-Gen. and Battery discharge
-                A_ub_2 =   [1,  0, 0, 0, 0] # Limitation of the Battery charging energy to PV-Generation
-                # previous Step
-                A_ub_1_1 = [0, 0, 0, 0, 0]
-                A_ub_2_1 = [0, 0, 0, 0, 0]
-            elif select_opti[3] == 0:
-                pass
-            else:
-                pass
+            # if select_opti[3] == 1:
+            # EEG-System: Battery charge from the grid is allowed
+            A_ub_3 =   [0, 0, 0, 0, 1] # Limitation of feed-in to PV-Generation
+            # previous Step
+            A_ub_3_1 = [0, 0, 0, 0, 0]
+            
+            # EEG-System: Battery feed-in allowed
+            A_ub_1 =   [0, -1, 0, 0, 1] # Limitation of feed-in to PV-Gen. and Battery discharge
+            A_ub_2 =   [1,  0, 0, 0, 0] # Limitation of the Battery charging energy to PV-Generation
+            # previous Step
+            A_ub_1_1 = [0, 0, 0, 0, 0]
+            A_ub_2_1 = [0, 0, 0, 0, 0]
+            # elif select_opti[3] == 0:
+            #     pass
+            # else:
+            #     pass
             
             
             # Vektor for unequality constrain equation
@@ -203,32 +215,32 @@ class Optimisation():
             b_eq_cache = self.append_array(len_opti-1,[0])
             for i in range(len(b_eq_cache)): b_eq.append(b_eq_cache[i])
 
-            if select_opti[3] == 1:
-                if battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
-                    # construction of the Matrix for unequality constrain equation
-                    '''EEG System: Battery charge from the Grid is allowed'''
-                    A_ub   =  []
-                    A_ub   =  self.append_constrains(len_opti,A_ub_3,A_ub_3_1)
-                    # construction of the vector for equality constrain equation 
-                    b_ub   =  []
-                    b_ub   =  self.append_array(1,pv_generation)
-
-                if battery_usage == "Energie einspeisen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
-                    '''EEG System: Battery feed-in allowed'''
-                    A_ub   =  []
-                    A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
-                    A_ub   =  self.append_constrains(len_opti,A_ub_2,A_ub_2_1)
-                        
-                    # construction of the vector for equality constrain equation 
-                    b_ub   =  []
-                    b_ub   =  self.append_array(1,pv_generation)
-                    b_ub   =  self.append_array(1,pv_generation)
-            else: 
+            # if select_opti[3] == 1:
+            if battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                # construction of the Matrix for unequality constrain equation
+                '''EEG System: Battery charge from the Grid is allowed'''
                 A_ub   =  []
-                A_ub_0 = [0, 0, 0, 0, 0]
-                A_ub   =  self.append_constrains(len_opti,A_ub_0,A_ub_0)
+                A_ub   =  self.append_constrains(len_opti,A_ub_3,A_ub_3_1)
+                # construction of the vector for equality constrain equation 
                 b_ub   =  []
-                b_ub   =  self.append_array(len_opti,[0])
+                b_ub   =  self.append_array(1,pv_generation)
+
+            if battery_usage == "Energie einspeisen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+                '''EEG System: Battery feed-in allowed'''
+                A_ub   =  []
+                A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
+                A_ub   =  self.append_constrains(len_opti,A_ub_2,A_ub_2_1)
+                    
+                # construction of the vector for equality constrain equation 
+                b_ub   =  []
+                b_ub   =  self.append_array(1,pv_generation)
+                b_ub   =  self.append_array(1,pv_generation)
+            # else: 
+            #     A_ub   =  []
+            #     A_ub_0 = [0, 0, 0, 0, 0]
+            #     A_ub   =  self.append_constrains(len_opti,A_ub_0,A_ub_0)
+            #     b_ub   =  []
+            #     b_ub   =  self.append_array(len_opti,[0])
             start_opti = time.time()
             # calculation of the Linear Optimisation
             result = linprog(c, A_eq=A_eq, b_eq=b_eq, A_ub=A_ub, b_ub=b_ub, bounds=limits)
