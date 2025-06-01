@@ -183,18 +183,14 @@ st.divider()
 # -------------------------- Calculation ---------------------------------------
 
 st.divider()
-st.markdown("""##### Auf welchen Tarif wollen Sie wechseln?""")
+st.markdown("""##### Berechnung von Ersparnissen bei einem Wechsel des Stromtarifmodels unter Angaben Ihrer Haushaltsstruktur""")
 
-col3, col4 = st.columns(2)
-
-with col3:
-    st.toggle("steuerbare Verbrauchseinrichtung", key="controllable_device")  
-
-with col4:
-    st.toggle("Ü20-Anlage AUS / EEG-Vergütung EIN", key="has_eeg")  
 
 st.markdown("""##### Lastgangauswahl über dem durchschnittlichen Stromverbrauch eines Jahres""")
 st.slider("Jährlicher Stromverbrauch (kWh)", 1000, 8000, key="consumption", step=500, help="Bitte wählen Sie ihren jährlichen Haushaltsstromverbrauch aus. Der selbstverbrauchte Photovoltaikstrom und die Batterieladung wird seperat betrachtet.") #, disabled=st.session_state.get("calculating"))
+
+st.markdown("""##### Steuerbare Verbrauchseinrichtungen nach EnWG 14a """)
+st.checkbox("Ich besitze eine steuerbare Verbrauchseinrichtung.", key="controllable_device")  
 
 # PV-Anlage
 st.markdown("""##### Angaben zur installierten Photovoltaik Anlage""")
@@ -207,7 +203,8 @@ if st.session_state.get("has_pv", False):
         st.session_state.pv_compass = "Süd"
     st.selectbox("Ausrichtung der PV-Anlage", list(direction_map.keys()), key="pv_compass") #, disabled=st.session_state.get("calculating", False))
     st.session_state.pv_direction = direction_map[st.session_state.pv_compass]
-         
+    st.toggle("Ü20-Anlage AUS / EEG-Vergütung EIN", key="has_eeg")  
+
     # EEG-Vergütung
     # st.checkbox("Ist Ihre Anlage noch innerhalb der 20 Jahren garantierter EEG-geförderter Einspeisevergütung?", key="has_eeg", help="Sollte Ihre PV-Anlage bereits ausgefördert sein, könnte sich in der Zukunft ein netzdienliches Verhalten auszahlen, welches in dem Fall der Nicht-Auswahl berechnet wird.")
     if st.session_state.get("has_eeg", False):
