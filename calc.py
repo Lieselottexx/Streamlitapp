@@ -183,7 +183,7 @@ st.divider()
 # -------------------------- Calculation ---------------------------------------
 
 st.divider()
-st.markdown("""## Berechnung von Ersparnissen bei einem Wechsel des Stromtarifmodels unter Angaben Ihrer Haushaltsstruktur""")
+st.markdown("""## Berechnung von Ersparnissen bei einem Wechsel des Stromtarifmodels unter Angaben der Haushaltsstruktur""")
 
 
 st.markdown("""##### Lastgangauswahl über dem durchschnittlichen Stromverbrauch eines Jahres""")
