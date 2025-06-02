@@ -40,11 +40,11 @@ if "calculating" not in st.session_state:
 st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
 
 st.markdown("""Diese Seite bietet eine Möglichkeit Kosteneinsparungen eines Haushalts für einen Wechsel auf einen dynamischen Stromtarif zu berechnen. 
-            Darüber hinaus werden Ergebnisse aus einer wissenschaftlichen Arbeit präsentiert, für wen sich ein ein Wechsel auf einen dynamischen Stromtarife lohnt und welche Tarifmodelle sich zur Kostensenkung eignen.""")
+            Darüber hinaus werden Ergebnisse aus einer wissenschaftlichen Arbeit präsentiert, für wen sich ein ein Wechsel auf einen dynamischen Stromtarif lohnt und welche Tarifmodelle sich zur Kostensenkung eignen.""")
 st.markdown("""Seit dem Jahresanfang 2025 werden vermehrt Smart-Meter-Gateways (SMGW) in Haushaltszählerschränken verbaut.
             Diese ermöglichen dem Haushalt ein Wechsel auf zeitlich variable Stromtarife, die sich sowohl an Schwankungen des Börsenstrompreises für elektrische Energie orientieren können, wie auch an zeitvariablen Netzentgelten.
             Im Folgenden werden zunächst die unterschiedlichen Stromtarif-Modelle aufgeführt sowie Hintergrundinformationen zu dem Wechsel. Bitte lesen Sie sich die folgenden Themenbereiche durch, da diese entscheidend für das Verständnis der Berechnung sind.
-            Anschließend ist ein Rechner aufgeführt, der unter Angabe von den eigenen Haushaltsstrukturen eine Abschätzung bietet, ob bei einem Wechsel unter den aktuellen Strukturen sich ein Wechsel lohnen kann.
+            Anschließend ist ein Rechner aufgeführt, der unter Angabe von den eigenen Haushaltsstrukturen eine Abschätzung bietet, ob sich unter den aktuellen Strukturen sich ein Wechsel lohnen kann.
             Auf der Seite Hintergrund Erklärungen sind Annahmen aufgeführt, die Grundlage der Berechnungsmöglichkeit sind und dort befinden sich ebenfalls Informationen zu den verwendeten Daten der Berechnung.
             """)
 st.divider()
@@ -52,10 +52,10 @@ st.divider()
 st.markdown("""##### Sie haben einen Smart-Meter-Gateway (SMGW) eingebaut bekommen oder interessieren sich dafür?""")
 with st.expander("Was ist ein Smart-Meter-Gateway und welche Funktionen bietet es?"):
     st.markdown("""
-                Ein Smart-Meter-Gateway (SMGW) gehört zur Messtechnik, die vom Messstellenbetrieb und ist ein Bauteil, was zusätzlich zum häufig genannten \"Stromzähler\" eingebaut wird. Das SMGW ist eine Kommunikationseinheit, die zum intelligenten Messsystem (iMSys) gehört, welches aus einer modernen Messeinrichtung (einem digitalen Zähler) und einem SMGW besteht.
+                Ein Smart-Meter-Gateway (SMGW) gehört zur Messtechnik, die vom Messstellenbetrieb eingebaut wird. Dies ist ein Bauteil, was zusätzlich zum häufig genannten \"Stromzähler\" eingebaut wird. Das SMGW ist eine Kommunikationseinheit, die zum intelligenten Messsystem (iMSys) gehört, welches aus einer modernen Messeinrichtung (einem digitalen Zähler) und einem SMGW besteht.
                 Diese Kommunikationseinheit empfängt Zählerdaten vom digitalen Zähler, speichert diese und kann zum Beispiel mit dem Energieversorger bezüglich der Abrechnung oder auch mit dem Netzbetreiber bezüglich Steuersignalen kommunizieren. Damit stellt der Besitz des SMGWs die Voraussetzung für eine dynamische Abrechnung dar.
-                Des Weiteren bietet es auch einen Kommunikationsweg zum Haushaltsendkunden und dessen kommunikationsfähigen Geräte. Letzteres kann über eine Steuerbox realisiert werden. Anschließend ist ein Rechner aufgeführt, der unter Angabe von den eigenen Haushaltsstrukturen eine Abschätzung bietet, ob bei einem Wechsel unter den aktuellen Strukturen sich ein Wechsel lohnen kann.
-                Auf der Seite Hintergrund Erklärungen sind Annahmen aufgeführt, die Grundlage der Berechnungsmöglichkeit sind und dort befinden sich ebenfalls Informationen zu den verwendeten Daten der Berechnung.
+                Des Weiteren bietet es auch einen Kommunikationsweg zum Haushaltsendkunden und dessen kommunikationsfähigen Geräte. Letzteres kann über eine Steuerbox realisiert werden.
+                
                 
                 :small[Quelle: Bundesnetzagentur, „Intelligente Messsysteme und moderne Messeinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/Metering/start.html. [Zugriff am: 19. Mai 2025].]""")
 
@@ -70,7 +70,7 @@ with st.expander("Warum muss ich ein Smart-Meter-Gateway bei mir einbauen lassen
                 Der Einbau von SMGW in Haushalten ist essenziell wichtig, um die elektrische Energieversorgung klimafreundlicher und zukunftssicher zu gestalten.
                 Primär bieten die Daten, die das SMGW an die Netzbetreiber bzw. Energieversorger sendet mehr Transparenz wie der Zustand der Netze und der Hausverbrauch wirklich aussieht. Die Netzbetreiber können aus den Daten ermitteln, ob es zu Überlastungen der Betriebsmittel des Netzes kommen kann und die Energieversorger können mit den Daten aus Verbrauchs- und Erzeugeranlagen besser den Haushalten die Energie vorhalten, die sie wirklich benötigen.
                 Ebenfalls können durch die Möglichkeit der zeitgenauen Abrechnung Anreize zur Lastverschiebung gesetzt werden, die wiederum den Anteil der elektrischen Energie aus erneuerbaren Erzeugeranlagen verbessern können.
-                Ebenso wichtig zur Erhaltung der Zuverlässigkeit ist die Steuerbarkeit von Erzeugeranlagen und großen Verbrauchseinrichtungen, sollte sich das Netz in einem kritischen Zustand befinden.
+                Ebenso wichtig zur Erhaltung der Zuverlässigkeit der Energieversorgung ist die Steuerbarkeit von Erzeugeranlagen und großen Verbrauchseinrichtungen, sollte sich das Netz in einem kritischen Zustand befinden.
 
                 :small[Quelle: Bundesnetzagentur, „Intelligente Messsysteme und moderne Messeinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/Metering/start.html. [Zugriff am: 19. Mai 2025].]""")
 
@@ -78,7 +78,7 @@ st.divider()
 st.markdown("""##### Was sind Dynamische Stromtarife?""")
 with st.expander("Welche Arten von dynamischen Stromtarifen gibt es?"):
     st.markdown("""
-                Neben den festen Stromtarifen können Energieversorger auch zeitlich flexible Stromtarife anbieten. Diese können sich an unterschiedlichen Modellen orientieren. Alle Stromtarife basieren mehr oder weniger dynamisch auf den Schwankungen des Börsenstrompreises. Zum einen können sich Tarife zu festen Tageszeiten auf festgelegte Preise verändern, wie beispielsweise Nachtstromtarife. Andere wiederum sind direkt mit dem Börsenstrompreis gekoppelt und passen sich an den durchschnittlichen Preis beispielsweise monatlich oder täglich an. Die im Folgenden diskutierten dynamischen Stromtarife passen sich auf die in Echtzeit gehandelten Börsenstrompreise an. Die Börsenstrompreise werden in stündlichen bzw. viertelstündlichen Auktionen gehandelt. Aktuell sind in der folgenden Berechnung für die dynamischen Stromtarife die stündlich gehandelten Börsenstrompreise der EPEX Spot Day-Ahead Auktion hinterlegt. Die Daten sind bezogen worden von der Website Energy Charts https://energy-charts.info/ am 23.01.2025. 
+                Neben den festen Stromtarifen können Energieversorger auch zeitlich flexible Stromtarife anbieten. Diese können sich an unterschiedlichen Modellen orientieren. Alle Stromtarife basieren mehr oder weniger dynamisch auf den Schwankungen des Börsenstrompreises. Zum einen können sich Tarife zu festen Tageszeiten auf festgelegte Preise verändern, wie beispielsweise Nachtstromtarife. Andere wiederum sind direkt mit dem Börsenstrompreis gekoppelt und passen sich an den durchschnittlichen Preis beispielsweise monatlich oder täglich an. Die im Folgenden diskutierten dynamischen Stromtarife passen sich auf die in Echtzeit gehandelten Börsenstrompreise an. Die Börsenstrompreise werden in stündlichen bzw. viertelstündlichen Auktionen gehandelt. Aktuell sind in der folgenden Berechnung für die dynamischen Stromtarife die stündlich gehandelte Day-Ahead Auktion der europäischen Strombörse EPEX Spot hinterlegt. Die Daten sind bezogen worden von der Website Energy Charts https://energy-charts.info/ am 23.01.2025. 
                 Da mit einem dynamischen Stromtarif ein Anreiz zur Lastverschiebung seitens des Endkunden geschaffen wird, muss seit 2025 jeder Energieversorger einen dynamischen Stromtarif anbieten. Ebenfalls können durch die Möglichkeit der zeitgenauen Abrechnung Anreize zur Lastverschiebung gesetzt werden, die wiederum den Anteil der elektrischen Energie aus erneuerbaren Erzeugeranlagen verbessern können.
                 Ebenso wichtig zur Erhaltung der Zuverlässigkeit ist die Steuerbarkeit von Erzeugeranlagen und großen Verbrauchseinrichtungen, sollte sich das Netz in einem kritischen Zustand befinden.
 
@@ -90,7 +90,7 @@ with st.expander("Welchen Nutzen erfüllen dynamische Stromtarife?"):
                 Da dynamische Stromtarife auf den Börsenstrompreisen basieren, spiegeln diese das Gleichgewicht aus Erzeugung und Verbrauch von elektrischer Energie im System wider. Dies hat den Effekt, einen monetären Anreiz für den Kunden zu bilden, wenn mehr Erzeugung aus erneuerbaren Energien vorhanden ist als von den Verbrauchern abgenommen wird.
                 Eine Verschiebung von Lasten in Zeiten niedriger Börsenstrompreise fördert die Integrität erneuerbaren Energien, spart CO2 Emissionen der Kraftwerke, die zum regulären Zeitpunkt die Energie bereitgestellt hätten, die Auslastung der Netz-Betriebsmittel in Zeiten hoher Nachfrage sinkt, so können Netzausbaumaßnahmen auf das Nötigste reduziert werden und gleichzeitig kann der Endverbraucher Kosten sparen.
 
-                Ein Wechsel auf einen dynamischen Stromtarif in Kombination mit Verbrauchsspitzen in den preislich hohen Zeitpunkten kann gleichermaßen einen Kostennachteil für den Endkunden bedeuten. Ein Wechsel auf einen dynamischen Stromtarif in Kombination mit Verbrauchsspitzen in den preislich hohen Zeitpunkten kann gleichermaßen einen Kostennachteil für den Endkunden bedeuten.
+                Ein Wechsel auf einen dynamischen Stromtarif in Kombination mit Verbrauchsspitzen in den preislich hohen Zeitpunkten kann gleichermaßen einen Kostennachteil für den Endkunden bedeuten.
 
                 Da diese individuelle Lastverschiebung nur schwer akkurat zu simulieren ist, geht die Berechnung vom Fall aus, dass der Endkunde sein Verhalten mit dem Wechsel auf einen dynamischen Stromtarif nicht verändert. Die monetären Vorteile durch eine Lastverschiebung können nach eigenem Interesse individuell abgeschätzt werden.
 
@@ -139,15 +139,15 @@ with st.expander("Was ist die Feste Einspeisevergütung für den eingespeiste el
                 """)
 with st.expander("Was ist die Direktvermarktung?"):
     st.markdown("""
-                In dem Solarpaket 1 von April 2025, in dem auch die weitere Einspeisevergütung nach 20 Jahren erweitert worden ist, ist auf eine Vereinfachung von der Direktvermarktung von kleinen Anlagen kleiner 25 kWp hingewiesen worden. Diese Art der Vermarktung von eigenerzeugten Energie bringt ähnliche Vorteile für das Energiesystem mit, die bereits für variable Bezugspreise aufgeführt sind. Je nach externem Direktvermarkter kommen unterschiedlich hohe Dienstleistungsgebühren hinzu, da die elektrische Energie manuell an der Börse gehandelt werden muss. 
-                
+                In dem Solarpaket 1 von April 2025, in dem auch die weitere Einspeisevergütung nach 20 Jahren erweitert worden ist, ist auf eine Vereinfachung von der Direktvermarktung von kleinen Anlagen kleiner 25 kWp hingewiesen worden. Bei der Direktvermarktung wird die eingespeiste Energie der PV-Anlage direkt von einem Dienstleister an der Strombörse verkauft. Eine Förderung wird dabei mit der so genannten Marktprämie umgesetzt, die auf den Börsenstrompreis hinzugerechnet wird und sicherstellt dass förderfähige Anlagen Erlöse im Bereich der festen Einspeisevergütung erhalten. Diese Art der Vermarktung von eigenerzeugten Energie bringt ähnliche Vorteile für das Energiesystem mit, die bereits für variable Bezugspreise aufgeführt sind. Je nach externem Direktvermarkter kommen unterschiedlich hohe Dienstleistungsgebühren hinzu, da die elektrische Energie manuell an der Börse gehandelt werden muss. 
+
                 In der Berechnung sind Dienstleistungskosten des Energieversorgers Luox Energy (Stand Mai 2025) mit 3% variablen Kosten einberechnet. Zu dem muss eine Gebühr von 200€ einmalig als Einrichtungsgebühr verrichtet werden.
                 
                 :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
                 """)
 with st.expander("Was ist bei einer Kombination aus Batteriespeichern und der PV-Anlage zu berücksichtigen?"):
     st.markdown("""
-                Ein weiterer Punkt im EEG ist die Behandlung von Speichern. Dieses Gesetz regelt die Einspeisevergütung der Energie, die von der Batterie ins Netz abgegeben werden kann. Das dort definierte Ausschließlichkeitsprinzip besagt dass der Speicher ausschließlich mit elektrischer Energie aus erneuerbaren Energieanlagen stammen darf und kein Netzbezug erfolgen darf, auch wenn der zugehörige Stromtarif auf 100% erneuerbaren Energien ausgelegt ist.
+                Ein weiterer Punkt im EEG ist die Behandlung von Speichern. Dieses Gesetz regelt die Einspeisevergütung der Energie, die von der Batterie ins Netz abgegeben werden kann. Das dort definierte Ausschließlichkeitsprinzip besagt, dass der Speicher ausschließlich mit elektrischer Energie aus erneuerbaren Energieanlagen stammen darf und kein Netzbezug erfolgen darf, auch wenn der zugehörige Stromtarif auf 100% erneuerbaren Energien ausgelegt ist.
 
                 :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
                 
@@ -166,9 +166,9 @@ st.markdown("""
             Die Berechnung soll dazu dienen, für sich selbst eine Einschätzung zu bekommen, ob sich ein Wechsel auf einen dynamischen Stromtarif lohnen würde.
             Die Berechnung basiert auf dem Jahresdurchschnittsverbrauch des Haushalts sowie optional auf der Erzeugung einer vorhandenen PV-Anlage, die Nutzung einer Batteriekapazität in Kombination mit einem intelligenten Heim-Energiemanagement-System (HEMS), das den Energiefluss intelligent steuern kann. Die Datengrundlage basiert auf dem Jahr 2024.
             
-            Das Ergebnis der Berechnung bezieht sich bei allen unterschiedlichen Tarifen immer auf den Vergleich der Eigenverbrauchsoptimierung, sprich einem normalen festen Stromtarif, ggf. einer festen Einspeisevergütung nach dem EEG und ggf. eine Batterie, die unter den Bedingungen kostensenkend eingesetzt wird. Der kosteneffiziente Einsatz der Batterie setzt immer ein Heim-Energiemanagement System (HEMS) voraus. Der Optimierungsalgorithmus bei der Berechnung soll immer die Kosten für den Kunden minimieren.
+            Das Ergebnis der Berechnung bezieht sich bei allen unterschiedlichen Tarifen immer auf den Vergleich der Eigenverbrauchsoptimierung, sprich einem festen Stromtarif, ggf. einer festen Einspeisevergütung nach dem EEG und ggf. einer Batterie, die unter den Bedingungen kostensenkend eingesetzt wird. Der kosteneffiziente Einsatz der Batterie setzt immer ein Heim-Energiemanagement System (HEMS) voraus. 
 
-            Die hinterlegten Lastverläufe sind durchschnittliche Lastverläufe für den ausgewählten Jahresdurchschnittsverbrauch auf der Grundlage von typischen Haushaltsverteilungen in Deutschland. Bitte betrachten Sie bei der Auswahl Ihren tatsächlichen Haushaltsverbrauch, falls bereits eine PV-Eigenverbauch stattfindet, entspricht dies nicht dem Netzbezug.
+            Die hinterlegten Lastverläufe sind durchschnittliche Lastverläufe für den ausgewählten Jahresdurchschnittsverbrauch auf der Grundlage von typischen Haushaltsverteilungen in Deutschland. Bitte betrachten Sie bei der Auswahl Ihren tatsächlichen Haushaltsverbrauch, falls bereits ein PV-Eigenverbauch stattfindet, entspricht dies nicht dem Netzbezug.
 
             Die Berechnung setzt voraus, dass sich das individuelle Verbrauchsverhalten mit dem Wechsel des Stromtarifs **nicht ändert**. Es erfolgt nur eine **optimierte** Batterienutzung und der PV-Einspeisung. Eine bewusste Verhaltensänderung in Verbindung mit einem dynamischen Stromtarif kann zu einer weiteren Ersparnis führen. Dabei sollte bewusst sein, dass im gleichen Maße ein Verhalten ungünstig zum Börsenstrompreis auch zusätzliche Kosten verursachen. Ebenfalls positiv auf Kosteneinsparungen tragen flexiblen Verbraucher gesteuert über ein HEMS bei, wie zum Beispiel Wärmepumpen und Wallboxen, die ebenfalls nicht in der Berechnung berücksichtigt werden.
             """)
@@ -179,7 +179,7 @@ st.page_link("explain.py", label="Hintergrund Erklärungen")
 st.divider()
 st.markdown(""" ##### Technischer Hinweis und Haftungsausschluss: """)
            
-st.warning("""Die auf dieser Website durchgeführten Berechnungen erfolgen auf Grundlage vereinfachter Modelle, definierter Annahmen sowie idealisierter Randbedingungen. Abweichungen zwischen den berechneten Werten und realen Gegebenheiten sind möglich und systembedingt. Die Ergebnisse dienen ausschließlich der unverbindlichen Orientierung und stellen keine belastbare Planungs- oder Entscheidungsgrundlage dar. Es wird keine Haftung für die Richtigkeit, Vollständigkeit oder Anwendbarkeit der ausgegebenen Ergebnisse übernommen. Die Nutzung erfolgt auf eigenes Risiko.
+st.warning("""Die auf dieser Website durchgeführten Berechnungen erfolgen auf Grundlage vereinfachter Modelle, definierter Annahmen sowie idealisierter Randbedingungen. Abweichungen zwischen den berechneten Werten und realen Gegebenheiten sind möglich und systembedingt. Die Ergebnisse dienen ausschließlich der unverbindlichen Orientierung und stellen keine belastbare Planungs- oder Entscheidungsgrundlage dar. Es wird keine Haftung für die Richtigkeit, Vollständigkeit oder Anwendbarkeit der ausgegebenen Ergebnisse übernommen.
 """)
 st.divider()
 # -------------------------- Calculation ---------------------------------------
