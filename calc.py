@@ -300,12 +300,17 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
                                  control.grid_power,  static_feed_in_price,  static_bonus_feed_in]
     battery_usage = st.session_state.battery_usage
 
+    if st.session_state.has_pv == 0 and st.session_state.has_battery == 1:
+        battery_alone = True
+    else:
+        battery_alone = False
+
     queue = multiprocessing.Queue()
     processes = {}
     for key in opti_dict:
         processes[key] = multiprocessing.Process(
         target=control.opimisation.select_optimisation,
-        args=(data, input_optimisation, opti_dict[key]["select"], battery_usage, queue, key)
+        args=(data, input_optimisation, opti_dict[key]["select"], battery_usage, battery_alone, queue, key)
         )
         processes[key].start()
 

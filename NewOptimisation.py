@@ -27,7 +27,7 @@ class Optimisation():
         pass
 
 
-    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, queue, num):
+    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, battery_alone, queue, num):
 
         # Do not forget to copy the data DataFrame
         '''Input self optimisation: 
@@ -64,11 +64,14 @@ class Optimisation():
         data['Dynamic Feed-in Price U20 [Cent/kWh]'] = data['Energy Price [Cent/kWh]'] - (data['Energy Price [Cent/kWh]'] * 0.03)
         data['Static Feed-in Price [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
         # if the optimisation is in the EEG Regulation:
-        if select_opti[3] == 1:
-           data['Static Feed-in Price [Cent/kWh]'] = input_optimisation[6]
-        # if the optimisation is out of the EEG Regulation
-        elif select_opti[3] == 0:
-            data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
+        if battery_alone == 1:
+            data['Static Feed-in Price [Cent/kWh]'] = 0
+        else:
+            if select_opti[3] == 1:
+                data['Static Feed-in Price [Cent/kWh]'] = input_optimisation[6]
+            # if the optimisation is out of the EEG Regulation
+            elif select_opti[3] == 0:
+                data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
 
         with open(os.path.join(self.data_path,self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nStart of the calculation of the Optimisation Number'+ str(input_optimisation[0])+ '.\n'))
