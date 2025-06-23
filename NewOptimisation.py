@@ -27,7 +27,7 @@ class Optimisation():
         pass
 
 
-    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, battery_alone, queue, num):
+    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, queue, num):
 
         # Do not forget to copy the data DataFrame
         '''Input self optimisation: 
@@ -63,15 +63,13 @@ class Optimisation():
         data['Dynamic Feed-in Price [Cent/kWh]'] = data['Dynamic Feed-in Price [Cent/kWh]'] - (data['Dynamic Feed-in Price [Cent/kWh]'] * 0.03)
         data['Dynamic Feed-in Price U20 [Cent/kWh]'] = data['Energy Price [Cent/kWh]'] - (data['Energy Price [Cent/kWh]'] * 0.03)
         data['Static Feed-in Price [Cent/kWh]'] = pd.Series(dtype=self.str_datatype)
+
         # if the optimisation is in the EEG Regulation:
-        if battery_alone == 1:
-            data['Static Feed-in Price [Cent/kWh]'] = 0
-        else:
-            if select_opti[3] == 1:
-                data['Static Feed-in Price [Cent/kWh]'] = input_optimisation[6]
-            # if the optimisation is out of the EEG Regulation
-            elif select_opti[3] == 0:
-                data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
+        if select_opti[3] == 1:
+            data['Static Feed-in Price [Cent/kWh]'] = input_optimisation[6]
+        # if the optimisation is out of the EEG Regulation
+        elif select_opti[3] == 0:
+            data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
 
         with open(os.path.join(self.data_path,self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nStart of the calculation of the Optimisation Number'+ str(input_optimisation[0])+ '.\n'))
@@ -218,7 +216,7 @@ class Optimisation():
             b_eq_cache = self.append_array(len_opti-1,[0])
             for i in range(len(b_eq_cache)): b_eq.append(b_eq_cache[i])
 
-            # if select_opti[3] == 1:
+           
             if battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
                 # construction of the Matrix for unequality constrain equation
                 '''EEG System: Battery charge from the Grid is allowed'''
@@ -238,12 +236,12 @@ class Optimisation():
                 b_ub   =  []
                 b_ub   =  self.append_array(1,pv_generation)
                 b_ub   =  self.append_array(1,pv_generation)
-            # else: 
-            #     A_ub   =  []
-            #     A_ub_0 = [0, 0, 0, 0, 0]
-            #     A_ub   =  self.append_constrains(len_opti,A_ub_0,A_ub_0)
-            #     b_ub   =  []
-            #     b_ub   =  self.append_array(len_opti,[0])
+            if select_opti[0] > 16 or select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]':
+                A_ub   =  []
+                A_ub_0 = [0, 0, 0, 0, 0]
+                A_ub   =  self.append_constrains(len_opti,A_ub_0,A_ub_0)
+                b_ub   =  []
+                b_ub   =  self.append_array(len_opti,[0])
             start_opti = time.time()
             # calculation of the Linear Optimisation
             result = linprog(c, A_eq=A_eq, b_eq=b_eq, A_ub=A_ub, b_ub=b_ub, bounds=limits)
