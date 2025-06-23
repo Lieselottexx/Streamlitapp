@@ -9,7 +9,7 @@ st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
 
 st.warning("Auf dieser Seite ist aktuell noch Baustelle!")
 
-path_pictures = r'C:\Users\lwegh\Documents\Study\MasterThesis\Streamlitapp\Bilder'
+path_pictures = r'Bilder' # C:\Users\lwegh\Documents\Study\MasterThesis\Streamlitapp\
 
 st.markdown("""EEG ohne Direktvermarktung """)
 """
