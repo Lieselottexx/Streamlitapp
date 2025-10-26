@@ -17,7 +17,7 @@ def progress_update( progress_bar, status_text, progress, text):
 
 
 
-st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """, help="Hi")
+# st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """, help="Hi")
 if "calculating" not in st.session_state:
     st.session_state.calculating            = False
     st.session_state.consumption            = 3000
