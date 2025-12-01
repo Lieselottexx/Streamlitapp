@@ -73,7 +73,7 @@ class PriceGenerator():
         for index, row in data.iterrows():
             # To get the first optimisation to behave like in real life 
             # make the price for the energy out of the grid cheaper with the time 
-            additional += 1e-8
+            additional += Param.additional
             data.at[index, "Static Electricity Price [Cent/kWh]"] = data.at[index, "Static Electricity Price [Cent/kWh]"] - additional
         # Fill the last row for 2024 New Years hour with the static price of 2023
         # Lambda Funktion macht dies unnötig da bereits nicht vorhandene Daten den Wert aus 2023 zugewiesen bekommen

@@ -24,6 +24,10 @@ import numpy as np
 
 
 ''' General Parameters '''
+# Ausschließlichkeitsprinzip des EEGs 
+battery_behaviour = "charged_from_grid"
+# battery_behaviour = "feed_in_from_battery"
+
 # Time-steps of the Data
 min_data = 15
 
@@ -60,7 +64,7 @@ data_path = '' # "C:\\Users\\lwegh\\Documents\\Study\\MasterThesis"
 battery_costs = 10 # Cent/kWh
 
 # the power with which the household can get energy from the grid
-grid_power = 11 * min_data/60 # kW * 5/60 h 
+grid_power = 22 * min_data/60 # kW * 5/60 h 
 
 # The time over how long an optimisation step should be calculated
 # how long the optimisation should be able to take a prediction into account
@@ -77,11 +81,14 @@ step_time = 12 # h
 
 ''' Energy Price Parameter '''
 # Variable costs of Tibber including:
-# Netznutzung brutto, Konzessionsabg. brutto, Stromsteuer, Offshore, KWKG, NEV Umlage, Tibber Aufschlag
-variable_costs = 11.88 + 1.571 + 2.05 + 0.816 + 0.277 + 1.558 + 2.15 
+# Netznutzung brutto, Konzessionsabg. brutto, Stromsteuer brutto, Offshore brutto, KWKG brutto, NEV Umlage brutto, Tibber Aufschlag brutto
+variable_costs = 11.88 + 1.571 + 2.44 + 0.971 + 0.330 + 1.854 + 2.559
 
 
 '''U20 Einspeisevergütung Jahresmarktwert Solar'''
 u20_feed_in_2024 = 4.624 # Jahresmarktwert Solar in 2024 
 # www.netztransparenz.de/de-de/Erneuerbare-Energien-und-Umlagen/EEG/Transparenzanforderungen/Marktprämie/Marktwertübersicht
 
+''' Beeinflussung des Verhaltens der Batterieladung bei der Eigenverbrauchsoptimierung'''
+# delta Preis pro Zeitabschnitt, Verringerung der Einspeisevergütung und des Bezugs-Strompreises
+additional = 1e-7
