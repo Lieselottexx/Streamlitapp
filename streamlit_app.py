@@ -20,7 +20,7 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Seite auswählen", ["Berechnung", "Erklärungen zum Rechner", "Erweiterte Ergebnisse"])
 
 
-st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """, help="Hi")
+# st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """, help="Hi")
 if "calculating" not in st.session_state:
     st.session_state.calculating = False
     st.session_state.consumption = 3000
@@ -264,8 +264,8 @@ for i, res in enumerate(st.session_state.results, start=1):
 # =====================================
 
 st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
-st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
-st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
+# st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
+# st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
 st.markdown("Auf dieser Seite werden alle Einstellmöglichkeiten sowie die Annahmen des Rechners erklärt. Des Weiteren sind auf dieser Seite der Optimierungsprozess und die Interpretation des Ergebnisses erklärt.")
 
 st.header("📌 Ziel der Berechnung")

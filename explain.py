@@ -2,8 +2,8 @@ import streamlit as st
 
 
 st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
-st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
-st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
+# st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
+# st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
 st.markdown("Auf dieser Seite werden alle Einstellmöglichkeiten sowie die Annahmen des Rechners erklärt. Des Weiteren sind auf dieser Seite der Optimierungsprozess und die Interpretation des Ergebnisses erklärt.")
 
 
