@@ -20,7 +20,7 @@ class Analysis():
 
 
     ''' Function to calculate the costs of the optimised load profile and the battery cycles for every year'''
-    def single_cost_batterycycle_calculation(self, data, select_opti):
+    def single_cost_batterycycle_calculation(self, data, select_opti, input_optimisation, peak_power_pv):
         result_column_names =   ['Battery Charge [kWh]', 'Battery Discharge[kWh]', 
                                 'Battery SOC', 'Supply from Grid [kWh]', 
                                 'Grid Feed-in [kWh]']
@@ -30,12 +30,19 @@ class Analysis():
         costs = pd.DataFrame(index=data.index)
         costs_of_grid_supply = data[result_column_names[3]] * (data[select_opti[5]]/100)
         payment_of_feed_in = data[result_column_names[4]] *(data[select_opti[6]]/100)
-        costs = costs_of_grid_supply - payment_of_feed_in
+        battery_usage_costs     = data[result_column_names[0]] * (Param.battery_costs / 100)                                                                                      
+        costs = costs_of_grid_supply - payment_of_feed_in + battery_usage_costs
         costs_of_grid_supply = costs_of_grid_supply.resample('1Y').sum()
         payment_of_feed_in = payment_of_feed_in.resample('1Y').sum() 
         costs = costs.resample('1Y').sum()
 
     
+        # # Direktvermarktungskosten abziehen jährlicher Anteil:
+        # if select_opti[2] == "Direktvermarktung" and (peak_power_pv > 0.9 or  input_optimisation[2] > 0.9): 
+        #     zusatzkosten = 72 if peak_power_pv < 10 else 90
+        #     costs = costs + peak_power_pv * 2 + zusatzkosten # Addieren auf die Kosten weil die nicht mit einberechnet werden aber jährlich fix existieren. Auch wenn da abziehen steht... 
+        
+        
         self.related_path_data = Param.data_path
         self.original_data_path ='Original_Data_2024'
         load_path = os.path.join(self.related_path_data, self.original_data_path, 'CO2_Emissionen')
@@ -50,7 +57,7 @@ class Analysis():
         feed_in_orig        = feed_in_orig.resample('1H').sum()
         co2_data = pd.concat([co2_data, grid_supply, feed_in_orig], axis=0)
         print(co2_data)
-        co2 = co2_data['Co2-Emissions [gCO2/kWh]'] * (grid_supply/1000) - co2_data['Co2-Emissions [gCO2/kWh]'] * (feed_in_orig/1000)
+        co2 = (co2_data['Co2-Emissions [gCO2/kWh]']/1000) * (grid_supply/1000) - (co2_data['Co2-Emissions [gCO2/kWh]']/1000) * (feed_in_orig/1000)
         co2 = co2.resample('1Y').sum() 
 
         # print(co2)

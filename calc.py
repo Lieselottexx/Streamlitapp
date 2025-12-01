@@ -261,10 +261,8 @@ else:
 # kann auch nur eine Direktvermarktung ohne EEG stattfinden. 
 # Mit 5 wird trotzdem verglichen, da sie dort nur einspeisen kann, sprich die batterie tut nix
 if st.session_state.has_pv == 0 and st.session_state.has_battery == 1:
-    if ses.controllable_device:
-        opti_numbers =[5, 17, 18, 19, 20]
-    else:
-        opti_numbers =[5, 17, 18]
+    opti_numbers =[5, 17, 18, 19, 20, 21]
+
 
 
 
@@ -315,6 +313,7 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
                                  control.battery_costs,  battery_power, 
                                  control.grid_power,  static_feed_in_price,  static_bonus_feed_in]
     battery_usage = st.session_state.battery_usage
+    peak_power_pv = st.session_state.pv_power
 
     # Falls nur eine Batterie vorhanden ist ohne PV
     # kann auch nur eine Direktvermarktung ohne EEG stattfinden. 
@@ -328,7 +327,7 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
     for key in opti_dict:
         processes[key] = multiprocessing.Process(
         target=control.opimisation.select_optimisation,
-        args=(data, input_optimisation, opti_dict[key]["select"], battery_usage, queue, key)
+        args=(data, input_optimisation, opti_dict[key]["select"], battery_usage, peak_power_pv, queue, key)
         )
         processes[key].start()
 
@@ -354,7 +353,7 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
         processes[key].join()
     
     for key in opti_dict:
-        opti_dict[key]["cost"], opti_dict[key]["co2"] = control.analysis.single_cost_batterycycle_calculation(opti_dict[key]["result"], opti_dict[key]["select"])
+        opti_dict[key]["cost"], opti_dict[key]["co2"] = control.analysis.single_cost_batterycycle_calculation(opti_dict[key]["result"], opti_dict[key]["select"], input_optimisation, peak_power_pv)
         if key == 1 or key == 5:
             origin_key = key
         else:
@@ -406,7 +405,7 @@ else:
             col2.write(f"**{opti_sel[1]}**")
             col3.write(f"**{opti_sel[2]}**")
             col4.write(f"**{round(opti_ben, 2)} €**")
-            col5.write(f"**{round(((opti_co2/1000)), 2)} kg CO2**")
+            col5.write(f"**{round((opti_co2), 2)} kg CO2**")
 
         st.markdown(":deciduous_tree: Zum Vergleich, eine Buche nimmt durchschnittlich 35 kg CO2 pro Jahr auf. ")
         st.markdown(" :small[Stiftung Unternehmen Wald, \"Wie viel Kohlendioxid (CO2) speichert der Baum bzw. der Wald\", [Online]. Verfügbar:https://www.wald.de/waldwissen/wie-viel-kohlendioxid-co2-speichert-der-wald-bzw-ein-baum/. [Zugriff am: 10. Juni 2025]. ]")

@@ -27,7 +27,7 @@ class Optimisation():
         pass
 
 
-    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, queue, num):
+    def select_optimisation(self, data , input_optimisation, select_opti, battery_usage, peak_power_pv, queue, num):
 
         # Do not forget to copy the data DataFrame
         '''Input self optimisation: 
@@ -69,7 +69,69 @@ class Optimisation():
             data['Static Feed-in Price [Cent/kWh]'] = input_optimisation[6]
         # if the optimisation is out of the EEG Regulation
         elif select_opti[3] == 0:
-            data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
+            if select_opti[0] == 21: 
+                data['Static Feed-in Price [Cent/kWh]'] = -100.0
+            else:
+                data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
+
+        additional = 0
+        for index, row in data.iterrows():
+            # To get the first optimisation to behave like in real life 
+            # make the price for the energy out of the grid cheaper with the time 
+            additional += Param.additional
+            data.at[index, 'Static Feed-in Price [Cent/kWh]'] = data.at[index, 'Static Feed-in Price [Cent/kWh]'] + additional
+
+
+
+        ''' Wenn die Bezugskosten kleiner sind als die Einspeisevergütung bezieht er und speist gleichzeitig ins Netz ein.
+            Dann sollen im 5-Minuten wechsel entweder Bezugspreis unheimlich hoch oder Einspeisevergütung niedrig gesetzt werden. 
+            Damit er physikalisch im Wechsel beziehen und Einspeisen kann, wie auch im Optimalfall ein HEMS reagieren könnte.
+            Gut analysieren ob das immer Korrekt ist.
+        ''' 
+
+        # Bedingung definieren
+        condition = (data[select_opti[5]] < data[select_opti[6]] )
+        # Index bestimmen
+        zeitpunkte = data.index[condition]
+        # Feste Werte auf die geändert werden 
+        # Eventuell auch abhängig des jeweils anderen Wertes
+        werte_bezug         = 240
+        werte_einspeisung   = 0
+
+        if select_opti[0] < 17:
+            if peak_power_pv > 0 or input_optimisation[2] > 0:
+                if (select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]') : 
+                    for i, idx in enumerate(zeitpunkte):
+                        if i % 2 == 0:
+                            # Gerade: ändere Spalte select_opti[4]
+                            data.at[idx, select_opti[5]] = werte_bezug
+                            # print("Hubba bubba", idx)
+                        else:
+                            # Ungerade: ändere Spalte select_opti[5]
+                            data.at[idx, select_opti[6]] = werte_einspeisung
+                            # print("Terätetere", idx)
+                else:
+                    for i, idx in enumerate(zeitpunkte):
+                        """Bei Charged from Grid, Einspeisung auf 0, bei Battery Feed-in Bezugspreise hoch"""
+                        if battery_usage == "charged_from_grid":
+                            data.at[idx, select_opti[6]] = werte_einspeisung
+                        elif battery_usage == "feed_in_from_battery":
+                            data.at[idx, select_opti[5]] = werte_bezug  
+                        else:
+                            print("Hubba bubba", idx)
+        else: 
+            for i, idx in enumerate(zeitpunkte):
+                if i % 2 == 0:
+                    # Gerade: ändere Spalte select_opti[4]
+                    data.at[idx, select_opti[5]] = werte_bezug
+                    # print("Hubba bubba", idx)
+                else:
+                    # Ungerade: ändere Spalte select_opti[5]
+                    data.at[idx, select_opti[6]] = werte_einspeisung
+                    # print("Terätetere", idx)
+
+
+
 
         with open(os.path.join(self.data_path,self.log_file_name), 'a') as file:
             file.write(str(str(datetime.now())+'\nStart of the calculation of the Optimisation Number'+ str(input_optimisation[0])+ '.\n'))
@@ -79,14 +141,14 @@ class Optimisation():
             file.write(str("Static feed-in Price EEG: "+ str(input_optimisation[6])+"  \n"))
             file.write(str("Static feed-in Bonus EEG: "+ str(input_optimisation[7])+"  \n\n"))
 
-        data_opti = self.optimisation(data.copy(), select_opti, input_optimisation, battery_usage, queue, num)
+        data_opti = self.optimisation(data.copy(), select_opti, input_optimisation, battery_usage, peak_power_pv, queue, num)
 
         print(data_opti)
         print(f"Die ganze Optimierung hat {(time.time()-start_function)/60} Minuten gedauert.")
         return data_opti
 
 
-    def optimisation(self, data, select_opti, input_optimisation, battery_usage, queue, num):
+    def optimisation(self, data, select_opti, input_optimisation, battery_usage, peak_power_pv, queue, num):
         # initialise the result columns of the optimisation 
         result_column_names =   ['Battery Charge [kWh]', 'Battery Discharge[kWh]', 
                                 'Battery SOC', 'Supply from Grid [kWh]', 
@@ -176,16 +238,18 @@ class Optimisation():
 
             # if select_opti[3] == 1:
             # EEG-System: Battery charge from the grid is allowed
-            A_ub_3 =   [0, 0, 0, 0, 1] # Limitation of feed-in to PV-Generation
+            A_ub_ga =   [0, 0, 0, 0, 1] # Limitation of feed-in to PV-Generation
             # previous Step
-            A_ub_3_1 = [0, 0, 0, 0, 0]
+            A_ub_ga_1 = [0, 0, 0, 0, 0]
             
             # EEG-System: Battery feed-in allowed
             A_ub_1 =   [0, -1, 0, 0, 1] # Limitation of feed-in to PV-Gen. and Battery discharge
             A_ub_2 =   [1,  0, 0, 0, 0] # Limitation of the Battery charging energy to PV-Generation
+            A_ub_3 =   [0,  0, 0, 1, 0] # Supply equal or less than Consumption
             # previous Step
             A_ub_1_1 = [0, 0, 0, 0, 0]
             A_ub_2_1 = [0, 0, 0, 0, 0]
+            A_ub_3_1 = [0, 0, 0, 0, 0]
             # elif select_opti[3] == 0:
             #     pass
             # else:
@@ -221,7 +285,7 @@ class Optimisation():
                 # construction of the Matrix for unequality constrain equation
                 '''EEG System: Battery charge from the Grid is allowed'''
                 A_ub   =  []
-                A_ub   =  self.append_constrains(len_opti,A_ub_3,A_ub_3_1)
+                A_ub   =  self.append_constrains(len_opti,A_ub_ga,A_ub_ga_1)
                 # construction of the vector for equality constrain equation 
                 b_ub   =  []
                 b_ub   =  self.append_array(1,pv_generation)
@@ -230,18 +294,26 @@ class Optimisation():
                 '''EEG System: Battery feed-in allowed'''
                 A_ub   =  []
                 A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
-                A_ub   =  self.append_constrains(len_opti,A_ub_2,A_ub_2_1)
-                    
+                A_ub_cache   =  self.append_constrains(len_opti,A_ub_2,A_ub_2_1)
+                for i in range(len(A_ub_cache)): A_ub.append(A_ub_cache[i])
+                A_ub_cache   =  self.append_constrains(len_opti,A_ub_3,A_ub_3_1)
+                for i in range(len(A_ub_cache)): A_ub.append(A_ub_cache[i])
+
                 # construction of the vector for equality constrain equation 
                 b_ub   =  []
                 b_ub   =  self.append_array(1,pv_generation)
-                b_ub   =  self.append_array(1,pv_generation)
+                b_ub_cache   =  self.append_array(1,pv_generation)
+                for i in range(len(b_ub_cache)): b_ub.append(b_ub_cache[i])
+                b_ub_cache   =  self.append_array(1,load_data)
+                for i in range(len(b_ub_cache)): b_ub.append(b_ub_cache[i])
+
             if select_opti[0] > 16 or select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]':
                 A_ub   =  []
-                A_ub_0 = [0, 0, 0, 0, 0]
-                A_ub   =  self.append_constrains(len_opti,A_ub_0,A_ub_0)
+                # Otherwise it will buy and sell energy at the same time to the grid
+                A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
                 b_ub   =  []
-                b_ub   =  self.append_array(len_opti,[0])
+                b_ub   =  self.append_array(1,pv_generation)
+
             start_opti = time.time()
             # calculation of the Linear Optimisation
             result = linprog(c, A_eq=A_eq, b_eq=b_eq, A_ub=A_ub, b_ub=b_ub, bounds=limits)

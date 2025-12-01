@@ -41,12 +41,12 @@ class Control():
         pass
 
 
-    def opti_und_cost_calc(self, data, input_optimisation, select_opti, battery_usage, queue, num):
+    def opti_und_cost_calc(self, data, input_optimisation, select_opti, battery_usage, peak_power_pv, queue, num):
         data_optimised = self.opimisation.select_optimisation(data,
                                                               input_optimisation, 
-                                                              select_opti, battery_usage, queue, num)
+                                                              select_opti, battery_usage, peak_power_pv, queue, num)
         print(data_optimised)
-        costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti)
+        costs_selected = self.analysis.single_cost_batterycycle_calculation(data_optimised, select_opti, input_optimisation, peak_power_pv)
         print(costs_selected)
         return costs_selected
     
@@ -112,6 +112,8 @@ class Control():
             select_opti = [19, c, f, 0, '19.csv', 'Static Timevariant Electricity Price [Cent/kWh]', 'Dynamic Feed-in Price U20 [Cent/kWh]']
         elif number_optimisation == 20:
             select_opti = [20, d, f, 0, '20.csv', 'Dynamic Timevariant Electricity Price [Cent/kWh]' , 'Dynamic Feed-in Price U20 [Cent/kWh]']
+        elif number_optimisation == 21:
+            select_opti = [21, d, e, 0, '21.csv', 'Dynamic Timevariant Electricity Price [Cent/kWh]' , 'Static Feed-in Price [Cent/kWh]']
         
 
 
