@@ -1,7 +1,7 @@
 [theme]
 
 # Base theme.
-base = "dark"
+# base = "dark"
 
 # Primary accent color.
 primaryColor = "#87a2b6ff"

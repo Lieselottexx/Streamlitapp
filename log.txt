@@ -22504,3 +22504,15 @@ Loaded the preprocessed Wind Data CSV Data.
 2025-12-02 16:40:56.358526
 Loaded the preprocessed Temperature Data CSV Data.
 
+2025-12-02 16:44:59.596509
+Loaded the Energy Prices.
+
+2025-12-02 16:45:00.468385
+Saved the data DataFrame to CSV!
+
+2025-12-02 16:46:39.185137
+Loaded the Energy Prices.
+
+2025-12-02 16:46:40.346282
+Saved the data DataFrame to CSV!
+
