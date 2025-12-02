@@ -22440,3 +22440,67 @@ Finished optimisation calculation.
 2025-11-30 19:31:21.701494
 Finished optimisation calculation.
 
+2025-12-02 16:13:43.752956
+Household Load Profile: 1000
+The average energy consumption of the household over one year is: 1000.0 kWh/a 
+
+2025-12-02 16:13:44.013309
+Loaded the SLP Profile.
+
+2025-12-02 16:15:05.022245
+Household Load Profile: 1000
+The average energy consumption of the household over one year is: 1000.0 kWh/a 
+
+2025-12-02 16:15:05.230621
+Loaded the SLP Profile.
+
+2025-12-02 16:15:05.232620
+0. Mode is selected!
+
+2025-12-02 16:15:06.614657
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-02 16:15:07.647137
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-02 16:15:08.667729
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-02 16:18:12.625168
+Loaded the Energy Prices.
+
+2025-12-02 16:18:13.524485
+Saved the data DataFrame to CSV!
+
+2025-12-02 16:20:49.152915
+Loaded the Energy Prices.
+
+2025-12-02 16:20:50.166618
+Saved the data DataFrame to CSV!
+
+2025-12-02 16:39:18.398669
+Household Load Profile: 4500
+The average energy consumption of the household over one year is: 4500.0 kWh/a 
+
+2025-12-02 16:39:18.697588
+Loaded the SLP Profile.
+
+2025-12-02 16:40:52.824638
+Household Load Profile: 4500
+The average energy consumption of the household over one year is: 4500.0 kWh/a 
+
+2025-12-02 16:40:53.001435
+Loaded the SLP Profile.
+
+2025-12-02 16:40:53.002435
+0. Mode is selected!
+
+2025-12-02 16:40:54.238966
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-02 16:40:55.318330
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-02 16:40:56.358526
+Loaded the preprocessed Temperature Data CSV Data.
+
