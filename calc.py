@@ -5,6 +5,7 @@ import datetime
 import NewControl as c
 import multiprocessing
 
+
 control = c.Control()
 
 
@@ -32,6 +33,15 @@ if "calculating" not in st.session_state:
     st.session_state.battery_capacity       = 3
     st.session_state.battery_usage          = "Energie einspeisen"
     st.session_state.direct_market          = False
+
+
+# Ergebnis-Speicher initialisieren
+if "result_tables" not in st.session_state:
+    st.session_state.result_tables = []
+
+if "active_result_tab" not in st.session_state:
+    st.session_state.active_result_tab = 0
+
 
 # st.write(st.session_state)
 
@@ -155,8 +165,8 @@ if "results" not in st.session_state:
 
 if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
     st.session_state.calculating = True
-
-    st.warning("Die Berechnung kann je nach Haushaltstyp  1 bis 2 Minuten dauern, bitte haben Sie Geduld.")
+    if st.session_state.calculating == True:
+        st.info("Die Berechnung kann je nach Haushaltstyp  1 bis 2 Minuten dauern, bitte haben Sie Geduld.")
     
     st.toast("Berechnung läuft")
     
@@ -242,49 +252,107 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
         print(opti_dict[key], opti_dict[key]["cost"])
     st.toast("Fertig, die Ergebnisse sind da!")
 
+
+
+
+    # Ergebnis-Daten aus opti_dict in DataFrame umwandeln
+    try:
+        benefit_rows = []
+        for key in opti_dict:
+            if "benefit" not in opti_dict[key] or key in (1, 5):
+                continue
+            
+            opti_sel = opti_dict[key].get("select", ["", "Tarif N/A", "EEG N/A"])
+            benefit_rows.append({
+                "Nr.": key,
+                "Stromtarif": opti_sel[1],
+                "Einspeisetarif": opti_sel[2],
+                "Ersparnis (€)": round(opti_dict[key]["benefit"], 2),
+                "CO2 Ersparnis (kg)": round(opti_dict[key]["co2_benefit"], 2)
+            })
+
+        # DataFrame erzeugen
+        df_results = pd.DataFrame(benefit_rows)
+
+        # Tabelle im SessionState speichern
+        st.session_state.result_tables.append(df_results)
+
+        # Neuen Tab aktiv setzen
+        st.session_state.active_result_tab = len(st.session_state.result_tables) - 1
+
+    except Exception as e:
+        st.error(f"Fehler beim Erstellen der Ergebnistabelle: {e}")
+
     st.session_state.calculating = False
+
+
 if st.button("Berechnung stoppen"):
     st.session_state.calculating = False
     st.rerun()
-# Ergebnisse anzeigen
 st.write("### Ergebnisse")
-st.markdown("""Die Ergebnisse der Berechnungen geben die Kosteneinsparung an, die angefallen wären, hätte man im Jahr 2024 den Stromtarif gewechselt. Ist das Ergebnis negativ, wären höhere Kosten angefallen bei einem Wechsel gegenüber dem festen Stromtarif in Kombination mit fester Einspeisevergütung für die ins Netz eingespeiste Energie. """)
 
-benefit_keys = [key for key in opti_dict if "benefit" in opti_dict[key]]
-header_cols = st.columns([1, 3, 3, 2, 2])
-header_cols[0].markdown("**Nr.**")
-header_cols[1].markdown("**Stromtarif**")
-header_cols[2].markdown("**Einspeisetarif**")
-header_cols[3].markdown("**Ersparnis**")
-header_cols[4].markdown("**CO2 Ersparnis**")
-if not benefit_keys:
-    st.info("Es wurden noch keine Optimierungsergebnisse berechnet.")
+if len(st.session_state.result_tables) == 0:
+    st.info("Noch keine Berechnungen durchgeführt.")
 else:
-    try:
-        # Keys sortieren nach Benefit-Wert, absteigend
-        sorted_keys = sorted(benefit_keys, key=lambda k: opti_dict[k]["benefit"], reverse=True)
+    tab_labels = [f"Berechnung {i+1}" for i in range(len(st.session_state.result_tables))]
+    active = st.session_state.active_result_tab
 
-        for key in sorted_keys:
-            if key in (1, 5):  # Diese ggf. ausblenden
-                continue
+    tabs = st.tabs(tab_labels)
 
-            opti_sel = opti_dict[key].get("select", ["", "Tarif N/A", "EEG N/A"])
-            opti_ben = opti_dict[key]["benefit"]
-            opti_co2 = opti_dict[key]["co2_benefit"]
+    for i, tab in enumerate(tabs):
+        with tab:
+            st.write(f"### Ergebnis {i+1}")
 
-            col1, col2, col3, col4, col5 = st.columns([1, 3, 3, 2, 2])
+            st.dataframe(
+                st.session_state.result_tables[i],
+                use_container_width=True
+            )
 
-            col1.write(f"**{key}.**")
-            col2.write(f"**{opti_sel[1]}**")
-            col3.write(f"**{opti_sel[2]}**")
-            col4.write(f"**{round(opti_ben, 2)} €**")
-            col5.write(f"**{round((opti_co2), 2)} kg CO2**")
+            st.markdown(
+                ":deciduous_tree: Zum Vergleich, eine Buche nimmt durchschnittlich **35 kg CO₂/Jahr** auf."
+            )
 
-        st.markdown(":deciduous_tree: Zum Vergleich, eine Buche nimmt durchschnittlich 35 kg CO2 pro Jahr auf. ")
-        st.markdown(" :small[Stiftung Unternehmen Wald, \"Wie viel Kohlendioxid (CO2) speichert der Baum bzw. der Wald\", [Online]. Verfügbar:https://www.wald.de/waldwissen/wie-viel-kohlendioxid-co2-speichert-der-wald-bzw-ein-baum/. [Zugriff am: 10. Juni 2025]. ]")
-        # Bund naturschutz hat auch auf diese Quelle verwiesen.. https://traunstein.bund-naturschutz.de/wald/baeume-pflanzen-gegen-den-klimawandel-1
-    except Exception as e:
-        st.error(f"Fehler bei der Ergebnisanzeige: {e}")
+
+
+# # Ergebnisse anzeigen
+# st.write("### Ergebnisse")
+# st.markdown("""Die Ergebnisse der Berechnungen geben die Kosteneinsparung an, die angefallen wären, hätte man im Jahr 2024 den Stromtarif gewechselt. Ist das Ergebnis negativ, wären höhere Kosten angefallen bei einem Wechsel gegenüber dem festen Stromtarif in Kombination mit fester Einspeisevergütung für die ins Netz eingespeiste Energie. """)
+
+# benefit_keys = [key for key in opti_dict if "benefit" in opti_dict[key]]
+# header_cols = st.columns([1, 3, 3, 2, 2])
+# header_cols[0].markdown("**Nr.**")
+# header_cols[1].markdown("**Stromtarif**")
+# header_cols[2].markdown("**Einspeisetarif**")
+# header_cols[3].markdown("**Ersparnis**")
+# header_cols[4].markdown("**CO2 Ersparnis**")
+# if not benefit_keys:
+#     st.info("Es wurden noch keine Optimierungsergebnisse berechnet.")
+# else:
+#     try:
+#         # Keys sortieren nach Benefit-Wert, absteigend
+#         sorted_keys = sorted(benefit_keys, key=lambda k: opti_dict[k]["benefit"], reverse=True)
+
+#         for key in sorted_keys:
+#             if key in (1, 5):  # Diese ggf. ausblenden
+#                 continue
+
+#             opti_sel = opti_dict[key].get("select", ["", "Tarif N/A", "EEG N/A"])
+#             opti_ben = opti_dict[key]["benefit"]
+#             opti_co2 = opti_dict[key]["co2_benefit"]
+
+#             col1, col2, col3, col4, col5 = st.columns([1, 3, 3, 2, 2])
+
+#             col1.write(f"**{key}.**")
+#             col2.write(f"**{opti_sel[1]}**")
+#             col3.write(f"**{opti_sel[2]}**")
+#             col4.write(f"**{round(opti_ben, 2)} €**")
+#             col5.write(f"**{round((opti_co2), 2)} kg CO2**")
+
+#         st.markdown(":deciduous_tree: Zum Vergleich, eine Buche nimmt durchschnittlich 35 kg CO2 pro Jahr auf. ")
+#         st.markdown(" :small[Stiftung Unternehmen Wald, \"Wie viel Kohlendioxid (CO2) speichert der Baum bzw. der Wald\", [Online]. Verfügbar:https://www.wald.de/waldwissen/wie-viel-kohlendioxid-co2-speichert-der-wald-bzw-ein-baum/. [Zugriff am: 10. Juni 2025]. ]")
+#         # Bund naturschutz hat auch auf diese Quelle verwiesen.. https://traunstein.bund-naturschutz.de/wald/baeume-pflanzen-gegen-den-klimawandel-1
+#     except Exception as e:
+#         st.error(f"Fehler bei der Ergebnisanzeige: {e}")
     
 
 
