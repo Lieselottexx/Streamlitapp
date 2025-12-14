@@ -251,6 +251,7 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
             # st.write(f"{benefit} = {costs_evo['2024-12-31']} - {costs_selected['2024-12-31']}")
         print(opti_dict[key], opti_dict[key]["cost"])
     st.toast("Fertig, die Ergebnisse sind da!")
+    
 
 
 
@@ -264,11 +265,10 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
             
             opti_sel = opti_dict[key].get("select", ["", "Tarif N/A", "EEG N/A"])
             benefit_rows.append({
-                "Nr.": key,
                 "Stromtarif": opti_sel[1],
                 "Einspeisetarif": opti_sel[2],
-                "Ersparnis (€)": round(opti_dict[key]["benefit"], 2),
-                "CO2 Ersparnis (kg)": round(opti_dict[key]["co2_benefit"], 2)
+                "Ersparnis": opti_dict[key]["benefit"],
+                "CO2 Ersparnis": opti_dict[key]["co2_benefit"]
             })
 
         # DataFrame erzeugen
@@ -305,7 +305,15 @@ else:
 
             st.dataframe(
                 st.session_state.result_tables[i],
-                use_container_width=True
+                row_height=70,
+                column_config= {"Ersparnis": st.column_config.NumberColumn("Ersparnis",format="%.2f€"),
+                                "CO2 Ersparnis": st.column_config.NumberColumn("CO2 Ersparnis", format="%.2f kg", 
+                                                                               help="Vergleich zu welchem CO2 Preis bezogen oder Eingespeist wurde."),
+                                "Stromtarif": st.column_config.TextColumn(help="Hier noch eine Hilfe reinschreiben?",
+                                                                          width="medium")
+                            },
+                hide_index=True
+                
             )
 
             st.markdown(
