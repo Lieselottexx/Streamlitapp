@@ -23822,3 +23822,28 @@ Finished optimisation calculation.
 2025-12-10 17:02:50.929337
 Finished optimisation calculation.
 
+2025-12-15 18:27:06.582508
+Household Load Profile: 4500
+The average energy consumption of the household over one year is: 4510.99609375 kWh/a 
+
+2025-12-15 18:27:06.701159
+Loaded the SLP Profile.
+
+2025-12-15 18:27:06.703614
+90. Mode is selected!
+
+2025-12-15 18:27:07.534486
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-15 18:27:08.294214
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-15 18:27:08.955373
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-15 18:28:10.657302
+Loaded the Energy Prices.
+
+2025-12-15 18:28:10.977715
+Saved the data DataFrame to CSV!
+

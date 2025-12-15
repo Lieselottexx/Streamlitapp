@@ -121,7 +121,7 @@ with st.container(border=True):
 
 opti_numbers = []
 ses = st.session_state
-'''Mit Direktvermarktung '''
+#'''Mit Direktvermarktung '''
 # if      not ses.has_pv and  not ses.controllable_device and not ses. has_eeg: 
 #     opti_numbers = [5, 7]
 # elif    not ses.has_pv and  not ses.controllable_device and     ses. has_eeg:
@@ -144,7 +144,7 @@ ses = st.session_state
 # if st.session_state.has_pv == 0 and st.session_state.has_battery == 1:
 #     opti_numbers =[5, 17, 18, 19, 20, 21]
 
-'''Ohne Direktvermarktung '''
+#'''Ohne Direktvermarktung '''
 if      not ses.has_pv and  not ses.controllable_device and not ses. has_eeg: 
     opti_numbers = [5, 7]
 elif    not ses.has_pv and  not ses.controllable_device and     ses. has_eeg:

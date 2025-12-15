@@ -1,5 +1,9 @@
 import streamlit as st
 
+if "calculating" in st.session_state:
+    st.markdown("Alles Super der Wechsel läuft!!!!!")
+
+
 st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
 st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
 st.markdown(""":blue[Fragen und Anregungen gerne an l.weghake@gmail.com]""")
