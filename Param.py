@@ -61,7 +61,7 @@ data_path = '' # "C:\\Users\\lwegh\\Documents\\Study\\MasterThesis"
 # '..'
 
 # Battery Costs per kWh (between 5 and 14 Cent/kWh)
-battery_costs = 10 # Cent/kWh
+battery_costs = 7 # Cent/kWh
 
 # the power with which the household can get energy from the grid
 grid_power = 22 * min_data/60 # kW * 5/60 h 

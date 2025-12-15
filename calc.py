@@ -121,6 +121,30 @@ with st.container(border=True):
 
 opti_numbers = []
 ses = st.session_state
+'''Mit Direktvermarktung '''
+# if      not ses.has_pv and  not ses.controllable_device and not ses. has_eeg: 
+#     opti_numbers = [5, 7]
+# elif    not ses.has_pv and  not ses.controllable_device and     ses. has_eeg:
+#     opti_numbers =[1, 3] 
+# elif    not ses.has_pv and      ses.controllable_device and not ses. has_eeg: 
+#     opti_numbers =[5, 7, 13, 15]
+# elif        ses.has_pv and  not ses.controllable_device and not ses. has_eeg: 
+#     opti_numbers =[5, 6, 7, 8]
+# elif        ses.has_pv and  not ses.controllable_device and     ses. has_eeg: 
+#     opti_numbers =[1, 2, 3, 4]
+# elif        ses.has_pv and      ses.controllable_device and not ses. has_eeg: 
+#     opti_numbers =[5, 6, 7, 8, 13, 14, 15, 16]
+# elif        ses.has_pv and      ses.controllable_device and     ses. has_eeg: 
+#     opti_numbers =[1, 2, 3, 4, 9, 10, 11, 12]
+# else:
+#     pass
+# Falls nur eine Batterie vorhanden ist ohne PV
+# kann auch nur eine Direktvermarktung ohne EEG stattfinden. 
+# Mit 5 wird trotzdem verglichen, da sie dort nur einspeisen kann, sprich die batterie tut nix
+# if st.session_state.has_pv == 0 and st.session_state.has_battery == 1:
+#     opti_numbers =[5, 17, 18, 19, 20, 21]
+
+'''Ohne Direktvermarktung '''
 if      not ses.has_pv and  not ses.controllable_device and not ses. has_eeg: 
     opti_numbers = [5, 7]
 elif    not ses.has_pv and  not ses.controllable_device and     ses. has_eeg:
@@ -128,21 +152,22 @@ elif    not ses.has_pv and  not ses.controllable_device and     ses. has_eeg:
 elif    not ses.has_pv and      ses.controllable_device and not ses. has_eeg: 
     opti_numbers =[5, 7, 13, 15]
 elif        ses.has_pv and  not ses.controllable_device and not ses. has_eeg: 
-    opti_numbers =[5, 6, 7, 8]
+    opti_numbers =[5, 7]
 elif        ses.has_pv and  not ses.controllable_device and     ses. has_eeg: 
-    opti_numbers =[1, 2, 3, 4]
+    opti_numbers =[1, 3]
 elif        ses.has_pv and      ses.controllable_device and not ses. has_eeg: 
-    opti_numbers =[5, 6, 7, 8, 13, 14, 15, 16]
+    opti_numbers =[5, 7,13, 15]
 elif        ses.has_pv and      ses.controllable_device and     ses. has_eeg: 
-    opti_numbers =[1, 2, 3, 4, 9, 10, 11, 12]
+    opti_numbers =[1, 3, 9, 11]
 else:
     pass
+
 
 # Falls nur eine Batterie vorhanden ist ohne PV
 # kann auch nur eine Direktvermarktung ohne EEG stattfinden. 
 # Mit 5 wird trotzdem verglichen, da sie dort nur einspeisen kann, sprich die batterie tut nix
 if st.session_state.has_pv == 0 and st.session_state.has_battery == 1:
-    opti_numbers =[5, 17, 18, 19, 20, 21]
+    opti_numbers =[5, 21]
 
 
 
@@ -165,8 +190,8 @@ if "results" not in st.session_state:
 
 if st.button("Berechnung starten", disabled=st.session_state.get("calculating", False)):
     st.session_state.calculating = True
-    if st.session_state.calculating == True:
-        st.info("Die Berechnung kann je nach Haushaltstyp  1 bis 2 Minuten dauern, bitte haben Sie Geduld.")
+    #if st.session_state.calculating == True:
+    st.info("Die Berechnung kann je nach Haushaltstyp  1 bis 2 Minuten dauern, bitte haben Sie Geduld.")
     
     st.toast("Berechnung läuft")
     
