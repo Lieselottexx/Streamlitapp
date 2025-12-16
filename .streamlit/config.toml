@@ -4,15 +4,15 @@
 base = "light"
 
 # Primary accent color.
-primaryColor = "#87a2b6ff"
+#primaryColor = "#87a2b6ff"
 
 # Background color of the app.
-backgroundColor = "#3f4b53ff"
+#backgroundColor = "#3f4b53ff"
 
 # Background color used for most interactive widgets.
-secondaryBackgroundColor = "#2d373fff"
+#secondaryBackgroundColor = "#2d373fff"
 
 # Color used for almost all text.
-textColor = "#f1ebddff"
+#textColor = "#f1ebddff"
 
 
