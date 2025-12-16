@@ -61,7 +61,7 @@ data_path = '' # "C:\\Users\\lwegh\\Documents\\Study\\MasterThesis"
 # '..'
 
 # Battery Costs per kWh (between 5 and 14 Cent/kWh)
-battery_costs = 10 # Cent/kWh
+battery_costs = 7 # Cent/kWh
 
 # the power with which the household can get energy from the grid
 grid_power = 22 * min_data/60 # kW * 5/60 h 
@@ -82,7 +82,7 @@ step_time = 12 # h
 ''' Energy Price Parameter '''
 # Variable costs of Tibber including:
 # Netznutzung brutto, Konzessionsabg. brutto, Stromsteuer brutto, Offshore brutto, KWKG brutto, NEV Umlage brutto, Tibber Aufschlag brutto
-variable_costs = 11.88 + 1.571 + 2.44 + 0.971 + 0.330 + 1.854 + 2.559
+variable_costs =  1.571 + 2.44 + 0.971 + 0.330 + 1.854 + 2.559 # 11.88 +
 
 
 '''U20 Einspeisevergütung Jahresmarktwert Solar'''
