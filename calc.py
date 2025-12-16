@@ -25,24 +25,28 @@ def progress_update( progress_bar, status_text, progress, text):
 
 
 # Stromverbrauch
-st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
+st.title("🔌 Dynamische Stromtarife")
 
-st.markdown("""Diese Seite bietet eine Möglichkeit Kosteneinsparungen eines Haushalts für einen Wechsel auf einen dynamischen Stromtarif zu berechnen. 
-            Darüber hinaus werden Ergebnisse aus einer wissenschaftlichen Arbeit präsentiert, für wen sich ein ein Wechsel auf einen dynamischen Stromtarif lohnt und welche Tarifmodelle sich zur Kostensenkung eignen.""")
+st.markdown("""Ob sich ein Wechsel auf dynamische Stromtarife für Haushalte lohnt, 
+            hängt von vielen verschiedenen Faktoren ab. Zudem gibt es die unterschiedlichsten Modelle, 
+            um den Bezugspreis zeitveränderlich zu haben. Das kann für viele intransparent wirken. """)
 
-st.markdown("""
-                Weitere Informationen zu dem Rechner erhalten Sie auf der Seite Hintergrund Erklärungen in der Seitenleiste und unterhalb auswählbar. Beachten Sie, dass laufende Berechnungen gestoppt werden, wenn die Seite gewechselt wird. """)
+st.markdown("""Diese Website soll Klarheit darüber schaffen, wie viel ein Haushalt gegenüber der normalen 
+            Tarifstruktur mindestens einsparen kann. Mindestens, da davon ausgegangen wird, dass Ihr Verbrauchsverhalten 
+            sich nicht ändert und alle erdenklichen Zusatzkosten bereits mit eingerechnet werden. Zusätzliche zeitliche 
+            Verschiebungen von bspw. Wärmepumpen oder Elektroautos 
+            sind noch nicht mit einbezogen und können bei vorteilhaftem Einsatz zusätzliche Ersparnisse bringen. """)
 with st.container(border=True):
     st.page_link("explain.py", label="Hintergrund Erklärungen")
 st.divider()
-st.markdown(""" ##### Technischer Hinweis und Haftungsausschluss: """)
+# st.markdown(""" ##### Technischer Hinweis und Haftungsausschluss: """)
            
-st.info("""Die auf dieser Website durchgeführten Berechnungen erfolgen auf Grundlage vereinfachter Modelle, definierter Annahmen sowie idealisierter Randbedingungen. Abweichungen zwischen den berechneten Werten und realen Gegebenheiten sind möglich und systembedingt. Die Ergebnisse dienen ausschließlich der unverbindlichen Orientierung und stellen keine belastbare Planungs- oder Entscheidungsgrundlage dar. Es wird keine Haftung für die Richtigkeit, Vollständigkeit oder Anwendbarkeit der ausgegebenen Ergebnisse übernommen.
-""")
-st.divider()
+# st.info("""Die auf dieser Website durchgeführten Berechnungen erfolgen auf Grundlage vereinfachter Modelle, definierter Annahmen sowie idealisierter Randbedingungen. Abweichungen zwischen den berechneten Werten und realen Gegebenheiten sind möglich und systembedingt. Die Ergebnisse dienen ausschließlich der unverbindlichen Orientierung und stellen keine belastbare Planungs- oder Entscheidungsgrundlage dar. Es wird keine Haftung für die Richtigkeit, Vollständigkeit oder Anwendbarkeit der ausgegebenen Ergebnisse übernommen.
+# """)
+# st.divider()
 # -------------------------- Calculation ---------------------------------------
 
-st.divider()
+
 st.markdown("""## Berechnung """)
 
 with st.container(border=True):
@@ -53,7 +57,7 @@ with st.container(border=True):
         1000,
         8000,
         step=500,
-        value=st.session_state.consumption,
+        # value=st.session_state.consumption,
         key="consumption",
         help=(
             "Bitte wählen Sie Ihren jährlichen Haushaltsstromverbrauch aus. "
@@ -71,6 +75,8 @@ with st.container(border=True):
         ["Stadtwerke Soest", "Westnetz", "Stadtwerke Lippstadt", "Stadtwerke Werl"],
         key="netzbetreiber",
         # disabled=not st.session_state.has_battery,
+        help="Der Netzbetreiber bestimmt die Höhe der Netzentgelte die für die  bezogenen " \
+        "elektrische Energie gezahlt werden. Im Raum Soest liegt dies bei rund 7 - 12 Cent/kWh."
         )
 
     st.checkbox(
@@ -79,9 +85,11 @@ with st.container(border=True):
         value=st.session_state.controllable_device,
         key="controllable_device",
         help=(
-            "Steuerbare Verbrauchseinrichtungen sind Geräte, die nach Januar 2024 "
-            "installiert wurden und eine Anschlussleistung über 4,2 kW besitzen. "
-            "Dies ermöglicht ggf. zeitvariable Netzentgelte."
+            "Die Auswahl ermöglicht zeitvariable Netzentgelte die ggf. zusätzlich Ersparnisse bieten. "
+            "Diese werden ermöglicht durch steuerbare Verbrauchseinrichtungen. "
+            "Das können die aufgezählten Gerätetypen sein, die seit Januar 2024, mit einer "
+            "Leistung > 4,2 kW in Betrieb genommen wurden."
+
         ),
     )
 
@@ -181,7 +189,10 @@ with st.container(border=True):
 
     st.checkbox("Ich möchte die Direktvermarktung an der Strombörse der ins Netz eingespeisten Energie in Betracht ziehen.", 
                 value=st.session_state.direct,
-                key="direct"
+                key="direct",
+                help="Erzeugungsanlagen oder Batteriespeicher haben die Möglichkeit zum " \
+                "Bösenstrompreis Energie ins Netz einzuspeisen, und können so von den Schwankungen " \
+                "des Bösenstrompreises profitieren. "
                 )
 
 
@@ -263,6 +274,11 @@ st.divider()
 # Berechnung starten
 if "results" not in st.session_state:
     st.session_state.results = []
+
+
+
+st.markdown("""Die Berechnung wird durchgeführt mit Daten über das gesamte Jahr 2024. """)
+
 
 
 
@@ -465,9 +481,9 @@ if st.button("Berechnung starten", disabled=st.session_state.get("calculating", 
     st.session_state.calculating = False
 
 
-if st.button("Berechnung stoppen"):
-    st.session_state.calculating = False
-    st.rerun()
+# if st.button("Berechnung stoppen"):
+#     st.session_state.calculating = False
+#     st.rerun()
 
 
 def format_setting_value(key, value):
@@ -519,11 +535,11 @@ else:
                     else:
                         st.dataframe(
                             display_df,
-                            # row_height=70,
+                            row_height=70,
                             column_config={
                                 "Ersparnis": st.column_config.NumberColumn("Ersparnis", format="%.2f €"),
                                 "CO2 Ersparnis": st.column_config.NumberColumn("CO₂ Ersparnis", format="%.2f kg", help="Hier eine Hilfe."),
-                                # "Stromtarif": st.column_config.TextColumn(width="medium"),
+                                "Stromtarif": st.column_config.TextColumn(width="medium"),
                                 # "Batterienutzung": st.column_config.TextColumn(width="small")
                             },
                             hide_index=True,
@@ -582,8 +598,58 @@ else:
 
                 
 
-                
 
+st.divider()
+st.write("### Informationen zu den Tarif-Optionen")
+with st.expander("Dynamische Stromtarife"):
+    st.markdown("""Wie jeder feste Stromtarif auch besteht auch ein dynamischer Stromtarif 
+                immer aus einem monatlichen Fixpreis und einem variablen Anteil je kWh 
+                elektrischer Energie. Nur der variable Anteil verändert sich dynamisch mit den 
+                Schwankungen des Börsenstrompreises. """)
+    st.markdown("""Der Börsenstrompreis bezieht sich in diesem Fall auf einen stündlich 
+                gehandelten Preis. Für den Energieversorger wird, in diesem Fall Tibber, 
+                wird eine monatliche Gebühr von 5,99 € und einem variablen Anteil von 
+                2,16 Cent/kWh angenommen (Preisblatt Jan. 2025).
+                """)
+with st.expander("Zeitvariable Netzentgelte"):
+    st.markdown("""Zu dem fixen Anteil des Strompreises gehören die Netzentgelte, 
+                Konzessionsabgaben, Stromsteuer, Offshore-Umlage, KWKG-Umlage, NEV-Umlage 
+                und ein energieversorger-spezifischer Aufschlag. Zur Entschädigung der 
+                Steuerungsmöglichkeit von bestimmten Verbrauchseinrichtungen 
+                erhält der Haushalt Netzentgeltreduzierungen. Neben pauschalen Reduzierungen 
+                gibt es zusätzlich die Option zu zeitvariablen Netzentgelten. Dieses Modul ist 
+                wählbar seit April 2025. Die Netzbetreiber können selbst ein dreistufigen 
+                Netzentgeltplan bestimmen. Dabei müssen sich in 24 h mindestens einmal 
+                ein Hochtarif, Standardtarif und Niedrigtarif wiederholen. """)
+
+    st.markdown("""Am Beispiel des Netzbetreibers Westnetz liegt der Standardtarif 
+                bei 11,88 Cent/kWh. Mit zeitvariablen Netzentgelten ist ein Niedrigtarif 
+                von 0 - 6 Uhr von 1,19 Cent/kWh und ein Hochtarif zwischen 15 - 20 Uhr 
+                von 17,75 Cent/kWh für 2025 festgelegt worden. Zu jeder anderen Zeit wird 
+                der Standardtarif berechnet. Beispielsweise eine Kombination aus Batteriespeicher 
+                und PV-Anlage kann den Netzbezug des Haushalts zeitlich passend verschieben.
+                """)
+with st.expander("Direktvermarktung"):
+    st.markdown("""Die Direktvermarktung bietet neben der üblichen festen Einspeisevergütung 
+                die Option, zu Börsenstrompreisen einzuspeisen. Eine Förderung wird dabei mit der 
+                so genannten Marktprämie umgesetzt, die auf den Börsenstrompreis hinzugerechnet wird
+                 und sicherstellt, dass förderfähige Anlagen Erlöse im Bereich der festen 
+                Einspeisevergütung erhalten. Hinzu kommen Dienstleistungskosten, in der 
+                Berechnung beispielhaft von Energieversorgers Luxor Energy (Stand Mai 2025) 
+                mit 3% variablen Kosten und einem fixen Anteil in Abhängigkeit von der Größe 
+                der PV-Anlage zwischen 74 € und 130 € pro Jahr eingerechnet. """)
+with st.expander("Batterieverhalten zum Netz"):
+    st.markdown("""Speicher in Kombination mit förderfähigen Erneuerbarer Energien-Anlagen 
+                dürfen aktuell wählen ob die Batterien ausschließlich aus dem Netz beziehen, 
+                oder ausschließlich ins Netz mit EEG-Vergütung einspeisen dürfen. Die jeweils 
+                profitablere Option wird in der Ergebnistabelle aufgelistet, wobei ohne 
+                Direktvermarktung aktuell immer die Option der Speicherung des Netzbezugs 
+                profitabler ist. """)
+
+    st.markdown("""In der Direktvermarktung ohne die Marktprämie können die Batterien sowohl 
+                aus dem Netz beziehen, wie auch einspeisen. In Zukunft soll dies auch mit 
+                der Marktprämie möglich sein. 
+                """)
 
 # # Ergebnisse anzeigen
 # st.write("### Ergebnisse")

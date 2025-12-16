@@ -28514,3 +28514,114 @@ Finished optimisation calculation.
 2025-12-16 13:19:15.122543
 Finished optimisation calculation.
 
+2025-12-16 17:14:00.243080
+Household Load Profile: 5000
+The average energy consumption of the household over one year is: 5975.8212890625 kWh/a 
+
+2025-12-16 17:14:00.283602
+Loaded the SLP Profile.
+
+2025-12-16 17:14:00.284602
+180. Mode is selected!
+
+2025-12-16 17:14:00.668503
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-16 17:14:01.050098
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-16 17:14:01.394007
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-16 17:14:50.389431
+Household Load Profile: 3000
+The average energy consumption of the household over one year is: 2993.950927734375 kWh/a 
+
+2025-12-16 17:14:50.433415
+Loaded the SLP Profile.
+
+2025-12-16 17:14:50.434415
+180. Mode is selected!
+
+2025-12-16 17:14:50.815252
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-16 17:14:51.162534
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-16 17:14:51.510710
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-16 17:14:57.267622
+Loaded the Energy Prices.
+
+2025-12-16 17:14:57.593032
+Saved the data DataFrame to CSV!
+
+2025-12-16 17:14:57.618040
+Loaded the dynamic energy prices.
+
+2025-12-16 17:15:01.130576
+Loaded the static energy prices.
+
+2025-12-16 17:15:01.150576
+Loaded the time variable Netzentgelte.
+
+2025-12-16 17:15:01.159587
+Saved the data DataFrame to CSV as opti_input!
+
+2025-12-16 17:15:51.853553
+Loaded the Energy Prices.
+
+2025-12-16 17:15:52.224681
+Saved the data DataFrame to CSV!
+
+2025-12-16 17:15:52.260130
+Loaded the dynamic energy prices.
+
+2025-12-16 17:15:55.728089
+Loaded the static energy prices.
+
+2025-12-16 17:15:55.741102
+Loaded the time variable Netzentgelte.
+
+2025-12-16 17:15:55.750629
+Saved the data DataFrame to CSV as opti_input!
+
+2025-12-16 17:53:04.910996
+Household Load Profile: 2500
+The average energy consumption of the household over one year is: 2535.72021484375 kWh/a 
+
+2025-12-16 17:53:04.947003
+Loaded the SLP Profile.
+
+2025-12-16 17:53:04.948015
+180. Mode is selected!
+
+2025-12-16 17:53:05.286767
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-16 17:53:05.617354
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-16 17:53:05.942193
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-16 17:53:57.617716
+Loaded the Energy Prices.
+
+2025-12-16 17:53:58.045131
+Saved the data DataFrame to CSV!
+
+2025-12-16 17:53:58.070134
+Loaded the dynamic energy prices.
+
+2025-12-16 17:54:01.467181
+Loaded the static energy prices.
+
+2025-12-16 17:54:01.481188
+Loaded the time variable Netzentgelte.
+
+2025-12-16 17:54:01.490176
+Saved the data DataFrame to CSV as opti_input!
+

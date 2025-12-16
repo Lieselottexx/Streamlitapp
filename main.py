@@ -14,7 +14,7 @@ if __name__ == "__main__":
         DEFAULTS = {
         "calculating": False,
         "consumption": 3000,
-        "controllable_device": False,
+        "controllable_device": True,
         "dyn_cost": False,
         "has_pv": False,
         "pv_power": 5,
