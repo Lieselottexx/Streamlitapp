@@ -48,7 +48,7 @@ st.divider()
 
 
 st.markdown("""## Berechnung """)
-
+st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """)
 with st.container(border=True):
     st.markdown("##### Jährlicher Stromverbrauch")
 
