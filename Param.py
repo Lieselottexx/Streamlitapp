@@ -82,7 +82,7 @@ step_time = 12 # h
 ''' Energy Price Parameter '''
 # Variable costs of Tibber including:
 # Netznutzung brutto, Konzessionsabg. brutto, Stromsteuer brutto, Offshore brutto, KWKG brutto, NEV Umlage brutto, Tibber Aufschlag brutto
-variable_costs = 11.88 + 1.571 + 2.44 + 0.971 + 0.330 + 1.854 + 2.559
+variable_costs =  1.571 + 2.44 + 0.971 + 0.330 + 1.854 + 2.559 # 11.88 +
 
 
 '''U20 Einspeisevergütung Jahresmarktwert Solar'''
