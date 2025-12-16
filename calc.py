@@ -18,24 +18,21 @@ def progress_update( progress_bar, status_text, progress, text):
 
 
 
-
-
-
-# st.write(st.session_state)
-
-
 # Stromverbrauch
-st.title("🔌 Dynamische Stromtarife")
+st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
 
-st.markdown("""Ob sich ein Wechsel auf dynamische Stromtarife für Haushalte lohnt, 
-            hängt von vielen verschiedenen Faktoren ab. Zudem gibt es die unterschiedlichsten Modelle, 
-            um den Bezugspreis zeitveränderlich zu haben. Das kann für viele intransparent wirken. """)
+"""
+Ob sich ein Wechsel auf dynamische Stromtarife für Haushalte lohnt, 
+hängt von vielen verschiedenen Faktoren ab. Zudem gibt es die unterschiedlichsten Tarifmodelle, 
+um den Bezugspreis zeitveränderlich zu nutzen. Dies kann in Summe für viel Intransparenz sorgen.
 
-st.markdown("""Diese Website soll Klarheit darüber schaffen, wie viel ein Haushalt gegenüber der normalen 
-            Tarifstruktur mindestens einsparen kann. Mindestens, da davon ausgegangen wird, dass Ihr Verbrauchsverhalten 
-            sich nicht ändert und alle erdenklichen Zusatzkosten bereits mit eingerechnet werden. Zusätzliche zeitliche 
-            Verschiebungen von bspw. Wärmepumpen oder Elektroautos 
-            sind noch nicht mit einbezogen und können bei vorteilhaftem Einsatz zusätzliche Ersparnisse bringen. """)
+Diese Website soll Ihnen einen Überblick über die verschiedenen Möglichkeiten geben. 
+Mithilfe des Berechnungstools soll aufzeigt werden, wie viel ein Haushalt 
+gegenüber der normalen Tarifstruktur mindestens einsparen könnte. 
+Die daraus resultiurenden Ergebnisse können Ihnene einen Überblick ermöglichen, 
+welche Auswirkungen die einzelönen Tarifmodelle in kombination mit Ihrem individuellem Haushalt haben.
+"""
+
 with st.container(border=True):
     st.page_link("explain.py", label="Hintergrund Erklärungen")
 st.divider()
@@ -57,7 +54,7 @@ with st.container(border=True):
         1000,
         8000,
         step=500,
-        # value=st.session_state.consumption,
+        value=st.session_state.consumption,
         key="consumption",
         help=(
             "Bitte wählen Sie Ihren jährlichen Haushaltsstromverbrauch aus. "
@@ -75,20 +72,23 @@ with st.container(border=True):
         ["Stadtwerke Soest", "Westnetz", "Stadtwerke Lippstadt", "Stadtwerke Werl"],
         key="netzbetreiber",
         # disabled=not st.session_state.has_battery,
-        help="Der Netzbetreiber bestimmt die Höhe der Netzentgelte die für die  bezogenen " \
+        help="Der Netzbetreiber bestimmt die Höhe der Netzentgelte, die im Strompreis enthalten sind, die von Ihnen für die bezogenen " \
         "elektrische Energie gezahlt werden. Im Raum Soest liegt dies bei rund 7 - 12 Cent/kWh."
         )
 
     st.checkbox(
         "Ich besitze eine Wärmepumpe, einen Batteriespeicher oder eine Wallbox "
-        "als steuerbare Verbrauchseinrichtung.",
+        "als sogenannte steuerbare Verbrauchseinrichtung.",
         value=st.session_state.controllable_device,
         key="controllable_device",
         help=(
-            "Die Auswahl ermöglicht zeitvariable Netzentgelte die ggf. zusätzlich Ersparnisse bieten. "
-            "Diese werden ermöglicht durch steuerbare Verbrauchseinrichtungen. "
-            "Das können die aufgezählten Gerätetypen sein, die seit Januar 2024, mit einer "
-            "Leistung > 4,2 kW in Betrieb genommen wurden."
+            """Steuerbare Verbrauchseinrichtungen können die aufgezählten Gerätetypen sein, die seit Jan. 2024
+            mit einer Leistung größer 4,2 kW in Betrieb genommen wurden.
+            Diese steuerbaren Verbrauchseinrichtungen ermöglichen die Nutzung zeitvariable Netzentgelte, die ggf. zusätzlich Ersparnisse bieten. """
+            # "Die Auswahl ermöglicht  "
+            # "Diese werden ermöglicht durch steuerbare Verbrauchseinrichtungen. "
+            # "Das können die aufgezählten Gerätetypen sein, die seit Januar 2024, mit einer "
+            # "Leistung > 4,2 kW in Betrieb genommen wurden."
 
         ),
     )
@@ -277,10 +277,19 @@ if "results" not in st.session_state:
 
 
 
-st.markdown("""Die Berechnung wird durchgeführt mit Daten über das gesamte Jahr 2024. """)
+"""
+Die Berechnung wird mit einem Datensatz aus dem gesamten Jahr 2024 durchgeführt. 
+Die darin enthaltene Daten beinhalten zum Beispiel das Wetter und den Börsenstrompreis des gesamten Jahres.
+
+Das Ergbenis der Berechnung zeigt die minimale Ersparnis, da alle erdenklichen Zusatzkosten bereits eingerechnet werden 
+und sich Ihr Verbrauchsverhalten nicht ändert.
+Zusätzliche zeitliche Verschiebungen des Verbrauchsverhaltens, bspw. Wärmepumpen oder Elektroautos,
+sind noch nicht mit einbezogen und können bei vorteilhaftem Einsatz zusätzliche Ersparnisse bringen.
+
+"""
 
 
-
+st.divider()
 
 
 if st.button("Berechnung starten", disabled=st.session_state.get("calculating", True)):
@@ -602,12 +611,12 @@ else:
 st.divider()
 st.write("### Informationen zu den Tarif-Optionen")
 with st.expander("Dynamische Stromtarife"):
-    st.markdown("""Wie jeder feste Stromtarif auch besteht auch ein dynamischer Stromtarif 
+    st.markdown("""Wie jeder feste Stromtarif besteht auch ein dynamischer Stromtarif 
                 immer aus einem monatlichen Fixpreis und einem variablen Anteil je kWh 
                 elektrischer Energie. Nur der variable Anteil verändert sich dynamisch mit den 
                 Schwankungen des Börsenstrompreises. """)
     st.markdown("""Der Börsenstrompreis bezieht sich in diesem Fall auf einen stündlich 
-                gehandelten Preis. Für den Energieversorger wird, in diesem Fall Tibber, 
+                gehandelten Preis. Für den Energieversorger, in diesem Fall Tibber, 
                 wird eine monatliche Gebühr von 5,99 € und einem variablen Anteil von 
                 2,16 Cent/kWh angenommen (Preisblatt Jan. 2025).
                 """)
@@ -634,16 +643,16 @@ with st.expander("Direktvermarktung"):
                 die Option, zu Börsenstrompreisen einzuspeisen. Eine Förderung wird dabei mit der 
                 so genannten Marktprämie umgesetzt, die auf den Börsenstrompreis hinzugerechnet wird
                  und sicherstellt, dass förderfähige Anlagen Erlöse im Bereich der festen 
-                Einspeisevergütung erhalten. Hinzu kommen Dienstleistungskosten, in der 
-                Berechnung beispielhaft von Energieversorgers Luxor Energy (Stand Mai 2025) 
-                mit 3% variablen Kosten und einem fixen Anteil in Abhängigkeit von der Größe 
-                der PV-Anlage zwischen 74 € und 130 € pro Jahr eingerechnet. """)
+                Einspeisevergütung erhalten. Hinzu kommen Dienstleistungskosten, die in der 
+                Berechnung beispielhaft von dem Energieversorgers Luxor Energy  
+                mit 3% variablen Kosten und einem fixen Anteil (in Abhängigkeit von der Größe 
+                der PV-Anlage) zwischen 74 € und 130 € pro Jahr eingerechnet werden. (Stand Mai 2025)""")
 with st.expander("Batterieverhalten zum Netz"):
-    st.markdown("""Speicher in Kombination mit förderfähigen Erneuerbarer Energien-Anlagen 
+    st.markdown("""Speicher in Kombination mit förderfähigen Erneuerbaren Energie-Anlagen 
                 dürfen aktuell wählen ob die Batterien ausschließlich aus dem Netz beziehen, 
                 oder ausschließlich ins Netz mit EEG-Vergütung einspeisen dürfen. Die jeweils 
-                profitablere Option wird in der Ergebnistabelle aufgelistet, wobei ohne 
-                Direktvermarktung aktuell immer die Option der Speicherung des Netzbezugs 
+                profitablere Option wird in der Ergebnistabelle aufgelistet, wobei bei fester Einspeisevergütung
+                aktuell immer die Option der Speicherung des Netzbezugs 
                 profitabler ist. """)
 
     st.markdown("""In der Direktvermarktung ohne die Marktprämie können die Batterien sowohl 
