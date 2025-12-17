@@ -339,7 +339,7 @@ with st.expander("Einspeisevergütung nach EEG"):
     """)
 
 
-with st.expander("statischer und dynamischer Tarif"):
+with st.expander("Statische und dynamische Tarifoptionen"):
     st.markdown("""
                 Die Erklärung wie sich der dynamische Tarif in der Berechnung zusammensetzt ist bereits 
                 zuvor erklärt worden. Zusammenfassend besteht dieser aus dem zeitlich 
