@@ -535,7 +535,7 @@ else:
                             row_height=70,
                             column_config={
                                 "Ersparnis": st.column_config.NumberColumn("Ersparnis", format="%.2f €"),
-                                "CO2 Ersparnis": st.column_config.NumberColumn("CO₂ Ersparnis", format="%.2f kg", help="Hier eine Hilfe."),
+                                "CO2 Ersparnis": st.column_config.NumberColumn("CO₂ Ersparnis", format="%.2f kg"),
                                 "Stromtarif": st.column_config.TextColumn(width="medium"),
                                 "Batterienutzung": st.column_config.TextColumn(width="small")
                             },
@@ -547,7 +547,7 @@ else:
                             row_height=70,
                             column_config={
                                 "Ersparnis": st.column_config.NumberColumn("Ersparnis", format="%.2f €"),
-                                "CO2 Ersparnis": st.column_config.NumberColumn("CO₂ Ersparnis", format="%.2f kg", help="Hier eine Hilfe."),
+                                "CO2 Ersparnis": st.column_config.NumberColumn("CO₂ Ersparnis", format="%.2f kg"),
                                 "Stromtarif": st.column_config.TextColumn(width="medium"),
                                 # "Batterienutzung": st.column_config.TextColumn(width="small")
                             },

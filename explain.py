@@ -9,18 +9,26 @@ st.markdown("Auf dieser Seite werden alle Einstellmöglichkeiten sowie die Annah
             "Des Weiteren sind auf dieser Seite der Optimierungsprozess und die Interpretation des Ergebnisses erklärt.")
 
 
-st.markdown("""Seit dem Jahresanfang 2025 werden vermehrt Smart-Meter-Gateways (SMGW) in Haushaltszählerschränken verbaut.
-            Diese ermöglichen dem Haushalt ein Wechsel auf zeitlich variable Stromtarife, die sich sowohl an Schwankungen 
-            des Börsenstrompreises für elektrische Energie orientieren können, wie auch an zeitvariablen Netzentgelten.
-            Im Folgenden werden zunächst die unterschiedlichen Stromtarif-Modelle aufgeführt sowie Hintergrundinformationen 
-            zu dem Wechsel. Bitte lesen Sie sich die folgenden Themenbereiche durch, da diese entscheidend für das Verständnis der Berechnung sind.
-            Anschließend ist ein Rechner aufgeführt, der unter Angabe von den eigenen Haushaltsstrukturen eine 
-            Abschätzung bietet, ob sich unter den aktuellen Strukturen sich ein Wechsel lohnen kann.
-            Auf der Seite Hintergrund Erklärungen sind Annahmen aufgeführt, die Grundlage der Berechnungsmöglichkeit 
-            sind und dort befinden sich ebenfalls Informationen zu den verwendeten Daten der Berechnung.
-            """)
-st.divider()
+with st.container(border=True):
+    st.markdown("### Inhaltsverzeichnis")
+    st.markdown("""
+    - [Vorraussetzungen für den Wechsel auf einen dynamischen Tarif](#vorraussetzungen-für-den-wechsel-auf-einen-dynamischen-tarif)
+    - [Annahmen und Erklärung der Berechnung](#annahmen-und-erklärung-der-berechnung)
+    """)
 
+
+# st.markdown("""Seit dem Jahresanfang 2025 werden vermehrt Smart-Meter-Gateways (SMGW) in Haushaltszählerschränken verbaut.
+#             Diese ermöglichen dem Haushalt ein Wechsel auf zeitlich variable Stromtarife, die sich sowohl an Schwankungen 
+#             des Börsenstrompreises für elektrische Energie orientieren können, wie auch an zeitvariablen Netzentgelten.
+#             Im Folgenden werden zunächst die unterschiedlichen Stromtarif-Modelle aufgeführt sowie Hintergrundinformationen 
+#             zu dem Wechsel. Bitte lesen Sie sich die folgenden Themenbereiche durch, da diese entscheidend für das Verständnis der Berechnung sind.
+#             Anschließend ist ein Rechner aufgeführt, der unter Angabe von den eigenen Haushaltsstrukturen eine 
+#             Abschätzung bietet, ob sich unter den aktuellen Strukturen sich ein Wechsel lohnen kann.
+#             Auf der Seite Hintergrund Erklärungen sind Annahmen aufgeführt, die Grundlage der Berechnungsmöglichkeit 
+#             sind und dort befinden sich ebenfalls Informationen zu den verwendeten Daten der Berechnung.
+#             """)
+st.divider()
+st.markdown("## Vorraussetzungen für den Wechsel auf einen dynamischen Tarif")
 st.markdown("""##### Sie haben einen Smart-Meter-Gateway (SMGW) eingebaut bekommen oder interessieren sich dafür?""")
 with st.expander("Was ist ein Smart-Meter-Gateway und welche Funktionen bietet es?"):
     st.markdown("""
@@ -260,6 +268,7 @@ with st.expander("Was ist bei einer Kombination aus Batteriespeichern und der PV
                 
 
 st.divider()
+st.markdown("## Annahmen und Erklärung der Berechnung")
 st.markdown("""##### Welche Annahmen trifft die Berechnung und welche Grenzen weißt diese auf?""")
 st.markdown("""
             Die Berechnung soll dazu dienen, für sich selbst eine Einschätzung zu bekommen, 
