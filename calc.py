@@ -22,15 +22,14 @@ def progress_update( progress_bar, status_text, progress, text):
 st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
 # st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """, help="Hi")
 """
-Ob sich ein Wechsel auf dynamische Stromtarife für Haushalte lohnt, 
-hängt von vielen verschiedenen Faktoren ab. Zudem gibt es die unterschiedlichsten Tarifmodelle, 
-um den Bezugspreis zeitveränderlich zu nutzen. Dies kann in Summe für viel Intransparenz sorgen.
+Ob sich ein Wechsel auf einen dynamischen Stromtarif und zeitvariable Netzengtelte für Haushalte lohnt, 
+hängt von vielen verschiedenen Faktoren ab. Diese Website soll Sie bei der Bewertung unterstützen. 
+Das Berechnungstool zeigt Ihnen, wie viel ein Haushalt gegenüber einam gewöhnlichen Festpreis-Tarif einsparen könnte.
 
-Diese Website soll Ihnen einen Überblick über die verschiedenen Möglichkeiten geben. 
-Mithilfe des Berechnungstools soll aufzeigt werden, wie viel ein Haushalt 
-gegenüber der normalen Tarifstruktur mindestens einsparen könnte. 
-Die daraus resultiurenden Ergebnisse können Ihnene einen Überblick ermöglichen, 
-welche Auswirkungen die einzelönen Tarifmodelle in kombination mit Ihrem individuellem Haushalt haben.
+Bitte beachten Sie, dass dieses Tool noch
+in der Entwicklung ist und Fehler enthalten kann. Die Berechnung erfolgt mit historischen Strompreisen
+(aktuell für das Jahr 2024, zeitvariable Netzentgelte für 2025), die zukünftigen Strompreise können und werden abweichen.
+Genauso werden für die Struktur des Haushalt-Stromverbrauchs und die PV-Erzeugung Annahmen gemacht.
 """
 
 with st.container(border=True):
@@ -50,7 +49,7 @@ with st.container(border=True):
     st.markdown("##### Jährlicher Stromverbrauch")
 
     st.slider(
-        "Haushalts-Stromverbrauch in kWh über ein Jahr",
+        "Haushalts-Stromverbrauch in kWh über ein Jahr (Bezug aus dem Netz + eigenverbrauchter PV-Strom)",
         1000,
         8000,
         step=500,
@@ -269,11 +268,9 @@ if "results" not in st.session_state:
 Die Berechnung wird mit einem Datensatz aus dem gesamten Jahr 2024 durchgeführt. 
 Die darin enthaltene Daten beinhalten zum Beispiel das Wetter und den Börsenstrompreis des gesamten Jahres.
 
-Das Ergebnis der Berechnung zeigt die minimale Ersparnis, da alle erdenklichen Zusatzkosten bereits eingerechnet werden 
-und sich Ihr Verbrauchsverhalten nicht ändert. Beispielsweise sind die Kosten für die 
-verstärkte Nutzung der Batterie bereits mit einbezogen. 
-Zusätzliche zeitliche Verschiebungen des Verbrauchsverhaltens, bspw. Wärmepumpen oder Elektroautos,
-sind noch nicht mit einbezogen und können bei vorteilhaftem Einsatz zusätzliche Ersparnisse bringen.
+Bereits abgezogen sind die Kosten, die durch einen intensiveren Einsatz des Batteriespeichers und eine
+dadurch bedingte schnellere Alterung entstehen. Zusätzliche zeitliche Verschiebungen des Verbrauchsverhaltens, bspw. Wärmepumpen oder Elektroautos,
+sind noch nicht mit einbezogen und können zusätzliche Ersparnisse bringen.
 
 
 """
@@ -603,21 +600,19 @@ with st.expander("Dynamische Stromtarife"):
                 immer aus einem monatlichen Fixpreis und einem variablen Anteil je kWh 
                 elektrischer Energie. Nur der variable Anteil verändert sich dynamisch mit den 
                 Schwankungen des Börsenstrompreises. """)
-    st.markdown("""Der Börsenstrompreis bezieht sich in diesem Fall auf einen stündlich 
-                gehandelten Preis. Für den Energieversorger, in diesem Fall Tibber, 
-                wird eine monatliche Gebühr von 5,99 € und einem variablen Anteil von 
-                2,16 Cent/kWh angenommen (Preisblatt Jan. 2025).
-                """)
+    #st.markdown("""Der Börsenstrompreis bezieht sich in diesem Fall auf einen stündlich 
+    #            gehandelten Preis. Für den Energieversorger, in diesem Fall Tibber, 
+    #            wird eine monatliche Gebühr von 5,99 € und einem variablen Anteil von 
+    #            2,16 Cent/kWh angenommen (Preisblatt Jan. 2025).
+    #            """)
 with st.expander("Zeitvariable Netzentgelte"):
-    st.markdown("""Zu dem fixen Anteil des Strompreises gehören die Netzentgelte, 
-                Konzessionsabgaben, Stromsteuer, Offshore-Umlage, KWKG-Umlage, NEV-Umlage 
-                und ein energieversorger-spezifischer Aufschlag. Zur Entschädigung der 
-                Steuerungsmöglichkeit von bestimmten Verbrauchseinrichtungen 
+    st.markdown("""Zur Entschädigung der 
+                Steuerungsmöglichkeit von bestimmten Verbrauchseinrichtungen wie E-Auto-Wallboxen und Wärmepumpen-Heizungen 
                 erhält der Haushalt Netzentgeltreduzierungen. Neben pauschalen Reduzierungen 
-                gibt es zusätzlich die Option zu zeitvariablen Netzentgelten. Dieses Modul ist 
-                wählbar seit April 2025. Die Netzbetreiber können selbst ein dreistufigen 
-                Netzentgeltplan bestimmen. Dabei müssen sich in 24 h mindestens einmal 
-                ein Hochtarif, Standardtarif und Niedrigtarif wiederholen. """)
+                gibt es zusätzlich die Option zu zeitvariablen Netzentgelten. Dann sind die
+                Netzentgelte zu bestimmten Zeiten, in denen eine geringe Netzauslastung erwartet wird, niedriger, und
+                höher zu Zeiten hoher erwarteter Netzauslastung.
+                """)
 
     st.markdown("""Am Beispiel des Netzbetreibers Westnetz liegt der Standardtarif 
                 bei 11,88 Cent/kWh. Mit zeitvariablen Netzentgelten ist ein Niedrigtarif 
