@@ -77,7 +77,7 @@ with st.container(border=True):
         )
 
     st.checkbox(
-        "Ich besitze eine Wärmepumpe, einen Batteriespeicher oder eine Wallbox "
+        "Ich besitze eine Wärmepumpe, einen Batteriespeicher, Klimaanlage oder eine Wallbox "
         "als sogenannte steuerbare Verbrauchseinrichtung.",
         value=st.session_state.controllable_device,
         key="controllable_device",
@@ -282,9 +282,11 @@ Die Berechnung wird mit einem Datensatz aus dem gesamten Jahr 2024 durchgeführt
 Die darin enthaltene Daten beinhalten zum Beispiel das Wetter und den Börsenstrompreis des gesamten Jahres.
 
 Das Ergebnis der Berechnung zeigt die minimale Ersparnis, da alle erdenklichen Zusatzkosten bereits eingerechnet werden 
-und sich Ihr Verbrauchsverhalten nicht ändert.
+und sich Ihr Verbrauchsverhalten nicht ändert. Beispielsweise sind die Kosten für die 
+verstärkte Nutzung der Batterie bereits mit einbezogen. 
 Zusätzliche zeitliche Verschiebungen des Verbrauchsverhaltens, bspw. Wärmepumpen oder Elektroautos,
 sind noch nicht mit einbezogen und können bei vorteilhaftem Einsatz zusätzliche Ersparnisse bringen.
+
 
 """
 

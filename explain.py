@@ -11,10 +11,13 @@ st.markdown("Auf dieser Seite werden alle Einstellmöglichkeiten sowie die Annah
 
 with st.container(border=True):
     st.markdown("### Inhaltsverzeichnis")
-    st.markdown("""
-    - [Vorraussetzungen für den Wechsel auf einen dynamischen Tarif](#vorraussetzungen-für-den-wechsel-auf-einen-dynamischen-tarif)
-    - [Annahmen und Erklärung der Berechnung](#annahmen-und-erklärung-der-berechnung)
-    """)
+    st.markdown(
+        """
+        - [Voraussetzungen für den Wechsel auf einen dynamischen Tarif](#voraussetzungen)
+        - [Annahmen und Erklärung der Berechnung](#annahmen)
+        """,
+        unsafe_allow_html=True
+    )
 
 
 # st.markdown("""Seit dem Jahresanfang 2025 werden vermehrt Smart-Meter-Gateways (SMGW) in Haushaltszählerschränken verbaut.
@@ -27,8 +30,12 @@ with st.container(border=True):
 #             Auf der Seite Hintergrund Erklärungen sind Annahmen aufgeführt, die Grundlage der Berechnungsmöglichkeit 
 #             sind und dort befinden sich ebenfalls Informationen zu den verwendeten Daten der Berechnung.
 #             """)
+
+st.markdown('<a id="voraussetzungen"></a>', unsafe_allow_html=True)
 st.divider()
-st.markdown("## Vorraussetzungen für den Wechsel auf einen dynamischen Tarif")
+
+st.markdown("## Voraussetzungen für den Wechsel auf einen dynamischen Tarif")
+
 st.markdown("""##### Sie haben einen Smart-Meter-Gateway (SMGW) eingebaut bekommen oder interessieren sich dafür?""")
 with st.expander("Was ist ein Smart-Meter-Gateway und welche Funktionen bietet es?"):
     st.markdown("""
@@ -89,7 +96,7 @@ with st.expander("Welche Arten von dynamischen Stromtarifen gibt es?"):
     st.markdown("""
                 Neben den festen Stromtarifen können Energieversorger auch zeitlich flexible Stromtarife anbieten. 
                 Diese können sich an unterschiedlichen Modellen orientieren. Alle Stromtarife basieren mehr 
-                oder weniger dynamisch auf den Schwankungen des Börsenstrompreises. Zum einen können sich 
+                oder weniger dynamisch auf die Schwankungen des Börsenstrompreises. Zum einen können sich 
                 Tarife zu festen Tageszeiten auf festgelegte Preise verändern, wie beispielsweise 
                 Nachtstromtarife. Andere wiederum sind direkt mit dem Börsenstrompreis gekoppelt 
                 und passen sich an den durchschnittlichen Preis beispielsweise monatlich oder täglich an. 
@@ -121,9 +128,9 @@ with st.expander("Welchen Nutzen erfüllen dynamische Stromtarife?"):
                 Erzeugung aus erneuerbaren Energien vorhanden ist als von den Verbrauchern abgenommen wird.
                 Eine Verschiebung von Lasten in Zeiten niedriger Börsenstrompreise fördert die 
                 Integrität erneuerbaren Energien, spart CO2 Emissionen der Kraftwerke, die zum 
-                regulären Zeitpunkt die Energie bereitgestellt hätten, die Auslastung der 
-                Netz-Betriebsmittel in Zeiten hoher Nachfrage sinkt, so können Netzausbaumaßnahmen 
-                auf das Nötigste reduziert werden und gleichzeitig kann der Endverbraucher Kosten sparen.
+                regulären Zeitpunkt die Energie bereitgestellt hätten. Ebenso sinkt die Auslastung der 
+                Netz-Betriebsmittel in Zeiten hoher Nachfrage und so können Netzausbaumaßnahmen 
+                auf das Nötigste reduziert werden.
 
                 Ein Wechsel auf einen dynamischen Stromtarif in Kombination mit Verbrauchsspitzen 
                 in den preislich hohen Zeitpunkten kann gleichermaßen einen Kostennachteil für den Endkunden bedeuten.
@@ -148,8 +155,7 @@ with st.expander("Wie ist ein dynamischer Stromtarif aufgebaut?"):
                 Offshore-Umlage, KWKG-Umlage, NEV-Umlage und ein Energieversorger spezifischer Aufschlag ein. 
                 Stündlich oder viertelstündlich verändern sich die Energiekosten, die dem Börsenstrompreis 
                 entsprechen und die Mehrwertsteuer, die sich dafür ergibt. Letzteres verstärkt die Schwankungen im Endpreis erheblich.
-                In der Berechnung ist ein dynamischer Stromtarif von Tibber verwendet worden, 
-                mit Netzentgelten des Netzbetreibers Westnetz, Stand Januar 2025. Tibber erhob 
+                In der Berechnung ist ein dynamischer Stromtarif von Tibber verwendet worden Stand Januar 2025. Tibber erhob 
                 zu dem Zeitpunkt eine monatliche Gebühr von 5,99 € und einen variablen Anteil pro kWh von 2,15 Cent/kWh.
                 """)
 st.divider()
@@ -164,8 +170,9 @@ with st.expander("Warum sollen Haushaltsgeräte vom Netzbetreiber aus steuerbar 
                 bevorstehenden Lasten ausgelegt und müssen in Zukunft ausgebaut und digitalisiert werden. 
                 Daher ist es das Ziel, all diese flexiblen Verbraucher mit hoher Leistungsaufnahme vom 
                 Netzbetreiber aus steuerbar zu machen. Der Netzbetreiber darf bei einer nachgewiesenen 
-                Netzüberlastung die Leistungsaufnahme dieser Geräte reduzieren. Als Entschädigung werden 
-                die Netzentgelte für den Endkunden reduziert.
+                Netzüberlastung die Leistungsaufnahme dieser Geräte reduzieren. Als Entschädigung für 
+                die Steurungsmöglichkeit werden die Netzentgelte für den Endkunden reduziert und 
+                nach einer Steuerung ist der Netzbetreiber verpflichtet sein Netz auszubauen.
                 
                 :small[Quelle: Bundesnetzagentur, „Integration von steuerbaren Verbrauchseinrichtungen“, 
                 Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html. [Zugriff am: 21. Mai 2025].]""")
@@ -194,13 +201,6 @@ with st.expander("Welchen Nutzen kann ich aus meinen steuerbaren Verbrauchseinri
                 
                 :small[Quelle: Bundesnetzagentur, „Integration von steuerbaren Verbrauchseinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html. [Zugriff am: 21. Mai 2025].]
                 
-                In der Berechnung wird ein zeitvariables Netzentgelt von dem Verteilnetzbetreiber Westnetz verwendet. 
-                Dieser hat ein Niedertarifpreis von 1,19 Cent/kWh, ein Standardtarifpreis von 11,88 Cent/kWh 
-                und einen Hochtarifpreis von 17,75 Cent/kWh in 2025. Der festgelegte Zeitplan von Westnetz 
-                entspricht zwischen 0 – 6 Uhr den Niedertarif und zwischen 15 – 20 Uhr den Hochtarif. 
-                Zu jeder anderen Zeit wird der Standardtarif berechnet. Damit wird die Kombination aus Modul 1 und 3 zugrunde gelegt.
-                
-                :small[Quelle: Westnetz GmbH, „Preisblätter Westnetz Strom 2025“, Westnetz GmbH, 2025. [Online]. Verfügbar: https://www.westnetz.de/content/dam/revu-global/westnetz/documents/ueber-westnetz/unser-netz/netzentgelte-strom/preisblaetter-westnetz-strom-01-01-2025.pdf. [Zugriff am: 21. Mai 2025].]
                 """)
 st.divider()
 
@@ -220,9 +220,7 @@ with st.expander("Was ist die Feste Einspeisevergütung für den eingespeiste el
                 """)
 with st.expander("Was ist die Direktvermarktung?"):
     st.markdown("""
-                In dem Solarpaket 1 von April 2025, in dem auch die weitere Einspeisevergütung nach 
-                20 Jahren erweitert worden ist, ist auf eine Vereinfachung von der Direktvermarktung 
-                von kleinen Anlagen kleiner 25 kWp hingewiesen worden. Bei der Direktvermarktung wird 
+                 Bei der Direktvermarktung wird 
                 die eingespeiste Energie der PV-Anlage direkt von einem Dienstleister an der 
                 Strombörse verkauft. Eine Förderung wird dabei mit der so genannten Marktprämie umgesetzt, 
                 die auf den Börsenstrompreis hinzugerechnet wird und sicherstellt dass förderfähige 
@@ -243,31 +241,24 @@ with st.expander("Was ist bei einer Kombination aus Batteriespeichern und der PV
     st.markdown("""
                 Ein weiterer Punkt im EEG ist die Behandlung von Speichern. Dieses Gesetz regelt 
                 die Einspeisevergütung der Energie, die von der Batterie ins Netz abgegeben werden 
-                kann. Das dort definierte Ausschließlichkeitsprinzip besagt, dass der Speicher 
-                ausschließlich mit elektrischer Energie aus erneuerbaren Energieanlagen stammen 
-                darf und kein Netzbezug erfolgen darf, auch wenn der zugehörige Stromtarif 
-                auf 100% erneuerbaren Energien ausgelegt ist.
+                kann. Das dort definierte Ausschließlichkeitsprinzip besagt, dass die Batterien ausschließlich 
+                aus dem Netz beziehen, oder ausschließlich ins Netz mit EEG-Vergütung einspeisen dürfen.
+                Damit soll vermieden werden, dass Energie die aus dem Netz bezogen und 
+                gespeichert worden ist, zu höhen Einspeisevergütungen ins Netz zurückgespeist wird.
 
                 :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
                 
-                Deshalb muss in den folgenden Einstellungen bei einer Batterie und 
-                EEG-Vergütung ausgewählt werden, ob die Batterie ausschließlich aus 
-                dem Netz beziehen darf oder ausschließlich ins Netz mit EEG-Vergütung einspeisen darf.
+                Aktuell kann ein freies Verhalten von Einspeisung und Netzbezug der Batterien nur 
+                in Kombination der Direktvermarktung ohne Marktprämie genutzt werden. 
+                Damit in Zukunft die Batterien mehr Spielraum haben auf die Anreize des Strommarkts 
+                zu reagieren, soll in Zukunft das Ausschließlichkeitsprinzip für die förderfähige 
+                Direktvermarktung angepasst werden. 
                 
-                :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „FAQs zum Solarpaket I“, BMWK, [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/FAQ/Solarpaket/faq-solarpaket.html. [Zugriff am: 21. Mai 2025].]
-                
-                Die Direktvermarktung kann auch ohne die Marktprämie des EEGs in Anspruch 
-                genommen werden, in direkt zu Börsenstrompreisen die Energie gehandelt wird. 
-                Darunter kann auch eine Batterie ohne PV-Anlage oder eine Altanlage Ü20 mit 
-                Batteriespeicher wirtschaftlich betrieben werden. Dabei hat der Speicher die 
-                Möglichkeit frei ein- und auszuspeisen und damit auch netzdienlich betrieben werden.
                 """)
-                # Um die Batteriespeicher in Haushalten in Zukunft netzdienlich einsetzen zusetzen wird über die Definition des Ausschließlichkeitsprinzips diskutiert. Dies würde zusätzliche Freiheiten in der Nutzung ermöglichen, die in der folgenden Berechnung mit einfließen können. Eine alternative (Worst-Case) Betrachtung für Altanlagen die dem aktuell denklichen netzdienlichen Gedanken verfolgt, also Anlage die bereits 20 Jahre eine Einspeisevergütung gefördert aus dem EEG erhaltben haben, könnte sein zum zeitlich aktuellen Börsenstrompreis einzuspeisen. Diese Betrachtung kann ebenfalls in der Berechnung ausgewählt werden. Diese Betrachtung dient dazu abzuschätzen in wie fern Aufdach PV-Anlagen von Privatbesitzern im Markt stehen und ohne Förderungen auskommen können. (Naja vergleich bezieht sich noch immer auf Einspeisevergütung… nicht abschätzbar grade)
                 
-                # :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
-                
-
+st.markdown('<a id="annahmen"></a>', unsafe_allow_html=True)
 st.divider()
+
 st.markdown("## Annahmen und Erklärung der Berechnung")
 st.markdown("""##### Welche Annahmen trifft die Berechnung und welche Grenzen weißt diese auf?""")
 st.markdown("""
@@ -284,9 +275,8 @@ st.markdown("""
             Bedingungen kostensenkend eingesetzt wird. Der kosteneffiziente Einsatz der Batterie 
             setzt immer ein Heim-Energiemanagement System (HEMS) voraus. 
 
-            Die hinterlegten Lastverläufe sind durchschnittliche Lastverläufe für den 
-            ausgewählten Jahresdurchschnittsverbrauch auf der Grundlage von 
-            typischen Haushaltsverteilungen in Deutschland. Bitte betrachten Sie bei der Auswahl 
+            Die hinterlegten Lastverläufe sind synthetische Lastverläufe für den 
+            ausgewählten Jahresdurchschnittsverbrauch. Bitte betrachten Sie bei der Auswahl 
             Ihren tatsächlichen Haushaltsverbrauch, falls bereits ein PV-Eigenverbauch stattfindet, 
             entspricht dies nicht dem Netzbezug.
 
@@ -310,25 +300,22 @@ st.markdown("""Der Großteil der Annahmen und Daten die in der Berechnung verwen
 
 with st.expander("Lastgänge"):
     st.markdown("""
-    Der Lastgang ist der **Rohverbrauch des Haushalts** ohne PV und Batterie.
-    Die Lastgänge sind generiert mit dem *Load Profile Generator*, www.https://www.loadprofilegenerator.de/ developed by Noah Pflugradt.
-    Die verwendeten representativen Profile für jeden Jahresdurchschnittsverbrauch basierend auf 1000 Profilen, 
-    die eine durchschnittliche Haushaltsverteilung in Deutschland abdecken.
-    Der angegebene Verbrauch spiegelt den typischen Verbrauch von Haushalten zwischen der letzten Stufe und der angegebenen Stufe wieder. 
-    """)
+                Der Lastgang ist der **Rohverbrauch des Haushalts**.
+                Die Lastgänge sind generiert mit dem *Load Profile Generator*, https://www.loadprofilegenerator.de/ entwickelt von Noah Pflugradt.
+                Die verwendeten representativen Profile für jeden Jahresdurchschnittsverbrauch ist mit diesem Tool erstellt worden.
+                """)
 
 with st.expander("Standardlastprofil (SLP)"):
     st.markdown("""
                 Das Standardlastprofil (SLP) wird vom Energieversorgungsunternehmen, 
                 für jeden Haushalt ohne Lastgangmessung, verwendet und bestimmt die
-                 Menge der Beschaffung der Energie zu jedem Zeitpunkt im Jahr.
+                Menge der Beschaffung der Energie zu jedem Zeitpunkt im Jahr.
                 Damit beeinflusst das SLP den Preis des festen Stromtarifs. 
-                Das bisher verwendete Standardlastprofil basiert auf dem Verbrauchsverhalten vor dem Jahr 2000. 
-                Im März 2025 sind neue Standardlastprofile des BDEWs Veröffentlicht worden. 
-                Diese basieren nicht nur auf die veränderten Verhaltensweisen sondern sind auch seperate 
-                SLP für Haushalte mit PV-Anlagen und mit PV-Batterie-Kombinationen erstellt worden. 
-                Welchen Einfluss die unterschiedlichen SLPs auf das Ergebnis der Berechnung 
-                hat wird auf der Seite der Erweiterten Ergebnisse dargestellt. 
+                Das bisher für Haushalte verwendete Standardlastprofil basiert auf dem Verbrauchsverhalten vor dem Jahr 2000. 
+                Im März 2025 sind neue Standardlastprofile des BDEWs veröffentlicht worden und werden in dieser Berechnung 
+                bereits genutzt. 
+                Diese basieren nicht nur auf den veränderten Verhaltensweisen, sondern auch beziehen die 
+                haushalts-individuellen PV-Anlagen und Batteriespeicher mit ein.
                 """)
 
 with st.expander("PV-Erzeugung"):
@@ -337,43 +324,40 @@ with st.expander("PV-Erzeugung"):
                 und den angegebenen Daten aus Leistung und Ausrichtung berechnet. Die Wetterdaten stammen 
                 direkt vom Deutschen Wetterdienst aus einer Station in Werl. Diese Daten werden mit einer 
                 Python-Bibliothek, der **PV-Lib**-Bibliothek, https://pvlib-python.readthedocs.io, zu einem 
-                Erzeugungsprofil der entsprechenden Anlage weiterverarbeitet. 
-    Noch raussuchen:
-    - Konservativer Jahresdruchschnittsertrag in Südausrichtung von 700–800 kWh/kWp
-    
+                Erzeugungsprofil der entsprechenden Anlage weiterverarbeitet.    
     """)
 
+    # Noch raussuchen:
+    # - Konservativer Jahresdruchschnittsertrag in Südausrichtung von 700–800 kWh/kWp
 with st.expander("Einspeisevergütung nach EEG"):
     st.markdown("""
                 Die Einspeisevergütung ist seit der ersten EEG-Novelle 2000 festgelegt. Seit 2009 können PV-Anlagen in 
                 Teileinspeisung betrieben werden und die selbsterzeugte elektrische Energie 
                 kann direkt vom Haushalt verbraucht werden.
-                Die feste Einspeisevergütung ist für den Installationszeitraum von Janunar 2012 bis 
+                Die feste Einspeisevergütung ist für den Installationszeitraum von Janunar 2009 bis 
                 Juli 2025 in der Berechnung hinterlegt.
-                Hinterlegt sind Einspeisevergütungen für PV-Anlagen die als Teileinspeisungsanlage gemeldet sind 
-                und bei Unterscheidung die unter 10kWp liegen. Muss noch angepast werden im Code, 
-                dann kann dieser Absatz auch ganz raus!!!!
     """)
 
 
 with st.expander("statischer und dynamischer Tarif"):
     st.markdown("""
                 Die Erklärung wie sich der dynamische Tarif in der Berechnung zusammensetzt ist bereits 
-                auf der Seite Berechnung erklärt worden. Zusammenfassend besteht dieser aus dem zeitlich 
+                zuvor erklärt worden. Zusammenfassend besteht dieser aus dem zeitlich 
                 variablen Börsenstrompreis mit Steuern, Abgaben und einem Zuschlag des Energieversorgers. 
 
                 Ein fester Stromtarif besteht im Wesentlichen aus den gleichen Komponenten, nur dass in 
                 dem Fall der Energieversorger die Energie nach dem Standardlastprofil möglichst kostengünstig 
                 beschafft. Im Mittel spiegeln die festen Tarife die Korrelation aus dem SLP und dem Börsenstrompreis wider, 
                 eventuell mit etwas Zeitverzögerung da die Energieversorger diese Anpassungen nur träge vornehmen. 
-                Für die Berechnung ist der dynamische Stromtarif mit dem SLP zeitlich übernander gelegt worden und 
-                ein Jahresmittel für den festen Strompreis gebildet worden.
+                Für die Berechnung des festen Stromtarifs wird der dynamische Stromtarif mit dem SLP zeitlich übernander gelegt und 
+                ein Jahresmittel gebildet .
 
-                Da die Fixkosten der Stromtarife auf die Menge der bezogenen Energie umgerechnet werden müssten 
-                und bei den unterschiedlichen Optimierung unterschiedlich viel Energie bezogen wird, 
-                könnten diese eine Ungenauigkeit ins Ergebnis bringen. Aufgrund dessen wird nur 
-                die Differenz der Kosten, bzw. die Einsparungen betrachtet und die Fixkosten 
-                aus der Berechnung außen vor gelassen. 
+                Die Fixkosten beider Tarifoptionen sind identisch und werden in der Berechnung vernachlässigt, 
+                da das Ergebnis die Differenzkosten beschreibt. 
+
+                Die zeitvariablen Netzentgelte und standard Netzentgelte für die auswählbaren Netzbetreiber sind den 
+                Preisblättern von 2025 des jeweiligen Netzbetreibers entnommen worden. Zufinden sind diese unter
+                dem Stichpunkt Modul 3 nach § 14a EnWG. 
                 """)
 
 
@@ -383,36 +367,38 @@ st.markdown("""
             welches die Kosten für den Endkunden minimiert. Dafür ist die Python-Bibliothek Scipy mit 
             der Linprog Optimierungsfunktion verwendet worden. In die Kosten-Zielfunktion gehen 
             die Bezugskosten für Energie aus dem Netz, Einspeisevergütung sowie Kosten für 
-            die Nutzung der Batterie. Die Kosten für die Nutzung der Batterie ist mit 10 Cent/kWh angenommen. 
+            die Nutzung der Batterie. Die Kosten für die Nutzung der Batterie ist mit 7 Cent/kWh angenommen. 
             Optimiert werden die Be- und Entladung der Batterie, der Netzbezug und die Einspeiseleistung. 
-            In die Nebenbedingungen der Optimierung geht das Leistungsgleichgewicht ein, welches ebenfalls 
+            In die Nebenbedingungen der Optimierung geht das Leistungsgleichgewicht ein, in welchem bereits 
             einen Batteriewirkungsgrad von 96% hinterlegt ist. Des Weiteren sind als Nebenbedingungen das 
             Ausschließlichkeitsprinzip des EEGs und die Berechnung des State of charge (SoC) definiert. 
             In der Limitierung der Zustandsvariablen ist die Netzanschlussleistung auf 22 kW begrenzt. 
-            Jeder Berechnungsschritt kennt Daten über 24 Stunden und optimiert auf Basis dieser. 
-            Diese Berechnung wiederholt sich alle 12 Stunden über das gesamte Jahr 2024.
+            Jeder Optimierungsschritt hat eine Vorhersage über die nächsten 24 Stunden zur Verfügung und 
+            wird alle 12 Stunden neu berechnet, über das gesamte Jahr 2024.
 
             Diese Berechnungen werden gleichzeitig für mehrere Stromtarife (Bezugs- und Einspeisetarife) 
             durchgeführt. Welcher Stromtarif berechnet wird, bestimmen die Angaben über den Haushalt. 
             Die Möglichkeiten der Wahl des Stromtarifs wird von den Tatsachen beeinflusst, ob eine 
-            steuerbare Verbrauchseinrichtung und/oder eine PV-Anlage vorhanden sind und ob diese 
+            steuerbare Verbrauchseinrichtung, Batteriespeicher und/oder eine PV-Anlage vorhanden sind und ob diese 
             eine geförderte Einspeisevergütung aktuell bekommt.
-    
-            Doofe Frage... wie sehen die Richtlinien aus wenn es keine PV gibt aber ne Batterie? 
-            Die kann ja nie ne Einspeisevergütung erhalten, läuft die dann unter gar keine 
-            Einspeisevergütung? Oder Direktvermarktung? Warscheinlich keine entladung möglich?
             """)
+
+
+    
 
 st.header("📈 Ergebnisse")
 st.markdown("""
-            Die Kosten für den Endverbraucher jeder Optimierung werden mit einer Optimierung 
-            mit den üblichen Stromtarifen aus festem Bezugspreis und ggf. der festen 
-            Einspeisevergütung nach dem EEG verglichen. Das Ergebnis, welches im 
-            Anschluss der Berechnung angezeigt wird, ist die Ersparnis 
-            bei einem Wechsel über das gesamte Jahr 2024.
+            Ein Großteil der Informationen zu den Ergebnissen ist bereits auf der Hauptseite der Berechnung
+            ganz unten mit aufgelistet. 
+            Die angezeigte Ersparnis ergibt sich aus Differenz der Kosten der jeweiligen Tarifoption 
+            zu den Kosten mit festen Stromtarifen. Dargestellt wird die Ersparnis bei einem Wechsel des 
+            Tarifs über ein ganzes Jahr. Mit einbezogen sind Zusatzkosten der jeweiligen Tarifoption, bspw. 
+            die Kosten der Direktvermarktung durch den externen Dienstleister. Unter anderem sind 
+            bereits Batteriekosten miteinbezogen. Kosten die bei einem Zähleraustausch auf ein 
+            intelligentes Messsystem anfallen sind nicht miteinbezogen, da ein Pflichteinbau stattfinden 
+            wird, unabhängig vom Wechsel auf einen dynamischen Tarif. 
 
             Wenn mehrere Stromtarifarten für den Haushalt zur Wahl stehen, werden 
             die Ergebnisse von der größten zu kleinsten Ersparnis sortiert und in 
             einer Zeile mit der Beschreibung des Stromtarifs aufgelistet.
-
 """)
