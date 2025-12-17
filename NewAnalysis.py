@@ -36,7 +36,7 @@ class Analysis():
         payment_of_feed_in = payment_of_feed_in.resample('1Y').sum() 
         costs = costs.resample('1Y').sum()
 
-    
+        # Verschoben in calc.py!
         # # Direktvermarktungskosten abziehen jährlicher Anteil:
         # if select_opti[2] == "Direktvermarktung" and (peak_power_pv > 0.9 or  input_optimisation[2] > 0.9): 
         #     zusatzkosten = 72 if peak_power_pv < 10 else 90

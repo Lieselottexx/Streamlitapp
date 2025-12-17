@@ -20,7 +20,7 @@ def progress_update( progress_bar, status_text, progress, text):
 
 # Stromverbrauch
 st.title("🔌 Einschätzung zum Wechsel auf einen dynamischen Stromtarif")
-
+# st.markdown(""":blue[Entwickelt von Laura Weghake B. Eng.] """, help="Hi")
 """
 Ob sich ein Wechsel auf dynamische Stromtarife für Haushalte lohnt, 
 hängt von vielen verschiedenen Faktoren ab. Zudem gibt es die unterschiedlichsten Tarifmodelle, 
@@ -65,7 +65,7 @@ with st.container(border=True):
 
 # ----------------------------------------------------------------------------------------   
 with st.container(border=True):
-    # st.markdown("##### Steuerbare Verbrauchseinrichtungen nach EnWG §14a")
+
     st.markdown("##### Netzbetreiber")
     st.selectbox(
         "Auswahl des Netzbetreibers",
@@ -85,13 +85,8 @@ with st.container(border=True):
             """Steuerbare Verbrauchseinrichtungen können die aufgezählten Gerätetypen sein, die seit Jan. 2024
             mit einer Leistung größer 4,2 kW in Betrieb genommen wurden.
             Diese steuerbaren Verbrauchseinrichtungen ermöglichen die Nutzung zeitvariable Netzentgelte, die ggf. zusätzlich Ersparnisse bieten. """
-            # "Die Auswahl ermöglicht  "
-            # "Diese werden ermöglicht durch steuerbare Verbrauchseinrichtungen. "
-            # "Das können die aufgezählten Gerätetypen sein, die seit Januar 2024, mit einer "
-            # "Leistung > 4,2 kW in Betrieb genommen wurden."
-
-        ),
-    )
+            ),
+        )
 
 # ----------------------------------------------------------------------------------------  
 
@@ -103,7 +98,7 @@ direction_map = {
             "Süd": 180,
             "Süd-West": 225,
             "West": 270,
-        }
+            }
 # PV-Anlage
 with st.container(border=True):
     st.markdown("##### Photovoltaik-Anlage")
@@ -133,7 +128,7 @@ with st.container(border=True):
             disabled=not st.session_state.has_pv,
         )
 
-        # pv_direction = direction_map.get(st.session_state.pv_compass, 180)
+
 
         st.checkbox(
             "Ich erhalte eine geförderte Einspeisevergütung nach EEG.",
@@ -148,7 +143,6 @@ with st.container(border=True):
                 key="installation_date",
                 min_value=datetime.date(2009, 1, 1),
                 max_value=datetime.date(2025, 6, 1),
-                #disabled=not (st.session_state.has_pv and st.session_state.has_eeg),
                 help=(
                     "Das Installationsdatum bestimmt die Höhe der EEG-Einspeisevergütung "
                     "über einen Zeitraum von 20 Jahren."
@@ -177,12 +171,6 @@ with st.container(border=True):
             disabled=not st.session_state.has_battery,
         )
 
-        # st.selectbox(
-        #     "Batterieverhalten zum Netz",
-        #     ["Energie einspeisen", "Energie aus dem Netz beziehen"],
-        #     key="battery_usage",
-        #     disabled=not st.session_state.has_battery,
-        # )
 # ----------------------------------------------------------------------------------------  
 with st.container(border=True):
     st.markdown("##### Optional: Direktvermarktung")
@@ -572,14 +560,12 @@ else:
                     "battery_capacity": "Batteriekapazität [kWh]",
                     "netzbetreiber": "Netzbetreiber",
                     "direct": "Direktvermarktung"
-                    # "battery_usage": "Batterieverhalten zum Netz",
                     }
                 SETTINGS_DEPENDENCIES = {
                     "pv_power": "has_pv",
                     "pv_direction": "has_pv",
                     "installation_date": "has_pv",
                     "battery_capacity": "has_battery",
-                    # ggf. später erweiterbar
                     }
                 settings_rows = []
 
@@ -587,7 +573,7 @@ else:
                     if key not in SETTINGS_LABELS:
                         continue  # nur anzeigen, was gemappt ist
 
-                    # Abhängigkeiten prüfen
+
                     if key in SETTINGS_DEPENDENCIES:
                         dependency_key = SETTINGS_DEPENDENCIES[key]
                         if not entry["settings"].get(dependency_key, False):
@@ -675,47 +661,4 @@ with st.expander("CO2-Einsparung"):
                 steuerbaren konventionellen Kraftwerken ausgeglichen, da erneuerbare Energien vorranig einspeisen 
                 dürfen. Wenn der Haushaltsverbrauch sich erhöht würde aktuell ein konventionelles Kraftwerk die 
                 Leistung anheben oder absenken. """)
-
-
-# # Ergebnisse anzeigen
-# st.write("### Ergebnisse")
-# st.markdown("""Die Ergebnisse der Berechnungen geben die Kosteneinsparung an, die angefallen wären, hätte man im Jahr 2024 den Stromtarif gewechselt. Ist das Ergebnis negativ, wären höhere Kosten angefallen bei einem Wechsel gegenüber dem festen Stromtarif in Kombination mit fester Einspeisevergütung für die ins Netz eingespeiste Energie. """)
-
-# benefit_keys = [key for key in opti_dict if "benefit" in opti_dict[key]]
-# header_cols = st.columns([1, 3, 3, 2, 2])
-# header_cols[0].markdown("**Nr.**")
-# header_cols[1].markdown("**Stromtarif**")
-# header_cols[2].markdown("**Einspeisetarif**")
-# header_cols[3].markdown("**Ersparnis**")
-# header_cols[4].markdown("**CO2 Ersparnis**")
-# if not benefit_keys:
-#     st.info("Es wurden noch keine Optimierungsergebnisse berechnet.")
-# else:
-#     try:
-#         # Keys sortieren nach Benefit-Wert, absteigend
-#         sorted_keys = sorted(benefit_keys, key=lambda k: opti_dict[k]["benefit"], reverse=True)
-
-#         for key in sorted_keys:
-#             if key in (1, 5):  # Diese ggf. ausblenden
-#                 continue
-
-#             opti_sel = opti_dict[key].get("select", ["", "Tarif N/A", "EEG N/A"])
-#             opti_ben = opti_dict[key]["benefit"]
-#             opti_co2 = opti_dict[key]["co2_benefit"]
-
-#             col1, col2, col3, col4, col5 = st.columns([1, 3, 3, 2, 2])
-
-#             col1.write(f"**{key}.**")
-#             col2.write(f"**{opti_sel[1]}**")
-#             col3.write(f"**{opti_sel[2]}**")
-#             col4.write(f"**{round(opti_ben, 2)} €**")
-#             col5.write(f"**{round((opti_co2), 2)} kg CO2**")
-
-#         st.markdown(":deciduous_tree: Zum Vergleich, eine Buche nimmt durchschnittlich 35 kg CO2 pro Jahr auf. ")
-#         st.markdown(" :small[Stiftung Unternehmen Wald, \"Wie viel Kohlendioxid (CO2) speichert der Baum bzw. der Wald\", [Online]. Verfügbar:https://www.wald.de/waldwissen/wie-viel-kohlendioxid-co2-speichert-der-wald-bzw-ein-baum/. [Zugriff am: 10. Juni 2025]. ]")
-#         # Bund naturschutz hat auch auf diese Quelle verwiesen.. https://traunstein.bund-naturschutz.de/wald/baeume-pflanzen-gegen-den-klimawandel-1
-#     except Exception as e:
-#         st.error(f"Fehler bei der Ergebnisanzeige: {e}")
-    
-
 

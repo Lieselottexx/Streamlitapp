@@ -70,7 +70,7 @@ class Optimisation():
         # if the optimisation is out of the EEG Regulation
         elif select_opti[3] == 0:
             if select_opti[0] == 21: 
-                data['Static Feed-in Price [Cent/kWh]'] = -100.0
+                data['Static Feed-in Price [Cent/kWh]'] = 0
             else:
                 data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
 
@@ -113,9 +113,9 @@ class Optimisation():
                 else:
                     for i, idx in enumerate(zeitpunkte):
                         """Bei Charged from Grid, Einspeisung auf 0, bei Battery Feed-in Bezugspreise hoch"""
-                        if battery_usage == "charged_from_grid":
+                        if battery_usage == "Energie aus dem Netz beziehen":
                             data.at[idx, select_opti[6]] = werte_einspeisung
-                        elif battery_usage == "feed_in_from_battery":
+                        elif battery_usage == ["Energie einspeisen", ]:
                             data.at[idx, select_opti[5]] = werte_bezug  
                         else:
                             print("Hubba bubba", idx)
@@ -281,7 +281,7 @@ class Optimisation():
             for i in range(len(b_eq_cache)): b_eq.append(b_eq_cache[i])
 
            
-            if battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+            if battery_usage == "Energie aus dem Netz beziehen" or select_opti[0] == 21:# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
                 # construction of the Matrix for unequality constrain equation
                 '''EEG System: Battery charge from the Grid is allowed'''
                 A_ub   =  []
@@ -307,7 +307,7 @@ class Optimisation():
                 b_ub_cache   =  self.append_array(1,load_data)
                 for i in range(len(b_ub_cache)): b_ub.append(b_ub_cache[i])
 
-            if select_opti[0] > 16 or select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]':
+            if (select_opti[0] > 16 and select_opti[0] < 21) or select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]' :
                 A_ub   =  []
                 # Otherwise it will buy and sell energy at the same time to the grid
                 A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
@@ -363,7 +363,7 @@ class Optimisation():
             file.write(str(str(datetime.now())+'\nFinished optimisation calculation.\n\n'))
 
         # Save Data as Self Consumption optimised    
-        # data.to_csv(os.path.join( self.data_path, f'result{num}.csv'), sep=';')
+        data.to_csv(os.path.join( self.data_path, f'result{num}.csv'), sep=';')
 
         # print the optimisation result 
         # self.plot_data.print_self_consumption_optimisation(data, price_column_name, result_column_names)
