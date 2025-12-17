@@ -70,7 +70,7 @@ class Optimisation():
         # if the optimisation is out of the EEG Regulation
         elif select_opti[3] == 0:
             if select_opti[0] == 21: 
-                data['Static Feed-in Price [Cent/kWh]'] = -0.001
+                data['Static Feed-in Price [Cent/kWh]'] = 0
             else:
                 data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
 
@@ -113,9 +113,9 @@ class Optimisation():
                 else:
                     for i, idx in enumerate(zeitpunkte):
                         """Bei Charged from Grid, Einspeisung auf 0, bei Battery Feed-in Bezugspreise hoch"""
-                        if battery_usage == "charged_from_grid":
+                        if battery_usage == "Energie aus dem Netz beziehen":
                             data.at[idx, select_opti[6]] = werte_einspeisung
-                        elif battery_usage == "feed_in_from_battery":
+                        elif battery_usage == ["Energie einspeisen", ]:
                             data.at[idx, select_opti[5]] = werte_bezug  
                         else:
                             print("Hubba bubba", idx)
@@ -307,7 +307,7 @@ class Optimisation():
                 b_ub_cache   =  self.append_array(1,load_data)
                 for i in range(len(b_ub_cache)): b_ub.append(b_ub_cache[i])
 
-            if (select_opti[0] > 16 and select_opti[0] < 21) or select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]':
+            if (select_opti[0] > 16 and select_opti[0] < 21) or select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]' :
                 A_ub   =  []
                 # Otherwise it will buy and sell energy at the same time to the grid
                 A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)
