@@ -70,7 +70,7 @@ class Optimisation():
         # if the optimisation is out of the EEG Regulation
         elif select_opti[3] == 0:
             if select_opti[0] == 21: 
-                data['Static Feed-in Price [Cent/kWh]'] = -100.0
+                data['Static Feed-in Price [Cent/kWh]'] = -0.001
             else:
                 data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
 
@@ -281,7 +281,7 @@ class Optimisation():
             for i in range(len(b_eq_cache)): b_eq.append(b_eq_cache[i])
 
            
-            if battery_usage == "Energie aus dem Netz beziehen":# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
+            if battery_usage == "Energie aus dem Netz beziehen" or select_opti[0] == 21:# ["Energie einspeisen", "Energie aus dem Netz beziehen"]
                 # construction of the Matrix for unequality constrain equation
                 '''EEG System: Battery charge from the Grid is allowed'''
                 A_ub   =  []
@@ -307,7 +307,7 @@ class Optimisation():
                 b_ub_cache   =  self.append_array(1,load_data)
                 for i in range(len(b_ub_cache)): b_ub.append(b_ub_cache[i])
 
-            if select_opti[0] > 16 or select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]':
+            if (select_opti[0] > 16 and select_opti[0] < 21) or select_opti[6] == 'Dynamic Feed-in Price U20 [Cent/kWh]':
                 A_ub   =  []
                 # Otherwise it will buy and sell energy at the same time to the grid
                 A_ub   =  self.append_constrains(len_opti,A_ub_1,A_ub_1_1)

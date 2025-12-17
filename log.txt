@@ -29171,3 +29171,840 @@ Finished optimisation calculation.
 2025-12-16 22:33:34.051905
 Finished optimisation calculation.
 
+2025-12-17 12:38:57.311028
+Household Load Profile: 3500
+The average energy consumption of the household over one year is: 3449.1708984375 kWh/a 
+
+2025-12-17 12:38:57.364173
+Loaded the SLP Profile.
+
+2025-12-17 12:38:57.364173
+180. Mode is selected!
+
+2025-12-17 12:38:57.698001
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-17 12:38:58.047516
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-17 12:38:58.400161
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-17 12:39:48.339604
+Loaded the Energy Prices.
+
+2025-12-17 12:39:48.661810
+Saved the data DataFrame to CSV!
+
+2025-12-17 12:39:48.685810
+Loaded the dynamic energy prices.
+
+2025-12-17 12:39:51.908537
+Loaded the static energy prices.
+
+2025-12-17 12:39:51.921593
+Loaded the time variable Netzentgelte.
+
+2025-12-17 12:39:51.931721
+Saved the data DataFrame to CSV as opti_input!
+
+2025-12-17 12:39:57.802435
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:39:59.387765
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:00.553144
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:01.587453
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:03.047535
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:04.804655
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:06.643498
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:08.672961
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:10.773758
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:13.236996
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:15.364705
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 11.87  
+Static feed-in Bonus EEG: 12.27  
+
+2025-12-17 12:40:46.397197
+Finished optimisation calculation.
+
+2025-12-17 12:40:51.852603
+Finished optimisation calculation.
+
+2025-12-17 12:40:55.860295
+Finished optimisation calculation.
+
+2025-12-17 12:40:57.073443
+Finished optimisation calculation.
+
+2025-12-17 12:41:00.213392
+Finished optimisation calculation.
+
+2025-12-17 12:41:02.112037
+Finished optimisation calculation.
+
+2025-12-17 12:41:04.533884
+Finished optimisation calculation.
+
+2025-12-17 12:41:07.580602
+Finished optimisation calculation.
+
+2025-12-17 12:41:08.566789
+Finished optimisation calculation.
+
+2025-12-17 12:41:10.694931
+Finished optimisation calculation.
+
+2025-12-17 12:41:14.012760
+Finished optimisation calculation.
+
+2025-12-17 12:49:56.117288
+Household Load Profile: 6500
+The average energy consumption of the household over one year is: 6625.40380859375 kWh/a 
+
+2025-12-17 12:49:56.150817
+Loaded the SLP Profile.
+
+2025-12-17 12:49:56.151814
+180. Mode is selected!
+
+2025-12-17 12:49:56.491489
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-17 12:49:56.849841
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-17 12:49:57.224173
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-17 12:50:48.005927
+Loaded the Energy Prices.
+
+2025-12-17 12:50:48.294554
+Saved the data DataFrame to CSV!
+
+2025-12-17 12:50:48.318554
+Loaded the dynamic energy prices.
+
+2025-12-17 12:50:51.645648
+Loaded the static energy prices.
+
+2025-12-17 12:50:51.658651
+Loaded the time variable Netzentgelte.
+
+2025-12-17 12:50:51.667644
+Saved the data DataFrame to CSV as opti_input!
+
+2025-12-17 12:50:57.529319
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:50:58.555260
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:50:59.943353
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:51:00.785643
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:51:01.745528
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:51:02.973325
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:51:31.102093
+Finished optimisation calculation.
+
+2025-12-17 12:51:37.954874
+Finished optimisation calculation.
+
+2025-12-17 12:51:39.245901
+Finished optimisation calculation.
+
+2025-12-17 12:51:40.124439
+Finished optimisation calculation.
+
+2025-12-17 12:51:41.151701
+Finished optimisation calculation.
+
+2025-12-17 12:51:41.801945
+Finished optimisation calculation.
+
+2025-12-17 12:55:03.777610
+Household Load Profile: 3500
+The average energy consumption of the household over one year is: 3449.1708984375 kWh/a 
+
+2025-12-17 12:55:03.818608
+Loaded the SLP Profile.
+
+2025-12-17 12:55:03.820609
+180. Mode is selected!
+
+2025-12-17 12:55:04.152392
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-17 12:55:04.495555
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-17 12:55:04.880733
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-17 12:55:55.134472
+Loaded the Energy Prices.
+
+2025-12-17 12:55:55.430420
+Saved the data DataFrame to CSV!
+
+2025-12-17 12:55:55.452411
+Loaded the dynamic energy prices.
+
+2025-12-17 12:55:58.667330
+Loaded the static energy prices.
+
+2025-12-17 12:55:58.681323
+Loaded the time variable Netzentgelte.
+
+2025-12-17 12:55:58.690335
+Saved the data DataFrame to CSV as opti_input!
+
+2025-12-17 12:56:04.791655
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:56:06.229291
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:56:06.886638
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:56:08.229386
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:56:09.674331
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:56:10.481586
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 12:56:42.160997
+Finished optimisation calculation.
+
+2025-12-17 12:56:49.582398
+Finished optimisation calculation.
+
+2025-12-17 12:56:50.103550
+Finished optimisation calculation.
+
+2025-12-17 12:56:51.902037
+Finished optimisation calculation.
+
+2025-12-17 12:56:52.700493
+Finished optimisation calculation.
+
+2025-12-17 12:56:53.262091
+Finished optimisation calculation.
+
+2025-12-17 13:08:59.729363
+Household Load Profile: 3500
+The average energy consumption of the household over one year is: 3449.1708984375 kWh/a 
+
+2025-12-17 13:08:59.771351
+Loaded the SLP Profile.
+
+2025-12-17 13:08:59.772339
+180. Mode is selected!
+
+2025-12-17 13:09:00.133974
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-17 13:09:00.487613
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-17 13:09:00.844125
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-17 13:09:52.196287
+Loaded the Energy Prices.
+
+2025-12-17 13:09:52.520824
+Saved the data DataFrame to CSV!
+
+2025-12-17 13:09:52.552839
+Loaded the dynamic energy prices.
+
+2025-12-17 13:09:56.116895
+Loaded the static energy prices.
+
+2025-12-17 13:09:56.129895
+Loaded the time variable Netzentgelte.
+
+2025-12-17 13:09:56.139889
+Saved the data DataFrame to CSV as opti_input!
+
+2025-12-17 13:10:01.919049
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:10:03.439145
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:10:04.383905
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:10:05.707410
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:10:06.661499
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:10:07.870488
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 17
+Variable Battery Costs: 7
+Battery Power: 4.25
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:10:39.351096
+Finished optimisation calculation.
+
+2025-12-17 13:10:47.408833
+Finished optimisation calculation.
+
+2025-12-17 13:10:48.822339
+Finished optimisation calculation.
+
+2025-12-17 13:10:49.367599
+Finished optimisation calculation.
+
+2025-12-17 13:10:51.182100
+Finished optimisation calculation.
+
+2025-12-17 13:10:51.818951
+Finished optimisation calculation.
+
+2025-12-17 13:15:56.125438
+Household Load Profile: 3500
+The average energy consumption of the household over one year is: 3449.1708984375 kWh/a 
+
+2025-12-17 13:15:56.157955
+Loaded the SLP Profile.
+
+2025-12-17 13:15:56.159955
+180. Mode is selected!
+
+2025-12-17 13:15:56.496601
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-17 13:15:56.816414
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-17 13:15:57.139727
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-17 13:16:46.240767
+Loaded the Energy Prices.
+
+2025-12-17 13:16:46.545595
+Saved the data DataFrame to CSV!
+
+2025-12-17 13:16:46.567608
+Loaded the dynamic energy prices.
+
+2025-12-17 13:16:49.742401
+Loaded the static energy prices.
+
+2025-12-17 13:16:49.755401
+Loaded the time variable Netzentgelte.
+
+2025-12-17 13:16:49.764398
+Saved the data DataFrame to CSV as opti_input!
+
+2025-12-17 13:16:55.423041
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:16:57.444631
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:16:58.373816
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:16:59.662338
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:17:01.316249
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:17:02.697717
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:17:33.066031
+Finished optimisation calculation.
+
+2025-12-17 13:17:40.659730
+Finished optimisation calculation.
+
+2025-12-17 13:17:41.092272
+Finished optimisation calculation.
+
+2025-12-17 13:17:41.444263
+Finished optimisation calculation.
+
+2025-12-17 13:17:42.338439
+Finished optimisation calculation.
+
+2025-12-17 13:17:43.907253
+Finished optimisation calculation.
+
+2025-12-17 13:18:03.764666
+Household Load Profile: 7500
+The average energy consumption of the household over one year is: 7508.15234375 kWh/a 
+
+2025-12-17 13:18:03.803659
+Loaded the SLP Profile.
+
+2025-12-17 13:18:03.805660
+180. Mode is selected!
+
+2025-12-17 13:18:04.157620
+Loaded the preprocessed Solar Data CSV Data.
+
+2025-12-17 13:18:04.461343
+Loaded the preprocessed Wind Data CSV Data.
+
+2025-12-17 13:18:04.769476
+Loaded the preprocessed Temperature Data CSV Data.
+
+2025-12-17 13:18:54.203441
+Loaded the Energy Prices.
+
+2025-12-17 13:18:54.481809
+Saved the data DataFrame to CSV!
+
+2025-12-17 13:18:54.504348
+Loaded the dynamic energy prices.
+
+2025-12-17 13:18:57.665955
+Loaded the static energy prices.
+
+2025-12-17 13:18:57.679954
+Loaded the time variable Netzentgelte.
+
+2025-12-17 13:18:57.694083
+Saved the data DataFrame to CSV as opti_input!
+
+2025-12-17 13:19:03.980311
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:19:05.362654
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:19:06.202240
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:19:07.300476
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:19:08.332587
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:19:09.524414
+Start of the calculation of the Optimisation Number24.
+Used Parameter: 
+Optimise Time: 24
+Step Time: 12  
+Battery Capacity: 8
+Variable Battery Costs: 7
+Battery Power: 2.0
+Grid Power: 5.5  
+Static feed-in Price EEG: 12.2  
+Static feed-in Bonus EEG: 12.6  
+
+2025-12-17 13:19:40.869160
+Finished optimisation calculation.
+
+2025-12-17 13:19:47.307673
+Finished optimisation calculation.
+
+2025-12-17 13:19:48.398369
+Finished optimisation calculation.
+
+2025-12-17 13:19:48.805595
+Finished optimisation calculation.
+
+2025-12-17 13:19:49.653943
+Finished optimisation calculation.
+
+2025-12-17 13:19:50.415440
+Finished optimisation calculation.
+
