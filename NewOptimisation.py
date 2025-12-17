@@ -70,7 +70,7 @@ class Optimisation():
         # if the optimisation is out of the EEG Regulation
         elif select_opti[3] == 0:
             if select_opti[0] == 21: 
-                data['Static Feed-in Price [Cent/kWh]'] = -100
+                data['Static Feed-in Price [Cent/kWh]'] = 0
             else:
                 data['Static Feed-in Price [Cent/kWh]'] = Param.u20_feed_in_2024
 
