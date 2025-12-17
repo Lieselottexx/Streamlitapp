@@ -281,7 +281,7 @@ if "results" not in st.session_state:
 Die Berechnung wird mit einem Datensatz aus dem gesamten Jahr 2024 durchgeführt. 
 Die darin enthaltene Daten beinhalten zum Beispiel das Wetter und den Börsenstrompreis des gesamten Jahres.
 
-Das Ergbenis der Berechnung zeigt die minimale Ersparnis, da alle erdenklichen Zusatzkosten bereits eingerechnet werden 
+Das Ergebenis der Berechnung zeigt die minimale Ersparnis, da alle erdenklichen Zusatzkosten bereits eingerechnet werden 
 und sich Ihr Verbrauchsverhalten nicht ändert.
 Zusätzliche zeitliche Verschiebungen des Verbrauchsverhaltens, bspw. Wärmepumpen oder Elektroautos,
 sind noch nicht mit einbezogen und können bei vorteilhaftem Einsatz zusätzliche Ersparnisse bringen.
@@ -659,6 +659,21 @@ with st.expander("Batterieverhalten zum Netz"):
                 aus dem Netz beziehen, wie auch einspeisen. In Zukunft soll dies auch mit 
                 der Marktprämie möglich sein. 
                 """)
+with st.expander("CO2-Einsparung"):
+    st.markdown("""Für die Berechnung wird die CO2-Emission der gesamten elektrischen Energieerzeugung in Deutschland 
+                verwendet. Wenn ein Haushalt beispielsweise vorher einem Netzbezug zu Zeiten hoher CO2-Emissionen
+                getätigt hat und durch den Wechsel des Tarifs und der Reaktion darauf, den Verbrauch in Zeiten 
+                geringerer CO2-Emissionen verschoben hat, zählt dies als CO2-Ersparnis. Die Höhe der Ersparnis
+                bestimmt die Differenz des CO2-Ausstoßes zu diesen Zeitpunkten von ganz Deutschland.""")
+    
+    st.markdown("""Dieses Ergebnis ist durch die Berechnung mit dem gesamten Strommix, aus konventionellen und 
+                erneuerbaren Kraftwerken, ein Hinweis darauf wie die Korrelation zwischen Ihrer Verbrauchsverschiebung 
+                und dem CO2-Ausstoß der Energieversorgung generell ist. 
+                In unserem aktuellen Energieversorgungssystem werden Schwankungen des Verbrauchs in der Regel mit 
+                steuerbaren konventionellen Kraftwerken ausgeglichen, da erneuerbare Energien vorranig einspeisen 
+                dürfen. Wenn der Haushaltsverbrauch sich erhöht würde aktuell ein konventionelles Kraftwerk die 
+                Leistung anheben oder absenken. """)
+
 
 # # Ergebnisse anzeigen
 # st.write("### Ergebnisse")
