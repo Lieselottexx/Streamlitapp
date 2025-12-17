@@ -1,23 +1,4 @@
-''' Restructuring of the code in March 2025
-    First use of a Parameter File 
-    Masters thesis Laura Weghake 
-    
-    The following parameters are set by the file 
-    'Load_profile_informations_csv.csv' match the individual optimisations:
 
-    Sorting in the Categories used for Analysis: 
-    Load Profile Catogory
-    PV-System Category
-    Battery-Capacity Category
-
-    Parameter for the Optimisation:
-    Number of the Load Profile
-    Peak-Power of the PV-System
-    Battery Capacity 
-    PV Orientation (South/East&West)
-    Battery Charging Power (usualy Capacity over an hour)
-    Behaviour of the Optimisation (1-11)
-    '''
 # Convert to Datetime format
 from datetime import datetime
 import numpy as np
