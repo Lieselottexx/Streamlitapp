@@ -54,7 +54,7 @@ with st.container(border=True):
         1000,
         8000,
         step=500,
-        value=st.session_state.consumption,
+        # value=st.session_state.consumption,
         key="consumption",
         help=(
             "Bitte wählen Sie Ihren jährlichen Haushaltsstromverbrauch aus. "
@@ -79,7 +79,7 @@ with st.container(border=True):
     st.checkbox(
         "Ich besitze eine Wärmepumpe, einen Batteriespeicher, Klimaanlage oder eine Wallbox "
         "als sogenannte steuerbare Verbrauchseinrichtung.",
-        value=st.session_state.controllable_device,
+        # value=st.session_state.controllable_device,
         key="controllable_device",
         help=(
             """Steuerbare Verbrauchseinrichtungen können die aufgezählten Gerätetypen sein, die seit Jan. 2024
@@ -104,7 +104,7 @@ with st.container(border=True):
     st.markdown("##### Photovoltaik-Anlage")
 
     st.checkbox("Ich besitze eine PV-Anlage.", 
-                value=st.session_state.has_pv,
+                # value=st.session_state.has_pv,
                 key="has_pv"
                 )
     if st.session_state.get("has_pv", False):
@@ -113,7 +113,7 @@ with st.container(border=True):
             1,
             25,
             step=1,
-            value=st.session_state.pv_power,
+            # value=st.session_state.pv_power,
             key="pv_power",
             disabled=not st.session_state.has_pv,
         )
@@ -132,14 +132,14 @@ with st.container(border=True):
 
         st.checkbox(
             "Ich erhalte eine geförderte Einspeisevergütung nach EEG.",
-            value=st.session_state.has_eeg,
+            # value=st.session_state.has_eeg,
             key="has_eeg",
             #disabled=not st.session_state.has_eeg,
-        )
+            )
         if st.session_state.get("has_eeg", False):
             st.date_input(
                 "Installationsdatum der PV-Anlage",
-                value=st.session_state.installation_date,
+                # value=st.session_state.installation_date,
                 key="installation_date",
                 min_value=datetime.date(2009, 1, 1),
                 max_value=datetime.date(2025, 6, 1),
@@ -157,7 +157,7 @@ with st.container(border=True):
     st.markdown("##### Angaben zum Batteriespeicher")
 
     st.checkbox("Ich besitze einen Batteriespeicher.", 
-                value=st.session_state.has_battery,
+                # value=st.session_state.has_battery,
                 key="has_battery"
                 )
     if st.session_state.get("has_battery", False):
@@ -166,7 +166,7 @@ with st.container(border=True):
             1,
             20,
             step=1,
-            value=st.session_state.battery_capacity,
+            # value=st.session_state.battery_capacity,
             key="battery_capacity",
             disabled=not st.session_state.has_battery,
         )
@@ -176,7 +176,7 @@ with st.container(border=True):
     st.markdown("##### Optional: Direktvermarktung")
 
     st.checkbox("Ich möchte die Direktvermarktung an der Strombörse der ins Netz eingespeisten Energie in Betracht ziehen.", 
-                value=st.session_state.direct,
+                # value=st.session_state.direct,
                 key="direct",
                 help="Erzeugungsanlagen oder Batteriespeicher haben die Möglichkeit zum " \
                 "Bösenstrompreis Energie ins Netz einzuspeisen, und können so von den Schwankungen " \
@@ -285,6 +285,13 @@ st.divider()
 if st.button("Berechnung starten", disabled=st.session_state.get("calculating", True)):
     st.session_state.calculating = True
     st.toast("Berechnung läuft")
+
+    # Voreinstellung zurücksetzen
+    if not st.session_state.has_pv :
+        st.session_state.pv_power = 0
+    if not st.session_state.has_battery:
+        st.session_state.battery_capacity = 0
+
 
     # ===================== SNAPSHOT =====================
     snapshot = {
