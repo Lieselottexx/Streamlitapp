@@ -32,6 +32,8 @@ class Analysis():
         payment_of_feed_in = data[result_column_names[4]] *(data[select_opti[6]]/100)
         battery_usage_costs     = data[result_column_names[0]] * (Param.battery_costs / 100)                                                                                      
         costs = costs_of_grid_supply - payment_of_feed_in + battery_usage_costs
+        print(costs)
+
         costs_of_grid_supply = costs_of_grid_supply.resample('1Y').sum()
         payment_of_feed_in = payment_of_feed_in.resample('1Y').sum() 
         costs = costs.resample('1Y').sum()
@@ -42,6 +44,21 @@ class Analysis():
         #     zusatzkosten = 72 if peak_power_pv < 10 else 90
         #     costs = costs + peak_power_pv * 2 + zusatzkosten # Addieren auf die Kosten weil die nicht mit einberechnet werden aber jährlich fix existieren. Auch wenn da abziehen steht... 
         
+        '''Herausfinden ob Fehlerhafte Einspeisepreise die Ergebnisse beeinflussen. Bei Korrekter Funktion wird dies nicht der Fall sein.'''
+        condition = (data[select_opti[5]] < data[select_opti[6]] )
+        # Index bestimmen
+        zeitpunkte = data.index[condition]
+        var_if_fail = 0
+        for i, idx in enumerate(zeitpunkte):
+            if data.at[idx, select_opti[6]] == 0 and data.at[idx, result_column_names[4]] > 0: # Bedingung bei Einspeisung bei fehlerhaften Einspeisepreisen
+            # if data.at[idx, select_opti[5]] == 100 and data.at[idx, result_column_names[3]] > 0: # Bedingung bei Bezug bei fehlerhaften Bezugspreisen
+                var_if_fail = 1
+        if var_if_fail:
+            try:
+                print("\nDer Haushalt: ",select_opti[0], " enthält Irrtümlich zu hohe Bezugskosten, durch den Pfusch der physikalischen Richtigkeit des Netzanschlusspunkts.\n")
+            except:
+                print("\nDer Haushalt: ","...", " enthält Irrtümlich zu hohe Bezugskosten, durch den Pfusch der physikalischen Richtigkeit des Netzanschlusspunkts.\n")
+
         
         self.related_path_data = Param.data_path
         self.original_data_path ='Original_Data_2024'
@@ -55,12 +72,12 @@ class Analysis():
         feed_in_orig        = data[result_column_names[4]].copy()
         grid_supply         = grid_supply_orig.resample('1H').sum()
         feed_in_orig        = feed_in_orig.resample('1H').sum()
-        co2_data = pd.concat([co2_data, grid_supply, feed_in_orig], axis=0)
+        co2_data = pd.concat([co2_data, grid_supply, feed_in_orig], axis=1)
         print(co2_data)
         co2 = (co2_data['Co2-Emissions [gCO2/kWh]']/1000) * (grid_supply/1000) - (co2_data['Co2-Emissions [gCO2/kWh]']/1000) * (feed_in_orig/1000)
         co2 = co2.resample('1Y').sum() 
 
-        # print(co2)
+
 
         return costs , co2
 
