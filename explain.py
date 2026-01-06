@@ -9,255 +9,255 @@ st.markdown("Auf dieser Seite werden alle Einstellmöglichkeiten sowie die Annah
             "Des Weiteren sind auf dieser Seite der Optimierungsprozess und die Interpretation des Ergebnisses erklärt.")
 
 
-# with st.container(border=True):
-#     st.markdown("### Inhaltsverzeichnis")
-#     st.markdown(
-#         """
-#         - [Voraussetzungen für den Wechsel auf einen dynamischen Tarif](#voraussetzungen)
-#         - [Annahmen und Erklärung der Berechnung](#annahmen)
-#         """,
-#         unsafe_allow_html=True
-#     )
+with st.container(border=True):
+    st.markdown("### Inhaltsverzeichnis")
+    st.markdown(
+        """
+        - [Voraussetzungen für den Wechsel auf einen dynamischen Tarif](#voraussetzungen)
+        - [Annahmen und Erklärung der Berechnung](#annahmen)
+        """,
+        unsafe_allow_html=True
+    )
 
 
-# st.markdown("""Seit dem Jahresanfang 2025 werden vermehrt Smart-Meter-Gateways (SMGW) in Haushaltszählerschränken verbaut.
-#             Diese ermöglichen dem Haushalt ein Wechsel auf zeitlich variable Stromtarife, die sich sowohl an Schwankungen 
-#             des Börsenstrompreises für elektrische Energie orientieren können, wie auch an zeitvariablen Netzentgelten.
-#             Im Folgenden werden zunächst die unterschiedlichen Stromtarif-Modelle aufgeführt sowie Hintergrundinformationen 
-#             zu dem Wechsel. Bitte lesen Sie sich die folgenden Themenbereiche durch, da diese entscheidend für das Verständnis der Berechnung sind.
-#             Anschließend ist ein Rechner aufgeführt, der unter Angabe von den eigenen Haushaltsstrukturen eine 
-#             Abschätzung bietet, ob sich unter den aktuellen Strukturen sich ein Wechsel lohnen kann.
-#             Auf der Seite Hintergrund Erklärungen sind Annahmen aufgeführt, die Grundlage der Berechnungsmöglichkeit 
-#             sind und dort befinden sich ebenfalls Informationen zu den verwendeten Daten der Berechnung.
-#             """)
+st.markdown("""Seit dem Jahresanfang 2025 werden vermehrt Smart-Meter-Gateways (SMGW) in Haushaltszählerschränken verbaut.
+            Diese ermöglichen dem Haushalt ein Wechsel auf zeitlich variable Stromtarife, die sich sowohl an Schwankungen 
+            des Börsenstrompreises für elektrische Energie orientieren können, wie auch an zeitvariablen Netzentgelten.
+            Im Folgenden werden zunächst die unterschiedlichen Stromtarif-Modelle aufgeführt sowie Hintergrundinformationen 
+            zu dem Wechsel. Bitte lesen Sie sich die folgenden Themenbereiche durch, da diese entscheidend für das Verständnis der Berechnung sind.
+            Anschließend ist ein Rechner aufgeführt, der unter Angabe von den eigenen Haushaltsstrukturen eine 
+            Abschätzung bietet, ob sich unter den aktuellen Strukturen sich ein Wechsel lohnen kann.
+            Auf der Seite Hintergrund Erklärungen sind Annahmen aufgeführt, die Grundlage der Berechnungsmöglichkeit 
+            sind und dort befinden sich ebenfalls Informationen zu den verwendeten Daten der Berechnung.
+            """)
 
-# st.markdown('<a id="voraussetzungen"></a>', unsafe_allow_html=True)
-# st.divider()
+st.markdown('<a id="voraussetzungen"></a>', unsafe_allow_html=True)
+st.divider()
 
-# st.markdown("## Voraussetzungen für den Wechsel auf einen dynamischen Tarif")
+st.markdown("## Voraussetzungen für den Wechsel auf einen dynamischen Tarif")
 
-# st.markdown("""##### Sie haben einen Smart-Meter-Gateway (SMGW) eingebaut bekommen oder interessieren sich dafür?""")
-# with st.expander("Was ist ein Smart-Meter-Gateway und welche Funktionen bietet es?"):
-#     st.markdown("""
-#                 Ein Smart-Meter-Gateway (SMGW) gehört zur Messtechnik, die vom Messstellenbetrieb eingebaut wird. 
-#                 Dies ist ein Bauteil, was zusätzlich zum häufig genannten \"Stromzähler\" eingebaut wird. 
-#                 Das SMGW ist eine Kommunikationseinheit, die zum intelligenten Messsystem (iMSys) gehört, 
-#                 welches aus einer modernen Messeinrichtung (einem digitalen Zähler) und einem SMGW besteht.
-#                 Diese Kommunikationseinheit empfängt Zählerdaten vom digitalen Zähler, speichert diese und 
-#                 kann zum Beispiel mit dem Energieversorger bezüglich der Abrechnung oder auch mit dem Netzbetreiber 
-#                 bezüglich Steuersignalen kommunizieren. Damit stellt der Besitz des SMGWs die Voraussetzung für eine 
-#                 dynamische Abrechnung dar.
-#                 Des Weiteren bietet es auch einen Kommunikationsweg zum Haushaltsendkunden und dessen 
-#                 kommunikationsfähigen Geräte. Letzteres kann über eine Steuerbox realisiert werden.
+st.markdown("""##### Sie haben einen Smart-Meter-Gateway (SMGW) eingebaut bekommen oder interessieren sich dafür?""")
+with st.expander("Was ist ein Smart-Meter-Gateway und welche Funktionen bietet es?"):
+    st.markdown("""
+                Ein Smart-Meter-Gateway (SMGW) gehört zur Messtechnik, die vom Messstellenbetrieb eingebaut wird. 
+                Dies ist ein Bauteil, was zusätzlich zum häufig genannten \"Stromzähler\" eingebaut wird. 
+                Das SMGW ist eine Kommunikationseinheit, die zum intelligenten Messsystem (iMSys) gehört, 
+                welches aus einer modernen Messeinrichtung (einem digitalen Zähler) und einem SMGW besteht.
+                Diese Kommunikationseinheit empfängt Zählerdaten vom digitalen Zähler, speichert diese und 
+                kann zum Beispiel mit dem Energieversorger bezüglich der Abrechnung oder auch mit dem Netzbetreiber 
+                bezüglich Steuersignalen kommunizieren. Damit stellt der Besitz des SMGWs die Voraussetzung für eine 
+                dynamische Abrechnung dar.
+                Des Weiteren bietet es auch einen Kommunikationsweg zum Haushaltsendkunden und dessen 
+                kommunikationsfähigen Geräte. Letzteres kann über eine Steuerbox realisiert werden.
                 
                 
-#                 :small[Quelle: Bundesnetzagentur, „Intelligente Messsysteme und moderne Messeinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/Metering/start.html. [Zugriff am: 19. Mai 2025].]""")
+                :small[Quelle: Bundesnetzagentur, „Intelligente Messsysteme und moderne Messeinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/Metering/start.html. [Zugriff am: 19. Mai 2025].]""")
 
-# with st.expander("Wer bekommt ein Smart-Meter-Gateway eingebaut?"):
-#     st.markdown("""
-#                 Der Rollout von SMGWs ist mit einer Gesetzesnovelle im Mai 2023 beschleunigt worden. 
-#                 Seit 2025 beginnt der Pflichteinbau von SMGWs für Haushalte mit einem Jahresdurchschnittsverbrauch 
-#                 zwischen 6000 kWh und 100.000 kWh mit einer Erzeugerleistung zwischen 7 kWp und 100 kWp, oder die 
-#                 im Besitz einer steuerbaren Verbrauchseinrichtung nach Energiewirtschaftsgesetz (EnWG) §14a sind. 
-#                 Das Thema steuerbare Verbrauchseinrichtungen wird im Folgenden nochmal genauer erklärt.
-#                 Ab 2028 beginnt ein weiter Pflichtrollout für Verbraucher über den zuvor genannten Energie und 
-#                 Leistungsmengen. Optional werden die übrigen Verbraucher ausgestattet. Ein SMGW kann auch auf 
-#                 Anfrage des Endkunden unabhängig des Pflichtrollouts eingebaut werden, allerdings kann dies 
-#                 höhere Kosten für den Endkunden verursachen.  Die Kosten des Pflichtrollouts sind gesetzlich 
-#                 gedeckelt auf rund 70€ - 100€ jährlich für digitalen Zähler und SMGW. Die Einbauten neben dem 
-#                 Pflichtrollout können zusätzlich einmalige Kosten im 3-stelligen Bereich mit sich bringen. 
-#                 Der Einbau wird direkt vom Messstellenbetreiber geregelt.
+with st.expander("Wer bekommt ein Smart-Meter-Gateway eingebaut?"):
+    st.markdown("""
+                Der Rollout von SMGWs ist mit einer Gesetzesnovelle im Mai 2023 beschleunigt worden. 
+                Seit 2025 beginnt der Pflichteinbau von SMGWs für Haushalte mit einem Jahresdurchschnittsverbrauch 
+                zwischen 6000 kWh und 100.000 kWh mit einer Erzeugerleistung zwischen 7 kWp und 100 kWp, oder die 
+                im Besitz einer steuerbaren Verbrauchseinrichtung nach Energiewirtschaftsgesetz (EnWG) §14a sind. 
+                Das Thema steuerbare Verbrauchseinrichtungen wird im Folgenden nochmal genauer erklärt.
+                Ab 2028 beginnt ein weiter Pflichtrollout für Verbraucher über den zuvor genannten Energie und 
+                Leistungsmengen. Optional werden die übrigen Verbraucher ausgestattet. Ein SMGW kann auch auf 
+                Anfrage des Endkunden unabhängig des Pflichtrollouts eingebaut werden, allerdings kann dies 
+                höhere Kosten für den Endkunden verursachen.  Die Kosten des Pflichtrollouts sind gesetzlich 
+                gedeckelt auf rund 70€ - 100€ jährlich für digitalen Zähler und SMGW. Die Einbauten neben dem 
+                Pflichtrollout können zusätzlich einmalige Kosten im 3-stelligen Bereich mit sich bringen. 
+                Der Einbau wird direkt vom Messstellenbetreiber geregelt.
 
-#                 :small[Quelle: Haufe Online Redaktion, „Smart-Meter-Rollout: Das ist seit dem 1. Januar Pflicht“
-#                 , Haufe.de, 2. Jan. 2025. [Online]. Verfügbar: https://www.haufe.de/immobilien/wirtschaft-politik/smart-meter-rollout_84342_638840.html. 
-#                 [Zugriff am: 25. Mai 2025].""")
+                :small[Quelle: Haufe Online Redaktion, „Smart-Meter-Rollout: Das ist seit dem 1. Januar Pflicht“
+                , Haufe.de, 2. Jan. 2025. [Online]. Verfügbar: https://www.haufe.de/immobilien/wirtschaft-politik/smart-meter-rollout_84342_638840.html. 
+                [Zugriff am: 25. Mai 2025].""")
     
-# with st.expander("Warum muss ich ein Smart-Meter-Gateway bei mir einbauen lassen?"):
-#     st.markdown("""
-#                 Der Einbau von SMGW in Haushalten ist essenziell wichtig, um die elektrische Energieversorgung 
-#                 klimafreundlicher und zukunftssicher zu gestalten.
-#                 Primär bieten die Daten, die das SMGW an die Netzbetreiber bzw. Energieversorger sendet mehr 
-#                 Transparenz wie der Zustand der Netze und der Hausverbrauch wirklich aussieht. Die Netzbetreiber 
-#                 können aus den Daten ermitteln, ob es zu Überlastungen der Betriebsmittel des Netzes kommen kann 
-#                 und die Energieversorger können mit den Daten aus Verbrauchs- und Erzeugeranlagen besser den 
-#                 Haushalten die Energie vorhalten, die sie wirklich benötigen.
-#                 Ebenfalls können durch die Möglichkeit der zeitgenauen Abrechnung Anreize zur Lastverschiebung 
-#                 gesetzt werden, die wiederum den Anteil der elektrischen Energie aus 
-#                 erneuerbaren Erzeugeranlagen verbessern können.
-#                 Ebenso wichtig zur Erhaltung der Zuverlässigkeit der Energieversorgung ist die 
-#                 Steuerbarkeit von Erzeugeranlagen und großen Verbrauchseinrichtungen, sollte sich das Netz in einem kritischen Zustand befinden.
+with st.expander("Warum muss ich ein Smart-Meter-Gateway bei mir einbauen lassen?"):
+    st.markdown("""
+                Der Einbau von SMGW in Haushalten ist essenziell wichtig, um die elektrische Energieversorgung 
+                klimafreundlicher und zukunftssicher zu gestalten.
+                Primär bieten die Daten, die das SMGW an die Netzbetreiber bzw. Energieversorger sendet mehr 
+                Transparenz wie der Zustand der Netze und der Hausverbrauch wirklich aussieht. Die Netzbetreiber 
+                können aus den Daten ermitteln, ob es zu Überlastungen der Betriebsmittel des Netzes kommen kann 
+                und die Energieversorger können mit den Daten aus Verbrauchs- und Erzeugeranlagen besser den 
+                Haushalten die Energie vorhalten, die sie wirklich benötigen.
+                Ebenfalls können durch die Möglichkeit der zeitgenauen Abrechnung Anreize zur Lastverschiebung 
+                gesetzt werden, die wiederum den Anteil der elektrischen Energie aus 
+                erneuerbaren Erzeugeranlagen verbessern können.
+                Ebenso wichtig zur Erhaltung der Zuverlässigkeit der Energieversorgung ist die 
+                Steuerbarkeit von Erzeugeranlagen und großen Verbrauchseinrichtungen, sollte sich das Netz in einem kritischen Zustand befinden.
 
-#                 :small[Quelle: Bundesnetzagentur, „Intelligente Messsysteme und moderne Messeinrichtungen“, 
-#                 Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/Metering/start.html. [Zugriff am: 19. Mai 2025].]""")
+                :small[Quelle: Bundesnetzagentur, „Intelligente Messsysteme und moderne Messeinrichtungen“, 
+                Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/Metering/start.html. [Zugriff am: 19. Mai 2025].]""")
 
-# st.divider()
-# st.markdown("""##### Was sind Dynamische Stromtarife?""")
-# with st.expander("Welche Arten von dynamischen Stromtarifen gibt es?"):
-#     st.markdown("""
-#                 Neben den festen Stromtarifen können Energieversorger auch zeitlich flexible Stromtarife anbieten. 
-#                 Diese können sich an unterschiedlichen Modellen orientieren. Alle Stromtarife basieren mehr 
-#                 oder weniger dynamisch auf die Schwankungen des Börsenstrompreises. Zum einen können sich 
-#                 Tarife zu festen Tageszeiten auf festgelegte Preise verändern, wie beispielsweise 
-#                 Nachtstromtarife. Andere wiederum sind direkt mit dem Börsenstrompreis gekoppelt 
-#                 und passen sich an den durchschnittlichen Preis beispielsweise monatlich oder täglich an. 
-#                 Die im Folgenden diskutierten dynamischen Stromtarife passen sich auf die in Echtzeit 
-#                 gehandelten Börsenstrompreise an. Die Börsenstrompreise werden in stündlichen bzw. 
-#                 viertelstündlichen Auktionen gehandelt. Aktuell sind in der folgenden Berechnung 
-#                 für die dynamischen Stromtarife die stündlich gehandelte Day-Ahead Auktion der 
-#                 europäischen Strombörse EPEX Spot hinterlegt. Die Daten sind bezogen worden von 
-#                 der Website Energy Charts https://energy-charts.info/ am 23.01.2025. 
-#                 Da mit einem dynamischen Stromtarif ein Anreiz zur Lastverschiebung seitens 
-#                 des Endkunden geschaffen wird, muss seit 2025 jeder Energieversorger einen 
-#                 dynamischen Stromtarif anbieten. Ebenfalls können durch die Möglichkeit der 
-#                 zeitgenauen Abrechnung Anreize zur Lastverschiebung gesetzt werden, die wiederum 
-#                 den Anteil der elektrischen Energie aus erneuerbaren Erzeugeranlagen verbessern können.
-#                 Ebenso wichtig zur Erhaltung der Zuverlässigkeit ist die Steuerbarkeit von 
-#                 Erzeugeranlagen und großen Verbrauchseinrichtungen, 
-#                 sollte sich das Netz in einem kritischen Zustand befinden.
+st.divider()
+st.markdown("""##### Was sind Dynamische Stromtarife?""")
+with st.expander("Welche Arten von dynamischen Stromtarifen gibt es?"):
+    st.markdown("""
+                Neben den festen Stromtarifen können Energieversorger auch zeitlich flexible Stromtarife anbieten. 
+                Diese können sich an unterschiedlichen Modellen orientieren. Alle Stromtarife basieren mehr 
+                oder weniger dynamisch auf die Schwankungen des Börsenstrompreises. Zum einen können sich 
+                Tarife zu festen Tageszeiten auf festgelegte Preise verändern, wie beispielsweise 
+                Nachtstromtarife. Andere wiederum sind direkt mit dem Börsenstrompreis gekoppelt 
+                und passen sich an den durchschnittlichen Preis beispielsweise monatlich oder täglich an. 
+                Die im Folgenden diskutierten dynamischen Stromtarife passen sich auf die in Echtzeit 
+                gehandelten Börsenstrompreise an. Die Börsenstrompreise werden in stündlichen bzw. 
+                viertelstündlichen Auktionen gehandelt. Aktuell sind in der folgenden Berechnung 
+                für die dynamischen Stromtarife die stündlich gehandelte Day-Ahead Auktion der 
+                europäischen Strombörse EPEX Spot hinterlegt. Die Daten sind bezogen worden von 
+                der Website Energy Charts https://energy-charts.info/ am 23.01.2025. 
+                Da mit einem dynamischen Stromtarif ein Anreiz zur Lastverschiebung seitens 
+                des Endkunden geschaffen wird, muss seit 2025 jeder Energieversorger einen 
+                dynamischen Stromtarif anbieten. Ebenfalls können durch die Möglichkeit der 
+                zeitgenauen Abrechnung Anreize zur Lastverschiebung gesetzt werden, die wiederum 
+                den Anteil der elektrischen Energie aus erneuerbaren Erzeugeranlagen verbessern können.
+                Ebenso wichtig zur Erhaltung der Zuverlässigkeit ist die Steuerbarkeit von 
+                Erzeugeranlagen und großen Verbrauchseinrichtungen, 
+                sollte sich das Netz in einem kritischen Zustand befinden.
 
-#                 :small[Quelle: Forschungsstelle für Energiewirtschaft e. V. (FfE), 
-#                 „Dynamische Stromtarife - Tarifarten, Vor- und Nachteile, technische Anforderungen“, 
-#                 FfE, 18. Aug. 2023. [Online]. Verfügbar: https://www.ffe.de/veroeffentlichungen/beitragsreihe-dynamische-stromtarife-tarifarten-vor-und-nachteile-technische-anforderungen/. [Zugriff am: 19. Mai 2025].]
-#                 """)
+                :small[Quelle: Forschungsstelle für Energiewirtschaft e. V. (FfE), 
+                „Dynamische Stromtarife - Tarifarten, Vor- und Nachteile, technische Anforderungen“, 
+                FfE, 18. Aug. 2023. [Online]. Verfügbar: https://www.ffe.de/veroeffentlichungen/beitragsreihe-dynamische-stromtarife-tarifarten-vor-und-nachteile-technische-anforderungen/. [Zugriff am: 19. Mai 2025].]
+                """)
 
-# with st.expander("Welchen Nutzen erfüllen dynamische Stromtarife?"):
-#     st.markdown("""
-#                 Da dynamische Stromtarife auf den Börsenstrompreisen basieren, spiegeln diese 
-#                 das Gleichgewicht aus Erzeugung und Verbrauch von elektrischer Energie im System wider. 
-#                 Dies hat den Effekt, einen monetären Anreiz für den Kunden zu bilden, wenn mehr 
-#                 Erzeugung aus erneuerbaren Energien vorhanden ist als von den Verbrauchern abgenommen wird.
-#                 Eine Verschiebung von Lasten in Zeiten niedriger Börsenstrompreise fördert die 
-#                 Integrität erneuerbaren Energien, spart CO2 Emissionen der Kraftwerke, die zum 
-#                 regulären Zeitpunkt die Energie bereitgestellt hätten. Ebenso sinkt die Auslastung der 
-#                 Netz-Betriebsmittel in Zeiten hoher Nachfrage und so können Netzausbaumaßnahmen 
-#                 auf das Nötigste reduziert werden.
+with st.expander("Welchen Nutzen erfüllen dynamische Stromtarife?"):
+    st.markdown("""
+                Da dynamische Stromtarife auf den Börsenstrompreisen basieren, spiegeln diese 
+                das Gleichgewicht aus Erzeugung und Verbrauch von elektrischer Energie im System wider. 
+                Dies hat den Effekt, einen monetären Anreiz für den Kunden zu bilden, wenn mehr 
+                Erzeugung aus erneuerbaren Energien vorhanden ist als von den Verbrauchern abgenommen wird.
+                Eine Verschiebung von Lasten in Zeiten niedriger Börsenstrompreise fördert die 
+                Integrität erneuerbaren Energien, spart CO2 Emissionen der Kraftwerke, die zum 
+                regulären Zeitpunkt die Energie bereitgestellt hätten. Ebenso sinkt die Auslastung der 
+                Netz-Betriebsmittel in Zeiten hoher Nachfrage und so können Netzausbaumaßnahmen 
+                auf das Nötigste reduziert werden.
 
-#                 Ein Wechsel auf einen dynamischen Stromtarif in Kombination mit Verbrauchsspitzen 
-#                 in den preislich hohen Zeitpunkten kann gleichermaßen einen Kostennachteil für den Endkunden bedeuten.
+                Ein Wechsel auf einen dynamischen Stromtarif in Kombination mit Verbrauchsspitzen 
+                in den preislich hohen Zeitpunkten kann gleichermaßen einen Kostennachteil für den Endkunden bedeuten.
 
-#                 Da diese individuelle Lastverschiebung nur schwer akkurat zu simulieren ist, 
-#                 geht die Berechnung vom Fall aus, dass der Endkunde sein Verhalten mit dem Wechsel 
-#                 auf einen dynamischen Stromtarif nicht verändert. Die monetären Vorteile durch eine 
-#                 Lastverschiebung können nach eigenem Interesse individuell abgeschätzt werden.
+                Da diese individuelle Lastverschiebung nur schwer akkurat zu simulieren ist, 
+                geht die Berechnung vom Fall aus, dass der Endkunde sein Verhalten mit dem Wechsel 
+                auf einen dynamischen Stromtarif nicht verändert. Die monetären Vorteile durch eine 
+                Lastverschiebung können nach eigenem Interesse individuell abgeschätzt werden.
 
-#                 :small[Quelle: Forschungsstelle für Energiewirtschaft e. V. (FfE), 
-#                 „Dynamische Stromtarife - Tarifarten, Vor- und Nachteile, technische Anforderungen“, FfE, 18. Aug. 2023. [Online]. 
-#                 Verfügbar: https://www.ffe.de/veroeffentlichungen/beitragsreihe-dynamische-stromtarife-tarifarten-vor-und-nachteile-technische-anforderungen/. 
-#                 [Zugriff am: 19. Mai 2025].]
+                :small[Quelle: Forschungsstelle für Energiewirtschaft e. V. (FfE), 
+                „Dynamische Stromtarife - Tarifarten, Vor- und Nachteile, technische Anforderungen“, FfE, 18. Aug. 2023. [Online]. 
+                Verfügbar: https://www.ffe.de/veroeffentlichungen/beitragsreihe-dynamische-stromtarife-tarifarten-vor-und-nachteile-technische-anforderungen/. 
+                [Zugriff am: 19. Mai 2025].]
 
-#                 """)
-# with st.expander("Wie ist ein dynamischer Stromtarif aufgebaut?"):
-#     st.markdown("""
-#                 Wie jeder feste Stromtarif auch besteht auch ein dynamischer Stromtarif immer aus 
-#                 einem monatlichen Fixpreis und einem variablen Anteil je kWh elektrischer Energie.
-#                  Nur der variable Anteil verändert sich dynamisch mit den Schwankungen des Börsenstrompreises. 
-#                 Zu dem variablen Anteil gehören fix die Netzentgelte, Konzessionsabgaben, Stromsteuer, 
-#                 Offshore-Umlage, KWKG-Umlage, NEV-Umlage und ein Energieversorger spezifischer Aufschlag ein. 
-#                 Stündlich oder viertelstündlich verändern sich die Energiekosten, die dem Börsenstrompreis 
-#                 entsprechen und die Mehrwertsteuer, die sich dafür ergibt. Letzteres verstärkt die Schwankungen im Endpreis erheblich.
-#                 In der Berechnung ist ein dynamischer Stromtarif von Tibber verwendet worden Stand Januar 2025. Tibber erhob 
-#                 zu dem Zeitpunkt eine monatliche Gebühr von 5,99 € und einen variablen Anteil pro kWh von 2,15 Cent/kWh.
-#                 """)
-# st.divider()
+                """)
+with st.expander("Wie ist ein dynamischer Stromtarif aufgebaut?"):
+    st.markdown("""
+                Wie jeder feste Stromtarif auch besteht auch ein dynamischer Stromtarif immer aus 
+                einem monatlichen Fixpreis und einem variablen Anteil je kWh elektrischer Energie.
+                 Nur der variable Anteil verändert sich dynamisch mit den Schwankungen des Börsenstrompreises. 
+                Zu dem variablen Anteil gehören fix die Netzentgelte, Konzessionsabgaben, Stromsteuer, 
+                Offshore-Umlage, KWKG-Umlage, NEV-Umlage und ein Energieversorger spezifischer Aufschlag ein. 
+                Stündlich oder viertelstündlich verändern sich die Energiekosten, die dem Börsenstrompreis 
+                entsprechen und die Mehrwertsteuer, die sich dafür ergibt. Letzteres verstärkt die Schwankungen im Endpreis erheblich.
+                In der Berechnung ist ein dynamischer Stromtarif von Tibber verwendet worden Stand Januar 2025. Tibber erhob 
+                zu dem Zeitpunkt eine monatliche Gebühr von 5,99 € und einen variablen Anteil pro kWh von 2,15 Cent/kWh.
+                """)
+st.divider()
 
-# st.markdown("""##### Was muss ich über steuerbare Verbrauchseinrichtungen wissen?""")
-# with st.expander("Warum sollen Haushaltsgeräte vom Netzbetreiber aus steuerbar sein?"):
-#     st.markdown("""
-#                 Durch die voranschreitende Sektorenkopplung, sprich der Versorgung der Sektoren 
-#                 Haushaltswärme und Individualverkehr mit elektrischer Energie, gelangen immer mehr 
-#                 elektrische Verbraucher mit hoher Leistungsaufnahme in die Haushalte, die häufig zu 
-#                 ähnlichen Zeiten verwendet werden. Nicht alle Versorgungsnetze sind gewiss auf die 
-#                 bevorstehenden Lasten ausgelegt und müssen in Zukunft ausgebaut und digitalisiert werden. 
-#                 Daher ist es das Ziel, all diese flexiblen Verbraucher mit hoher Leistungsaufnahme vom 
-#                 Netzbetreiber aus steuerbar zu machen. Der Netzbetreiber darf bei einer nachgewiesenen 
-#                 Netzüberlastung die Leistungsaufnahme dieser Geräte reduzieren. Als Entschädigung für 
-#                 die Steurungsmöglichkeit werden die Netzentgelte für den Endkunden reduziert und 
-#                 nach einer Steuerung ist der Netzbetreiber verpflichtet sein Netz auszubauen.
+st.markdown("""##### Was muss ich über steuerbare Verbrauchseinrichtungen wissen?""")
+with st.expander("Warum sollen Haushaltsgeräte vom Netzbetreiber aus steuerbar sein?"):
+    st.markdown("""
+                Durch die voranschreitende Sektorenkopplung, sprich der Versorgung der Sektoren 
+                Haushaltswärme und Individualverkehr mit elektrischer Energie, gelangen immer mehr 
+                elektrische Verbraucher mit hoher Leistungsaufnahme in die Haushalte, die häufig zu 
+                ähnlichen Zeiten verwendet werden. Nicht alle Versorgungsnetze sind gewiss auf die 
+                bevorstehenden Lasten ausgelegt und müssen in Zukunft ausgebaut und digitalisiert werden. 
+                Daher ist es das Ziel, all diese flexiblen Verbraucher mit hoher Leistungsaufnahme vom 
+                Netzbetreiber aus steuerbar zu machen. Der Netzbetreiber darf bei einer nachgewiesenen 
+                Netzüberlastung die Leistungsaufnahme dieser Geräte reduzieren. Als Entschädigung für 
+                die Steurungsmöglichkeit werden die Netzentgelte für den Endkunden reduziert und 
+                nach einer Steuerung ist der Netzbetreiber verpflichtet sein Netz auszubauen.
                 
-#                 :small[Quelle: Bundesnetzagentur, „Integration von steuerbaren Verbrauchseinrichtungen“, 
-#                 Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html. [Zugriff am: 21. Mai 2025].]""")
-# with st.expander("Was ist eine steuerbare Verbrauchseinrichtung?"):
-#     st.markdown("""
-#                 Für die Umsetzung des Ziels ist in dem Energiewirtschaftsgesetz (EnWG) geregelt, 
-#                 welche Geräte als eine steuerbare Verbrauchseinrichtung betitelt werden. 
-#                 Dabei handelt es sich um Stromspeicher, Klimageräte, Wärmepumpen und Wallboxen mit einer 
-#                 Netzanschlussleistung größer 4,2 kW, die nach dem 01.01.2024 in Betrieb genommen worden sind. 
-#                 Temporär muss sich diese vom Netzbetreiber auf 4,2 kW dimmen lassen können.
+                :small[Quelle: Bundesnetzagentur, „Integration von steuerbaren Verbrauchseinrichtungen“, 
+                Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html. [Zugriff am: 21. Mai 2025].]""")
+with st.expander("Was ist eine steuerbare Verbrauchseinrichtung?"):
+    st.markdown("""
+                Für die Umsetzung des Ziels ist in dem Energiewirtschaftsgesetz (EnWG) geregelt, 
+                welche Geräte als eine steuerbare Verbrauchseinrichtung betitelt werden. 
+                Dabei handelt es sich um Stromspeicher, Klimageräte, Wärmepumpen und Wallboxen mit einer 
+                Netzanschlussleistung größer 4,2 kW, die nach dem 01.01.2024 in Betrieb genommen worden sind. 
+                Temporär muss sich diese vom Netzbetreiber auf 4,2 kW dimmen lassen können.
                 
-#                 :small[Quelle: Bundesnetzagentur, „Integration von steuerbaren Verbrauchseinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html. [Zugriff am: 21. Mai 2025].]
-#                 """)
-# with st.expander("Welchen Nutzen kann ich aus meinen steuerbaren Verbrauchseinrichungen ziehen?"):
-#     st.markdown("""
-#                 Die Entschädigung der Steuerungsmöglichkeit wird in drei frei wählbaren Modulen geregelt. 
-#                 Das erste Modul enthält eine pauschale Entschädigung zwischen 110 und 190 €, je nach Netzbetreiber. 
-#                 Das Modul kann mit dem Modul drei kombiniert werden, diese Module benötigen keine eigene Messung 
-#                 der Energie der steuerbaren Verbrauchseinrichtung. Für das zweite Modul muss die Energie der 
-#                 steuerbaren Verbrauchseinrichtung separat zum Haushaltsstrom gemessen werden. Dafür erhält der 
-#                 Endkunde auf die von der steuerbaren Verbrauchseinrichtung verbrauchten elektrischen Energie 
-#                 eine prozentuale Netzentgeltreduzierung von 40%. Das dritte Modul, welches nur in Kombination 
-#                 mit Modul 1 gewählt werden kann, beinhaltet zeitvariable Netzentgelte. Dieses Modul ist wählbar 
-#                 seit April 2025. Die Netzbetreiber können selbst ein dreistufigen Netzentgeltplan bestimmen. 
-#                 Dabei müssen sich in 24 h mindestens einmal ein Hochtarif, Standardtarif und Niedrigtarif wiederholen.
+                :small[Quelle: Bundesnetzagentur, „Integration von steuerbaren Verbrauchseinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html. [Zugriff am: 21. Mai 2025].]
+                """)
+with st.expander("Welchen Nutzen kann ich aus meinen steuerbaren Verbrauchseinrichungen ziehen?"):
+    st.markdown("""
+                Die Entschädigung der Steuerungsmöglichkeit wird in drei frei wählbaren Modulen geregelt. 
+                Das erste Modul enthält eine pauschale Entschädigung zwischen 110 und 190 €, je nach Netzbetreiber. 
+                Das Modul kann mit dem Modul drei kombiniert werden, diese Module benötigen keine eigene Messung 
+                der Energie der steuerbaren Verbrauchseinrichtung. Für das zweite Modul muss die Energie der 
+                steuerbaren Verbrauchseinrichtung separat zum Haushaltsstrom gemessen werden. Dafür erhält der 
+                Endkunde auf die von der steuerbaren Verbrauchseinrichtung verbrauchten elektrischen Energie 
+                eine prozentuale Netzentgeltreduzierung von 40%. Das dritte Modul, welches nur in Kombination 
+                mit Modul 1 gewählt werden kann, beinhaltet zeitvariable Netzentgelte. Dieses Modul ist wählbar 
+                seit April 2025. Die Netzbetreiber können selbst ein dreistufigen Netzentgeltplan bestimmen. 
+                Dabei müssen sich in 24 h mindestens einmal ein Hochtarif, Standardtarif und Niedrigtarif wiederholen.
                 
-#                 :small[Quelle: Bundesnetzagentur, „Integration von steuerbaren Verbrauchseinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html. [Zugriff am: 21. Mai 2025].]
+                :small[Quelle: Bundesnetzagentur, „Integration von steuerbaren Verbrauchseinrichtungen“, Bundesnetzagentur, [Online]. Verfügbar: https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html. [Zugriff am: 21. Mai 2025].]
                 
-#                 """)
-# st.divider()
+                """)
+st.divider()
 
-# st.markdown("""##### Was muss ich alles über die EEG-Vergütung wissen?""")
-# with st.expander("Was ist die Feste Einspeisevergütung für den eingespeiste elektrische Energie aus Erneuerbaren Energieanlagen?"):
-#     st.markdown("""
-#                 In dem Erneuerbaren-Energien-Gesetz ist die vorrangige Abnahme von elektrischer Energie aus 
-#                 erneuerbaren Energieanlagen geregelt. Ebenfalls ist dort die Einspeisevergütung geregelt, 
-#                 die sich nach Installationsdatum, Leistung der Anlage und Art der Einspeisung (Voll- oder 
-#                 Teileinspeisung ins Netz) bemisst.
+st.markdown("""##### Was muss ich alles über die EEG-Vergütung wissen?""")
+with st.expander("Was ist die Feste Einspeisevergütung für den eingespeiste elektrische Energie aus Erneuerbaren Energieanlagen?"):
+    st.markdown("""
+                In dem Erneuerbaren-Energien-Gesetz ist die vorrangige Abnahme von elektrischer Energie aus 
+                erneuerbaren Energieanlagen geregelt. Ebenfalls ist dort die Einspeisevergütung geregelt, 
+                die sich nach Installationsdatum, Leistung der Anlage und Art der Einspeisung (Voll- oder 
+                Teileinspeisung ins Netz) bemisst.
 
-#                 Für Anlagen, die älter als 20 Jahre sind, erhalten aktuell bis 2032 so geregelt weiterhin 
-#                 eine vorrangige Abnahme der Energie und eine Einspeisevergütung, die sich an den 
-#                 Börsenstrompreis orientiert und Jahresmarktwert Solar heißt.
+                Für Anlagen, die älter als 20 Jahre sind, erhalten aktuell bis 2032 so geregelt weiterhin 
+                eine vorrangige Abnahme der Energie und eine Einspeisevergütung, die sich an den 
+                Börsenstrompreis orientiert und Jahresmarktwert Solar heißt.
                 
-#                 :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
-#                 """)
-# with st.expander("Was ist die Direktvermarktung?"):
-#     st.markdown("""
-#                  Bei der Direktvermarktung wird 
-#                 die eingespeiste Energie der PV-Anlage direkt von einem Dienstleister an der 
-#                 Strombörse verkauft. Eine Förderung wird dabei mit der so genannten Marktprämie umgesetzt, 
-#                 die auf den Börsenstrompreis hinzugerechnet wird und sicherstellt dass förderfähige 
-#                 Anlagen Erlöse im Bereich der festen Einspeisevergütung erhalten. Diese Art der Vermarktung 
-#                 von eigenerzeugten Energie bringt ähnliche Vorteile für das Energiesystem mit, die bereits 
-#                 für variable Bezugspreise aufgeführt sind. Je nach externem Direktvermarkter kommen
-#                  unterschiedlich hohe Dienstleistungsgebühren hinzu, da die elektrische Energie manuell 
-#                 an der Börse gehandelt werden muss. 
+                :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
+                """)
+with st.expander("Was ist die Direktvermarktung?"):
+    st.markdown("""
+                 Bei der Direktvermarktung wird 
+                die eingespeiste Energie der PV-Anlage direkt von einem Dienstleister an der 
+                Strombörse verkauft. Eine Förderung wird dabei mit der so genannten Marktprämie umgesetzt, 
+                die auf den Börsenstrompreis hinzugerechnet wird und sicherstellt dass förderfähige 
+                Anlagen Erlöse im Bereich der festen Einspeisevergütung erhalten. Diese Art der Vermarktung 
+                von eigenerzeugten Energie bringt ähnliche Vorteile für das Energiesystem mit, die bereits 
+                für variable Bezugspreise aufgeführt sind. Je nach externem Direktvermarkter kommen
+                 unterschiedlich hohe Dienstleistungsgebühren hinzu, da die elektrische Energie manuell 
+                an der Börse gehandelt werden muss. 
 
-#                 In der Berechnung sind Dienstleistungskosten des Energieversorgers Luox Energy 
-#                 (Stand Mai 2025) mit 3% variablen Kosten und einem Fixen Anteil in Abhängigkeit 
-#                 der Größe der PV-Anlage zwischen 74€ und 130€ pro Jahr eingerechnet. 
-#                 Zu dem muss eine Gebühr von 200€ einmalig als Einrichtungsgebühr verrichtet werden.
+                In der Berechnung sind Dienstleistungskosten des Energieversorgers Luox Energy 
+                (Stand Mai 2025) mit 3% variablen Kosten und einem Fixen Anteil in Abhängigkeit 
+                der Größe der PV-Anlage zwischen 74€ und 130€ pro Jahr eingerechnet. 
+                Zu dem muss eine Gebühr von 200€ einmalig als Einrichtungsgebühr verrichtet werden.
                 
-#                 :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
-#                 """)
-# with st.expander("Was ist bei einer Kombination aus Batteriespeichern und der PV-Anlage zu berücksichtigen?"):
-#     st.markdown("""
-#                 Ein weiterer Punkt im EEG ist die Behandlung von Speichern. Dieses Gesetz regelt 
-#                 die Einspeisevergütung der Energie, die von der Batterie ins Netz abgegeben werden 
-#                 kann. Das dort definierte Ausschließlichkeitsprinzip besagt, dass die Batterien ausschließlich 
-#                 aus dem Netz beziehen, oder ausschließlich ins Netz mit EEG-Vergütung einspeisen dürfen.
-#                 Damit soll vermieden werden, dass Energie die aus dem Netz bezogen und 
-#                 gespeichert worden ist, zu höhen Einspeisevergütungen ins Netz zurückgespeist wird.
+                :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
+                """)
+with st.expander("Was ist bei einer Kombination aus Batteriespeichern und der PV-Anlage zu berücksichtigen?"):
+    st.markdown("""
+                Ein weiterer Punkt im EEG ist die Behandlung von Speichern. Dieses Gesetz regelt 
+                die Einspeisevergütung der Energie, die von der Batterie ins Netz abgegeben werden 
+                kann. Das dort definierte Ausschließlichkeitsprinzip besagt, dass die Batterien ausschließlich 
+                aus dem Netz beziehen, oder ausschließlich ins Netz mit EEG-Vergütung einspeisen dürfen.
+                Damit soll vermieden werden, dass Energie die aus dem Netz bezogen und 
+                gespeichert worden ist, zu höhen Einspeisevergütungen ins Netz zurückgespeist wird.
 
-#                 :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
+                :small[Quelle: Bundesministerium für Wirtschaft und Klimaschutz (BMWK), „Das Solarpaket I im Überblick“, BMWK, 26. Apr. 2024. [Online]. Verfügbar: https://www.bmwk.de/Redaktion/DE/Downloads/S-T/solarpaket-im-ueberblick.pdf?__blob=publicationFile&v=14. [Zugriff am: 21. Mai 2025].]
                 
-#                 Aktuell kann ein freies Verhalten von Einspeisung und Netzbezug der Batterien nur 
-#                 in Kombination der Direktvermarktung ohne Marktprämie genutzt werden. 
-#                 Damit in Zukunft die Batterien mehr Spielraum haben auf die Anreize des Strommarkts 
-#                 zu reagieren, soll in Zukunft das Ausschließlichkeitsprinzip für die förderfähige 
-#                 Direktvermarktung angepasst werden. 
+                Aktuell kann ein freies Verhalten von Einspeisung und Netzbezug der Batterien nur 
+                in Kombination der Direktvermarktung ohne Marktprämie genutzt werden. 
+                Damit in Zukunft die Batterien mehr Spielraum haben auf die Anreize des Strommarkts 
+                zu reagieren, soll in Zukunft das Ausschließlichkeitsprinzip für die förderfähige 
+                Direktvermarktung angepasst werden. 
                 
-#                 """)
+                """)
                 
-# st.markdown('<a id="annahmen"></a>', unsafe_allow_html=True)
-# st.divider()
+st.markdown('<a id="annahmen"></a>', unsafe_allow_html=True)
+st.divider()
 
 st.markdown("## Annahmen und Erklärung der Berechnung")
 st.markdown("""##### Welche Annahmen trifft die Berechnung und welche Grenzen weißt diese auf?""")
